@@ -2,7 +2,7 @@
 
 ## SupportsConnect
 A website to facilitate the ongoing relationship between people with disabilities and support workers.
-Specifically this website helps with manageing scheduling and reporting.
+Specifically this website will help with manageing the scheduling and reporting aspects of this relationship.
 
 ## Group Members 
 - Jonathan Chan
