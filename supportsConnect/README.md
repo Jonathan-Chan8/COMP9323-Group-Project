@@ -2,7 +2,7 @@ This directory is responsible for:
 - Spinning up the Flask server on localhost
 - Running html / css in the client's web browser
 
-# SET UP VIRTUAL ENV #
+## SET UP VIRTUAL ENV ##
 
 1. navigate to the COMP9323-Group-Project/supportsConnect directory
 2. Create virtual environment called 'supportsConnect_env': 
@@ -17,7 +17,7 @@ This directory is responsible for:
 	
 	$ pip install -r requirements.txt
 
-	# NOTE if you are on mac and it can't download psycopg2, do this
+	NOTE if you are on mac and it can't download psycopg2, do this
 	```
 	pip install psycopg2-binary
 	```
@@ -34,6 +34,6 @@ This directory is responsible for:
 	$ python3 network.py
 
 
-# DEACTIVATE VIRTUAL ENV #
+## DEACTIVATE VIRTUAL ENV ##
 
-	# deactivate supportsConnect_env
+	$ deactivate supportsConnect_env
