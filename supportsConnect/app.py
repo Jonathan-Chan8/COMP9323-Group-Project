@@ -8,10 +8,9 @@ Flask Server
 
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy 
-#from models import db
 from psycopg2 import connect, Error
 
-ENV = 'heroku'
+ENV = 'local'
 #----------------------------------------------------------------------------#
 
 ## Business Logic ##
@@ -19,12 +18,11 @@ ENV = 'heroku'
 app = Flask(__name__)
 app.secret_key = "key"  # necessary for session data
 
+
 POSTGRES = {
-    #'user': 'admin',
-    'user': 'postgres',
-  #  'pw': ";'",
-    'pw': "support",
-    'db': 'supportsConnect',
+    'user': 'sc_user',
+    'pw': 'sc_password',
+    'db': 'supportsconnect_database',
     'host': 'localhost',
     'port': '5432',
 }
@@ -35,11 +33,7 @@ if ENV == 'heroku':
 	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tzyorblmmujtqn:78696e1fe5d8cbacb4fc2cbdde7b835d8960d8e347350cde074e90aab8f7a444@ec2-107-21-10-179.compute-1.amazonaws.com:5432/d37h70o640paa9'
 
 
-
 db = SQLAlchemy(app)
-
-#db.init_app(app)
-#db = SQLAlchemy(app)
 
 class users(db.Model):
 	_id = db.Column("id", db.Integer, primary_key=True)
