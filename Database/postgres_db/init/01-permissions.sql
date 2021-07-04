@@ -1,1 +1,0 @@
-GRANT ALL ON ALL TABLES IN SCHEMA NewsCollectorInfo to admin;
