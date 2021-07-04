@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title%} User Account {% endblock %}
+
+{% block content %} 
+
+<h1> Welcome to your account {{username}} </h1>
+<!-- <h1> {age} </h1> -->
+<form action="#" method="post">
+	<p>Logout: </p>
+		<button name="logout" type="submit" value="submit">
+			Submit
+		</button>
+</form>
+
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for msg in messages %}
+				<p style="color:green;">{{msg}}</p>	
+			{% endfor %}
+		{% endif %}
+	{% endwith%}
+
+
+{% endblock %}
