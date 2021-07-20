@@ -44,6 +44,11 @@ def create_account():
 		email = request.form["email"]
 		first_name = request.form["first_name"]					
 		last_name = request.form["last_name"]
+		user_type = request.form.get("user_type")
+
+		user_instance = Support_Worker(first_name, last_name, email)
+
+		print(user_instance)
 
 		session["name"] = first_name
 		session["email"] = email

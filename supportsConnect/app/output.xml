@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ABRPayloadSearchResults xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://abr.business.gov.au/ABRXMLSearch/">
+  <request>
+    <identifierSearchRequest>
+      <authenticationGUID>a5e88c9d-d1a0-4fdb-af71-4d1c96aa3e20</authenticationGUID>
+      <identifierType>ABN</identifierType>
+      <identifierValue>71403348348</identifierValue>
+      <history>Y</history>
+    </identifierSearchRequest>
+  </request>
+  <response>
+    <usageStatement>The Registrar of the ABR monitors the quality of the information available on this website and updates the information regularly. However, neither the Registrar of the ABR nor the Commonwealth guarantee that the information available through this service (including search results) is accurate, up to date, complete or accept any liability arising from the use of or reliance upon this site.</usageStatement>
+    <dateRegisterLastUpdated>2021-07-16</dateRegisterLastUpdated>
+    <dateTimeRetrieved>2021-07-16T17:22:31.8092712+10:00</dateTimeRetrieved>
+    <businessEntity202001>
+      <recordLastUpdatedDate>2019-03-11</recordLastUpdatedDate>
+      <ABN>
+        <identifierValue>71403348348</identifierValue>
+        <isCurrentIndicator>Y</isCurrentIndicator>
+        <replacedFrom>0001-01-01</replacedFrom>
+      </ABN>
+      <entityStatus>
+        <entityStatusCode>Active</entityStatusCode>
+        <effectiveFrom>2019-03-10</effectiveFrom>
+        <effectiveTo>0001-01-01</effectiveTo>
+      </entityStatus>
+      <ASICNumber />
+      <entityType>
+        <entityTypeCode>IND</entityTypeCode>
+        <entityDescription>Individual/Sole Trader</entityDescription>
+      </entityType>
+      <legalName>
+        <givenName>JONATHAN</givenName>
+        <otherGivenName>WILL SUN-EE</otherGivenName>
+        <familyName>CHAN</familyName>
+        <effectiveFrom>2019-03-10</effectiveFrom>
+        <effectiveTo>0001-01-01</effectiveTo>
+      </legalName>
+      <mainBusinessPhysicalAddress>
+        <stateCode>NSW</stateCode>
+        <postcode>2035</postcode>
+        <effectiveFrom>2019-03-10</effectiveFrom>
+        <effectiveTo>0001-01-01</effectiveTo>
+      </mainBusinessPhysicalAddress>
+    </businessEntity202001>
+  </response>
+</ABRPayloadSearchResults>

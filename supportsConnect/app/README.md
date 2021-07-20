@@ -4,7 +4,7 @@ This directory is responsible for:
 
 ## SET UP VIRTUAL ENV ##
 
-1. navigate to the COMP9323-Group-Project/supportsConnect directory
+1. navigate to the COMP9323-Group-Project/supportsConnect/app directory
 2. Create virtual environment called 'supportsConnect_env': 
 
 	$ python3 -m venv supportsConnect_env
@@ -46,7 +46,7 @@ This directory is responsible for:
 
 1. Assuming you have set up the virtual environment and have docker working, do:
 
-	$ python3 network.py
+	$ python3 app.py
 
 	You should then be able to view the website in your browser
 

@@ -4,6 +4,16 @@
 from .database import *
 
 
+class Support_Worker ():
+	
+	def __init__(self, given_name, family_name, email):
+		self.givenName = given_name
+		self.familyName = family_name 
+		self.email = email
+
+		print("Instance has been created for" + self.givenName)
+
+
 #----------------------------------------------------------------------------#
 # Check if the user email exists in the database
 
