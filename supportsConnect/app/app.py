@@ -12,51 +12,10 @@ from psycopg2 import connect, Error
 from datetime import timedelta
 
 # User-defined imports
-from utils.connect_to_db import connect_to_supportsconnect_database
-
-
-#----------------------------------------------------------------------------#
-## Database Queries ##
-
-def user_already_exists(email):
-	conn, cur = connect_to_supportsconnect_database() 
-	query = "SELECT EXISTS(SELECT 1 FROM Users WHERE email = '{0}');".format(email)
-
-	if cur != None:
-		try:
-			cur.execute(query)
-			result = cur.fetchone()[0]
-		except (Exception, Error) as error:
-			print("\nexecute_sql() error:", error)
-			conn.rollback()
-	else:
-		result = False
-	cur.close()
-	conn.close()
-
-	return result
-		
-def add_user_to_database(email,first_name, last_name):
-	conn, cur = connect_to_supportsconnect_database() 
-	query = "INSERT INTO Users(email, givenName, familyName) VALUES ('{0}', '{1}', '{2}');".format(email, first_name, last_name)
-
-	result = False
-	if cur != None:
-		try:
-			cur.execute(query)
-			print("SUCCESSFULLY ADDED")
-
-		except (Exception, Error) as error:
-			print("\nexecute_sql() error:", error)
-			conn.rollback()
-	else:
-		result = False
-
-	conn.commit()
-	cur.close()
-	conn.close()
-
-	return result
+from modules.database import *
+from modules.profiles import *
+from modules.scheduling import *
+from modules.reporting import *
 
 #----------------------------------------------------------------------------#
 
@@ -66,9 +25,16 @@ app = Flask(__name__)
 app.secret_key = "key"  # necessary for session data
 app.permanent_session_lifetime = timedelta(days=2)
 
+#----------------------------------------------------------------------------#
+
+## Home Page ##
+
 @app.route("/")
 def home():
 	return render_template("index.html")
+
+
+## Create Account Page ##
 
 @app.route("/create_account", methods=["POST", "GET"])
 def create_account():
@@ -95,6 +61,8 @@ def create_account():
 	return render_template("create_account.html")
 
 
+## Login Page ##
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
 
@@ -105,11 +73,13 @@ def login():
 		if user_already_exists(email):
 			return redirect(url_for("user"))
 		else:
-			flash("This account does not exist")
-			return redirect(url_for("user"))
+			flash("This account does not exist", "error")
+			return redirect(url_for("login"))
 
 	return render_template("login.html")
 
+
+## User Profile Page ##
 
 @app.route("/user", methods=["POST", "GET"])
 def user():
