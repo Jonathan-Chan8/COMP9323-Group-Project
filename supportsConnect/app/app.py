@@ -46,9 +46,7 @@ def create_account():
 		last_name = request.form["last_name"]
 		user_type = request.form.get("user_type")
 
-		user_instance = Support_Worker(first_name, last_name, email)
-
-		print(user_instance)
+		user = Support_Worker(first_name, last_name, email)
 
 		session["name"] = first_name
 		session["email"] = email
@@ -60,7 +58,7 @@ def create_account():
 
 		# Case 2: Add user to database
 		else:
-			add_user_to_database(email, first_name, last_name)  
+			add_user_to_database(user)  
 			return redirect(url_for("user"))
 
 	return render_template("create_account.html")
