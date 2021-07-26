@@ -1,10 +1,6 @@
-
-# The following are functions related to user profiles
-
 from .database import *
 
 
-#----------------------------------------------------------------------------#
 # Check if the user email exists in the database
 
 def user_already_exists(email):
@@ -14,10 +10,10 @@ def user_already_exists(email):
 	
 	result = execute_read_query(query, conn, cur)
 	return result
-#----------------------------------------------------------------------------#
-# Check if the user account details to the database
 
-def add_user_to_database(email,first_name, last_name):
+# Add user account details to the database
+
+def add_user_to_database(email, first_name, last_name):
 
 	conn, cur = connect_to_database() 
 	query = """INSERT INTO Users(email, givenName, familyName) 
@@ -25,7 +21,3 @@ def add_user_to_database(email,first_name, last_name):
 	
 	result = execute_update_query(query, conn, cur)
 	return result
-#----------------------------------------------------------------------------#
-
-
-

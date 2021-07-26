@@ -17,19 +17,19 @@ create domain NameValue as varchar(20);
 create domain RepetitionType as varchar(10)
     check (value in ('daily','weekly','monthly'));
 
-create domain Description as varchar(50)
+create domain Description as varchar(50);
 
 create table Users (
     id                serial,
     username          varchar(20) not null,
     password          varchar(20) not null,
-    accountType       char(1) not null check (value in ('g', 'c', 'w'))  --guardian/client/worker
+    accountType       char(1) not null check (accountType in ('g', 'c', 'w')),  --guardian/client/worker
     email             EmailValue not null,
     firstName         NameValue not null,
     lastName          NameValue,
     dateOfBirth       date,
     age               integer,
-    gender            varchar(6) check (value in ('male','female','other')),
+    gender            varchar(6) check (gender in ('male','female','other')),
     contactNo         varchar(15),
     homeAddress       Description,
     shortBio          varchar(140),
@@ -103,8 +103,8 @@ create table Activities (
 
 create table Reports (
     id                  serial,
-    activity            integer references activity(id),
-    mood                varchar(10) not null check (value in ('Angry','Sad','Moderate','Happy','Hyperactive')),
+    activity            integer references Activities(id),
+    mood                varchar(10) not null check (mood in ('Angry','Sad','Moderate','Happy','Hyperactive')),
     incident            boolean default false,
     incidentReport      text,
     sessionReport       text,
