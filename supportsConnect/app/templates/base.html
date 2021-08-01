@@ -8,10 +8,16 @@
         <h1> supportsConnect </h1>
         <p> This is stuff from the base.html file. Put stuff here that should be on every page. E.g. header/footer </p>
 
-   		{% block content %}
-   		{% endblock %}
-
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+   		{% block content %}{% endblock %}
     </body>
 </html>
-
-

@@ -33,7 +33,9 @@ def connect_to_database():
 
 # CRUD (CREATE, READ, UPDATE, DELETE) Operations
 
-def execute_update_query(query, conn, cur):
+def execute_update_query(query):
+	
+	conn, cur = connect_to_database()
 
 	result = False
 	if cur != None:
@@ -53,7 +55,9 @@ def execute_update_query(query, conn, cur):
 
 	return result
 
-def execute_read_query(query, conn, cur):
+def execute_read_query(query):
+
+	conn, cur = connect_to_database()
 
 	if cur != None:
 		try:
