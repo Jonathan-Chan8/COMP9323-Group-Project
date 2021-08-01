@@ -46,9 +46,9 @@ This directory is responsible for:
 
 1. Assuming you have set up the virtual environment and have docker working, do:
 
-	$ python3 network.py
+	$ flask app
 
-	You should then be able to view the website in your browser
+	You should then be able to view the website at localhost in your browser
 
 ## DEACTIVATE VIRTUAL ENV ##
 

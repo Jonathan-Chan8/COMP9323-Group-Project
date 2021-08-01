@@ -21,10 +21,9 @@ create domain Description as varchar(50);
 
 create table Users (
     id                serial,
-    username          varchar(20) not null,
+    email             EmailValue not null,
     password          varchar(20) not null,
     accountType       char(1) not null check (accountType in ('g', 'c', 'w')),  --guardian/client/worker
-    email             EmailValue not null,
     firstName         NameValue not null,
     lastName          NameValue,
     dateOfBirth       date,
