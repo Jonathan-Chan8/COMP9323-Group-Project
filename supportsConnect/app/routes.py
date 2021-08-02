@@ -1,82 +1,54 @@
-from flask import render_template, flash, redirect
+from flask import flash, redirect, render_template, request
 from flask.helpers import url_for
-from app import app, db
-from app.forms import Login_Form, Sign_up_Client_Form
-from app.models import *
-from app.database import *
-from app.database_queries import *
-from app.test_data import add_test_data_to_database
+from flask_login import current_user, login_user, logout_user
+from werkzeug.urls import url_parse
 
-add_test_data_to_database()
+from app import app, db
+from app.forms import Login_Form, RegistrationForm, Sign_up_Client_Form
+from app.models import Users
+
+# from app.test_data import add_test_data_to_database
+
+# add_test_data_to_database()
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template("index.html")
-
-@app.route('/sign_up_client', methods=['GET', 'POST'])
-def sign_up_client():
-	form = Sign_up_Client_Form()
-	if form.validate_on_submit():
-		flash(f'Create account requested for {form.email.data}')
-
-		if user_already_exists(form.email.data):
-			flash(f'User email already exists')
-
-		else:
-			add_user_to_database(form.first_name.data, form.last_name.data, form.email.data, form.password.data,form.account_type.data)
-			flash(f'User added to database')
-			return redirect(url_for('index'))
-
-	return render_template('sign_up_client.html', title='Sign Up Client Form', form=form)
-
+    return render_template("index.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	form = Login_Form()
-	if form.validate_on_submit():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = Login_Form()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid email or password')
+            return redirect(url_for('login'))
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
+    return render_template('login.html', title='Sign In', form=form)
 
-		flash(f'Login requested for user {form.email.data}, remember_me={form.remember_me.data}')
-		return redirect(url_for('index'))
-	return render_template('login.html', title='Sign In', form=form)
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = Users(email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)

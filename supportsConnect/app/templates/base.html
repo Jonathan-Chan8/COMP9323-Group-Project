@@ -4,6 +4,15 @@
 <head>
 <title> {% block title %}{% endblock %} </title>
     </head>
+    <div>
+        SupportsConnect:
+        <a href="{{ url_for('index') }}">Home</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </div>
     <body>
         <h1> supportsConnect </h1>
         <p> This is stuff from the base.html file. Put stuff here that should be on every page. E.g. header/footer </p>
