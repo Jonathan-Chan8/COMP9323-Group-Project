@@ -16,25 +16,25 @@ def get_or_create(session, model, **kwargs):
 
 
 def add_test_data_to_database():
-	
-	get_or_create(db.session, Clients, email = 'Jasonsmith@hotmail.com', password = 'password', accountType = 'client',
-					firstName = 'Jason', lastName = 'Smith')
+    
+    get_or_create(db.session, Clients, email = 'Jasonsmith@hotmail.com', password = 'password', accountType = 'client',
+                    firstName = 'Jason', lastName = 'Smith')
 
-	get_or_create(db.session, Clients, email = 'Jessmunroe@hotmail.com', password = 'password', accountType = 'client',
-					firstName = 'Jess', lastName = 'Munroe')
+    get_or_create(db.session, Clients, email = 'Jessmunroe@hotmail.com', password = 'password', accountType = 'client',
+                    firstName = 'Jess', lastName = 'Munroe')
 
-	get_or_create(db.session, Clients, email = 'Jeffre@hotmail.com', password = 'encrypted')
-	get_or_create(db.session, SupportWorkers, email = 'RolfHarris@example.com')
-	get_or_create(db.session, SupportWorkers, email = 'Nathan@example.com')
+    get_or_create(db.session, Clients, email = 'Jeffre@hotmail.com', password = 'encrypted')
+    get_or_create(db.session, SupportWorkers, email = 'RolfHarris@example.com')
+    get_or_create(db.session, SupportWorkers, email = 'Nathan@example.com')
 
 
-	#u = SupportWorkers(email='David@example.com')
-	#db.session.add(u)
-	#z = SupportWorkers(email='Rob@example.com')
-	#db.session.add(z)
+    #u = SupportWorkers(email='David@example.com')
+    #db.session.add(u)
+    #z = SupportWorkers(email='Rob@example.com')
+    #db.session.add(z)
 
-	#db.session.commit()
-	
-	#print('Great Success')
+    #db.session.commit()
+    
+    #print('Great Success')
 
 
