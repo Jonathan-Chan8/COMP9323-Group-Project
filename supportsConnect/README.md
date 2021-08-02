@@ -41,6 +41,15 @@ This directory is responsible for:
 	
 	$ docker-compose down
 
+## Add the SQL_Alchemy ORM schema to out postgresql database ""
+
+1. navigate to the COMP9323-Group-Project/supportsConnect directory
+
+	$ flask db init      #This will create a directory called 'migrations' 
+
+	$ flask db migrate   #This will add the ORM schema to the database
+
+	$ flask db upgrade   #This will commit the changes to database
 
 # RUN THE WEBSITE #
 
