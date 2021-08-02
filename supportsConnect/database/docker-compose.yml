@@ -11,8 +11,8 @@ services:
       - POSTGRES_PASSWORD=password
 
     ### MOUNT DB INIT FILES INTO CONTAINER
-    volumes:
-      - "./postgres_db/init:/docker-entrypoint-initdb.d"
+    #volumes:
+    #  - "./postgres_db/init:/docker-entrypoint-initdb.d"
 
     ### NETWORKING
     ports:

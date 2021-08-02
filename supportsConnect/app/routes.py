@@ -1,10 +1,14 @@
 from flask import render_template, flash, redirect
 from flask.helpers import url_for
-from app import app
+from app import app, db
 from app.forms import Login_Form, Sign_up_Client_Form
-
+from app.models import *
 from app.database import *
 from app.database_queries import *
+from app.test_data import add_test_data_to_database
+
+add_test_data_to_database()
+
 
 @app.route('/')
 @app.route('/index')
@@ -36,6 +40,31 @@ def login():
 		flash(f'Login requested for user {form.email.data}, remember_me={form.remember_me.data}')
 		return redirect(url_for('index'))
 	return render_template('login.html', title='Sign In', form=form)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
