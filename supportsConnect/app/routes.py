@@ -4,7 +4,7 @@ from flask_login import current_user, login_user, logout_user
 from werkzeug.urls import url_parse
 
 from app import app, db
-from app.forms import Login_Form, RegistrationForm, Sign_up_Client_Form
+from app.forms import LoginForm, RegistrationForm
 from app.models import Users
 
 # from app.test_data import add_test_data_to_database
@@ -21,7 +21,7 @@ def index():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    form = Login_Form()
+    form = LoginForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):

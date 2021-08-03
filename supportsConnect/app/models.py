@@ -13,7 +13,7 @@ class Users(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password = db.Column(db.VARCHAR(20))
+    password_hash = db.Column(db.String(128))
     accountType = db.Column(db.Enum('client', 'guardian', name = 'account_type'))
     firstName = db.Column(NameValue)
     lastName = db.Column(NameValue)
