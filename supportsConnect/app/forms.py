@@ -33,7 +33,7 @@ class RegistrationForm(FlaskForm):
 
 class ConnectForm(FlaskForm):
     
-    email = StringField('Email', validators=[DataRequired(), Email()])  
+    email = StringField('Client Email', validators=[DataRequired(), Email()])  
     send_request = SubmitField('Send Request')
 
 
@@ -58,7 +58,7 @@ class ClientInformationForm(FlaskForm):
     
     # Payment Details Page
     ndis_number = IntegerField('NDIS Number', validators=[Optional()])
-    ndis_plan = SelectField(u'NDIS Plan', choices = [('self managed', 'Self Managed'), ('plan managed', 'Plan Managed')])
+    ndis_plan = SelectField(u'NDIS Plan', choices = [('self managed', 'Self Managed'), ('plan managed', 'Plan Managed')],validators=[Optional()])
     plan_manager = StringField('Plan Manager')
     invoice_email = StringField('Invoice Email')
     

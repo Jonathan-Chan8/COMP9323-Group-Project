@@ -1,6 +1,8 @@
 from flask import flash, redirect, render_template, request
 from flask.helpers import url_for
 from flask_login import current_user, login_user, logout_user, login_required
+
+#from flask_login.utils import login_required
 from werkzeug.urls import url_parse
 from datetime import date
 from dateutil.relativedelta import relativedelta
@@ -56,7 +58,22 @@ def register():
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
+    
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/user/<email>')
+@login_required
+def user(email):
+    user = Users.query.filter_by(email=email).first_or_404()
+    return render_template('user.html', user=user)
+
+@app.route('/support_worker/<email>')
+@login_required
+def support_worker(email):
+    user = Users.query.filter_by(email=email).first_or_404()
+    return render_template('support_worker.html', user=user)
+
 
 @app.route('/worker_connect', methods=['GET', 'POST'])
 @login_required
@@ -77,11 +94,12 @@ def worker_connect():
                                                     supportWorkerStatus = 'sent')
                 db.session.add(connection_request)
                 db.session.commit()
-                flash("User found")
+                flash("A request has been sent")
             else:
                 flash("This user doesn't exist")
             
     return render_template('worker_connect.html', form=form, user=user)
+
 
 @app.route('/client_profile_personal_info', methods=['GET', 'POST'])
 @login_required
@@ -92,11 +110,6 @@ def client_profile_personal_info():
     form = ClientInformationForm()
     
     if form.validate_on_submit():
-        
-        if form.personal_information.data:
-            return redirect('client_profile_personal_info.html', form=form, user=user)
-        if form.payment_details.data:
-            return redirect('client_profile_payment_details.html', form=form, user=user)
         
         if form.guardian_first_name.data:
             user.guardianFirstName = form.guardian_first_name.data
@@ -120,7 +133,6 @@ def client_profile_personal_info():
             user.homeAddress = form.home_address.data
         if form.likes.data: 
             user.likes = form.likes.data
-        print(form.likes.data)
         if form.dislikes.data: 
             user.dislikes = form.dislikes.data
         if form.allergies.data: 
@@ -131,6 +143,7 @@ def client_profile_personal_info():
             user.shortBio = form.short_bio.data
                  
         db.session.commit()
+        
     print(form.errors)
 
     return render_template('client_profile_personal_info.html', form=form, user=user)
@@ -145,11 +158,6 @@ def client_profile_payment_details():
     form = ClientInformationForm()
     
     if form.validate_on_submit():
-        
-        if form.personal_information.data:
-            return redirect(url_for('client_profile_personal_info', form=form, user=user))
-        if form.payment_details.data:
-            return redirect(url_for('client_profile_payment_details', form=form, user=user))
         
         if form.ndis_number.data: 
             user.ndisNumber = form.ndis_number.data
@@ -342,6 +350,7 @@ def worker_profile_past_experience():
                            add_work_history2 = add_work_history2, add_work_history3 = add_work_history3, 
                            work_history1 = work_history1, work_history2 = work_history2, work_history3 = work_history3,
                            training1 = training1, training2 = training2, training3 = training3)
+
 
 
 

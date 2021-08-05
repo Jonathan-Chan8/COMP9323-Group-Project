@@ -1,7 +1,17 @@
-{% extends "base.html" %}
+{% if current_user.accountType == 'support worker' %}
+    {% extends "worker_base.html" %}
+{% else %}    
+
+    {% extends "base.html" %}
+{% endif %}
+
+
+
 {% block title %} Home Page {% endblock %}
 {% block content %}
+{% if current_user.is_authenticated %}
 <h1>Hi, {{ current_user.email }}!</h1>
+{% endif %}
 <!DOCTYPE html>
 <html lang="en">
 

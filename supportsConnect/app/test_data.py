@@ -22,9 +22,13 @@ def add_test_data_to_database():
     
     print("ENTERS HERE")
     
+    # Jason Smith 
+    # Client
+    # password = "test"
+    
     get_or_create(db.session, Clients, email = 'Jasonsmith@hotmail.com', accountType = 'client',
                     firstName = 'Jason', lastName = 'Smith', ndisNumber = '3453453', 
-                    password_hash = 'pbkdf2:sha256:260000$yL7K57JK2ukpjRsV$87b180f9155dae1d93f26e8d425f83caf50e459620c71b09e61ade927214aa76',
+                    password_hash = 'pbkdf2:sha256:260000$0WLpNaXEJFoCBkqY$171259332c77a3de2a96942f29ace3d69cc9826cf1fb37815eab13cb30d08344',
                     guardianFirstName = 'Janeene', asGuardian = True, ndisPlan = 'plan managed', 
                     planManager = 'plan partners', invoiceEmail = 'planpartners@fake.com')
 
@@ -32,8 +36,14 @@ def add_test_data_to_database():
                     firstName = 'Jess', lastName = 'Munroe')
 
     get_or_create(db.session, Clients, email = 'Jeffre@hotmail.com')
-    get_or_create(db.session, SupportWorkers, email = 'RolfHarris@example.com', firstName = 'Rolf',
-                    lastName = 'Harris', age = 3, gender = 'male', contactNo = '04444spammm')
+    
+    # Rolf Harris
+    # Support Worker
+    # password = "test"
+
+    get_or_create(db.session, SupportWorkers, email = 'RolfHarris@example.com', accountType = 'support worker',
+                  firstName = 'Rolf', lastName = 'Harris', age = 3, gender = 'male', contactNo = '04444spammm',
+                  password_hash = 'pbkdf2:sha256:260000$0WLpNaXEJFoCBkqY$171259332c77a3de2a96942f29ace3d69cc9826cf1fb37815eab13cb30d08344')
     get_or_create(db.session, SupportWorkers, email = 'DavidBeckam@example.com', firstName = 'David',
                     lastName = 'Beckam', age = 33, gender = 'male', contactNo = '04444spammm')
     get_or_create(db.session, SupportWorkers, email = 'Nathan@example.com')

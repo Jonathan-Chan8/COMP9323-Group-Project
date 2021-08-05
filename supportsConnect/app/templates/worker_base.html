@@ -11,13 +11,13 @@
         {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
         {% else %}
-        <a href="{{ url_for('user', email=current_user.email) }}">Profile</a> 
+        <a href="{{ url_for('support_worker', email=current_user.email) }}">Profile</a> 
         <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
     </div>
     <body>
         <h1> supportsConnect </h1>
-        <p> This is stuff from the base.html file. Put stuff here that should be on every page. E.g. header/footer </p>
+        <p> This is stuff from the worker_base.html file. Put stuff here that should be on every support worker's page </p>
 
         <hr>
         {% with messages = get_flashed_messages() %}
@@ -32,5 +32,3 @@
    		{% block content %}{% endblock %}
     </body>
 </html>
-
-
