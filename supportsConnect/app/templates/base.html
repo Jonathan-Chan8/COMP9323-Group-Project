@@ -10,9 +10,9 @@
         {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
         {% else %}
+        <a href="{{ url_for('user', email=current_user.email) }}">Profile</a> 
         <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
-        <a href="{{ url_for('register') }}">Register</a>
     </div>
     <body>
         <h1> supportsConnect </h1>
