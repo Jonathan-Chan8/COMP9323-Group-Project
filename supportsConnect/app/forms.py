@@ -31,8 +31,13 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Email already in use.')
 
-class ClientInformationForm(FlaskForm):
+class ConnectForm(FlaskForm):
     
+    email = StringField('Email', validators=[DataRequired(), Email()])  
+    send_request = SubmitField('Send Request')
+
+
+class ClientInformationForm(FlaskForm):
     
     # User Details
     guardian_first_name = StringField('First Name')

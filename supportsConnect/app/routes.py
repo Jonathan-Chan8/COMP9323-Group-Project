@@ -6,7 +6,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ClientInformationForm, WorkerInformationForm
+from app.forms import LoginForm, RegistrationForm, ConnectForm, ClientInformationForm, WorkerInformationForm
 from app.models import *
 
 from app.test_data import add_test_data_to_database
@@ -58,6 +58,30 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+@app.route('/worker_connect', methods=['GET', 'POST'])
+@login_required
+def worker_connect():
+
+    user_id = current_user.get_id()
+    user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
+    form = ConnectForm()
+    
+    if form.validate_on_submit():
+        
+        if form.send_request.data:
+
+            client = Clients.query.filter_by(email = form.email.data).first()
+            if client:
+                connection_request = ConnectedUsers(supportWorkerId = user_id, 
+                                                    clientId = client.id,
+                                                    supportWorkerStatus = 'sent')
+                db.session.add(connection_request)
+                db.session.commit()
+                flash("User found")
+            else:
+                flash("This user doesn't exist")
+            
+    return render_template('worker_connect.html', form=form, user=user)
 
 @app.route('/client_profile_personal_info', methods=['GET', 'POST'])
 @login_required
@@ -243,10 +267,8 @@ def worker_profile_past_experience():
             add_work_history3 = True
         elif form.add_training2.data:
             add_training2 = True
-            print("add training 2")
         elif form.add_training3.data:
             add_training3 = True
-            print("add training 3")
 
         
         # Work History 1
@@ -320,24 +342,6 @@ def worker_profile_past_experience():
                            add_work_history2 = add_work_history2, add_work_history3 = add_work_history3, 
                            work_history1 = work_history1, work_history2 = work_history2, work_history3 = work_history3,
                            training1 = training1, training2 = training2, training3 = training3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

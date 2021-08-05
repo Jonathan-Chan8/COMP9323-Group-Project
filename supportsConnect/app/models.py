@@ -90,10 +90,13 @@ class Training (db.Model):
 
 
 class ConnectedUsers(db.Model):
-
+    
+    
     id = db.Column(db.Integer, primary_key = True)
     supportWorkerId = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
+    supportWorkerStatus = db.Column(db.Enum('sent', 'accepted', name = 'supportWorkerStatus'))
     clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    clientStatus = db.Column(db.Enum('sent', 'accepted', name = 'clientStatus'))
     dateConnected = db.Column(db.Date)
 
     def __repr__(self):
