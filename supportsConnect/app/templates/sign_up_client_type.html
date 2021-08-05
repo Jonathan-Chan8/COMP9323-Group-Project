@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>Who will be using this platform! </h2>
+    <h3> Will you be using this platform for yourself or someone else? </h3>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.client_self_managed() }}<br>
+            {{ form.client_guardian() }}<br>
+
+        </p>
+    </form>
+{% endblock %}

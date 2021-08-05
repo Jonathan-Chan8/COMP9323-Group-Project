@@ -18,14 +18,21 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class RegistrationForm(FlaskForm):
-    # first_name = StringField('First Name', validators=[DataRequired()])
-    # last_name = StringField('Last Name')
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    guardian_first_name = StringField('First Name')
+    guardian_last_name = StringField('Last Name')
     email = StringField('Email', validators=[DataRequired(), Email()])  
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    # account_type = StringField('Account Type', validators=[DataRequired()])  
-    submit = SubmitField('Register')
 
+    support_worker = SubmitField('I provide support')
+    client = SubmitField('I receive support')
+    client_guardian = SubmitField('Someone Else')
+    client_self_managed = SubmitField('Myself')
+    
+    submit = SubmitField('Register')
+    
     def validate_email(self, email):
         user = Users.query.filter_by(email=email.data).first()
         if user is not None:

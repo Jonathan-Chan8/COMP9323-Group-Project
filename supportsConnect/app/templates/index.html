@@ -1,11 +1,11 @@
 {% if current_user.accountType == 'support worker' %}
     {% extends "worker_base.html" %}
-{% else %}    
-
+  
+{% elif current_user.accountType == 'client'%}
+    {% extends "client_base.html" %}
+{% else %}
     {% extends "base.html" %}
 {% endif %}
-
-
 
 {% block title %} Home Page {% endblock %}
 {% block content %}

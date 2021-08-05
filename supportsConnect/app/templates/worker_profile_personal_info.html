@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "worker_base.html" %}
 
 {% block content %}
 
@@ -117,7 +117,8 @@
             {% for error in form.short_bio.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
-        </p>           
+        </p> 
+                  
         <p>{{ form.submit() }}</p>
     </form>
 {% endblock %}

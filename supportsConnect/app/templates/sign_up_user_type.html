@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Welcome! </h1>
+    <h3> Which of the following best describes you? </h3>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.client() }}<br>
+            {{ form.support_worker() }}<br>
+
+        </p>
+    </form>
+{% endblock %}
+
+

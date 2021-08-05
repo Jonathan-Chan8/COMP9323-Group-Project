@@ -20,7 +20,6 @@ from wtforms import StringField
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
     return render_template("index.html")
 
@@ -37,7 +36,13 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            
+            if user.accountType == 'support worker':
+                return redirect(url_for('worker_dashboard', email=user.email))
+            elif user.accountType == 'client':
+                return redirect(url_for('client_dashboard', email=user.email))
+            else:
+                next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
@@ -46,33 +51,111 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/sign_up_user_type', methods=['GET', 'POST'])
+def sign_up_user_type():
+    form = RegistrationForm()
+
+    if form.support_worker.data:
+        return redirect(url_for('sign_up_support_worker'))
+    if form.client.data:
+        return redirect(url_for('sign_up_client_type'))
+    
+    return render_template('/sign_up_user_type.html', form=form)
+
+@app.route('/sign_up_client_type', methods=['GET', 'POST'])
+def sign_up_client_type():
+    
+    form = RegistrationForm()
+
+    if form.client_self_managed.data:
+        return redirect(url_for('sign_up_client'))
+    if form.client_guardian.data:
+        return redirect(url_for('sign_up_client_guardian'))
+        
+    return render_template('/sign_up_client_type.html', form=form)
+
+@app.route('/sign_up_support_worker', methods=['GET', 'POST'])
+def sign_up_support_worker():
+    
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+    
     form = RegistrationForm()
+    
     if form.validate_on_submit():
-        user = Users(email=form.email.data)
+
+        user = SupportWorkers(email=form.email.data)
         user.set_password(form.password.data)
+        user.firstName = form.first_name.data
+        user.lastName = form.last_name.data
+        user.accountType = 'support worker'
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login', email=user.email))
+    
+    return render_template('sign_up_support_worker.html', title='Sign Up', form=form)
+
+@app.route('/sign_up_client', methods=['GET', 'POST'])
+def sign_up_client():
+    
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = RegistrationForm()
+    
+    if form.validate_on_submit():
+
+        user = Clients(email=form.email.data)
+        user.set_password(form.password.data)
+        user.firstName = form.first_name.data
+        user.lastName = form.last_name.data
+        user.asGuardian = False
+        user.accountType = 'client'
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     
-    return render_template('register.html', title='Register', form=form)
+    return render_template('sign_up_client.html', title='Sign Up', form=form)
+
+@app.route('/sign_up_client_guardian', methods=['GET', 'POST'])
+def sign_up_client_guardian():
+    
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = RegistrationForm()
+    
+    if form.validate_on_submit():
+        
+        user = Clients(email=form.email.data)
+        user.set_password(form.password.data)
+        user.guardianFirstName = form.guardian_first_name.data
+        user.guardianFirstName = form.guardian_last_name.data
+        user.firstName = form.first_name.data
+        user.lastName = form.last_name.data
+        user.asGuardian = True
+        user.accountType = 'client'
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+
+    return render_template('sign_up_client_guardian.html', title='Sign Up', form=form)
 
 
-@app.route('/user/<email>')
+@app.route('/worker_dashboard/<email>')
 @login_required
-def user(email):
+def worker_dashboard(email):
     user = Users.query.filter_by(email=email).first_or_404()
-    return render_template('user.html', user=user)
+    return render_template('worker_dashboard.html', user=user)
 
-@app.route('/support_worker/<email>')
+@app.route('/client_dashboard/<email>')
 @login_required
-def support_worker(email):
+def client_dashboard(email):
     user = Users.query.filter_by(email=email).first_or_404()
-    return render_template('support_worker.html', user=user)
+    return render_template('client_dashboard.html', user=user)
 
 
 @app.route('/worker_connect', methods=['GET', 'POST'])
@@ -179,9 +262,10 @@ def client_profile_payment_details():
 def worker_profile_personal_info():
         
     user_id = current_user.get_id()
+    print(user_id)
     user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
+    print("GETS TO HERE")
     form = WorkerInformationForm()
-    
     
     if form.validate_on_submit():
         
