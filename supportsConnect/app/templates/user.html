@@ -2,23 +2,21 @@
 {% block title%} User Account {% endblock %}
 
 {% block content %} 
+<table>
+    <tr valign="top">
+        <td><img src="{{ user.avatar(128) }}"></td>
+        <td><h1>User: {{ user.email }}</h1></td>
+    </tr>
+</table>
 
-<h1> Welcome to your account {{username}} </h1>
-<!-- <h1> {age} </h1> -->
-<form action="#" method="post">
-    <p>Logout: </p>
-        <button name="logout" type="submit" value="submit">
-            Submit
-        </button>
-</form>
+<h1> Welcome to your account {{ user.email }} </h1>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-                <p style="color:green;">{{msg}}</p>	
-            {% endfor %}
-        {% endif %}
-    {% endwith%}
-
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p style="color:green;">{{msg}}</p>	
+        {% endfor %}
+    {% endif %}
+{% endwith%}
 
 {% endblock %}

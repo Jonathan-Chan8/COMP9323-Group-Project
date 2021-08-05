@@ -1,6 +1,7 @@
 from flask import flash, redirect, render_template, request
 from flask.helpers import url_for
 from flask_login import current_user, login_user, logout_user
+from flask_login.utils import login_required
 from werkzeug.urls import url_parse
 
 from app import app, db
@@ -52,3 +53,9 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+@app.route('/user/<email>')
+@login_required
+def user(email):
+    user = Users.query.filter_by(email=email).first_or_404()
+    return render_template('user.html', user=user)
