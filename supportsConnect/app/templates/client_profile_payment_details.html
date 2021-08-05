@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Edit Client Payment Details </h1>
+
+    <div>
+    <button onclick="location.href='http://localhost:5000/client_profile_personal_info'" type="button">
+     Personal Information</button>
+    <button onclick="location.href='http://localhost:5000/client_profile_payment_details'" type="button">
+     Payment Details</button>
+    </div>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+        <p>
+            {{ form.ndis_number.label }}<br>
+            {% if user.ndisNumber %}
+                {{ form.ndis_number(size=50, placeholder = user.ndisNumber) }}<br>
+            {% else %} 
+                {{ form.ndis_number(size=50) }}<br>
+            {% endif %}
+            {% for error in form.ndis_number.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.ndis_plan.label }}<br>
+            {% if user.ndisPlan %}
+                {{ form.ndis_plan(placeholder = user.ndisPlan) }}<br>
+            {% else %} 
+                {{ form.ndis_plan() }}<br>
+            {% endif %}
+            {% for error in form.ndis_plan.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.plan_manager.label }}<br>
+            {% if user.planManager %}
+                {{ form.plan_manager(size=50, placeholder = user.planManager) }}<br>
+            {% else %} 
+                {{ form.plan_manager(size=50) }}<br>
+            {% endif %}
+            {% for error in form.plan_manager.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.invoice_email.label }}<br>
+            {% if user.invoiceEmail %}
+                {{ form.invoice_email(size=50, placeholder = user.invoiceEmail) }}<br>
+            {% else %} 
+                {{ form.invoice_email(size=50) }}<br>
+            {% endif %}
+            {% for error in form.invoice_email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+
+ 
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

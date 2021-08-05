@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db, login
 
-NameValue = db.VARCHAR(20)
+NameValue = db.VARCHAR(30)
 Description = db.VARCHAR(50)
 
 
@@ -38,10 +38,16 @@ class Clients(Users):
 
     id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key = True)
     asGuardian = db.Column(db.BOOLEAN)
+    guardianFirstName = db.Column(NameValue)
+    guardianLastName = db.Column(NameValue)
     allergies = db.Column(Description)
     likes = db.Column(Description)
     dislikes = db.Column(Description)
     healthNeeds = db.Column(Description)
+    ndisNumber = db.Column(db.Integer)
+    ndisPlan = db.Column(db.Enum('self managed', 'plan managed', name = 'ndisPlan'))
+    planManager = db.Column(NameValue)
+    invoiceEmail = db.Column(db.String(120))
 
     def __repr__(self):
         return '<Client {}>'.format(self.id)
@@ -62,6 +68,7 @@ class WorkHistory (db.Model):
     id = db.Column(db.Integer, primary_key = True)
     worker = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
     location = db.Column(Description)
+    role = db.Column(NameValue)
     startDate = db.Column(db.Date)
     endDate = db.Column(db.Date)
 
@@ -73,7 +80,7 @@ class Training (db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     worker = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
-    subject = db.Column(NameValue)
+    course = db.Column(NameValue)
     institution = db.Column(NameValue)
     startDate = db.Column(db.Date)
     endDate = db.Column(db.Date)

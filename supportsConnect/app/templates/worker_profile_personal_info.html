@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Edit Support Worker Profile Information </h1>
+
+    <div>
+    <button onclick="location.href='http://localhost:5000/worker_profile_personal_info'" type="button">
+     Personal Information</button>
+    <button onclick="location.href='http://localhost:5000/worker_profile_past_experience'" type="button">
+     Past Experience</button>
+    </div>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.first_name.label}}<br>
+            {{ form.first_name(size=32, placeholder = user.firstName) }}<br>
+            {% for error in form.first_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.last_name.label }}<br>
+            {{ form.last_name(size=32, placeholder = user.lastName) }}<br>
+            {% for error in form.last_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.phone_number.label }}<br>
+            {% if user.contactNo %}
+                {{ form.phone_number(size=32, placeholder = user.contactNo) }}<br>
+            {% else %} 
+                {{ form.phone_number(size=32) }}<br>
+            {% endif %}
+            {% for error in form.phone_number.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.date_of_birth.label }}<br>
+
+            {{ form.date_of_birth(size=32) }}
+            {% if user.dateOfBirth %}
+                <text style="color:grey"> {{ user.dateOfBirth }}  </text>
+            {% endif %}
+
+            {% for error in form.date_of_birth.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.age.label }}<br>
+            {% if user.age %}
+                {{ form.age(size=32, placeholder = user.age) }}<br>
+            {% else %} 
+                {{ form.age(size=32) }}<br>
+            {% endif %}
+            {% for error in form.age.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+        </p>
+        <p>
+            {{ form.gender.label }}<br>
+            {% if user.gender %}
+                {{ form.gender(size=32, placeholder = user.gender) }}<br>
+            {% else %} 
+                {{ form.gender(size=32) }}<br>
+            {% endif %}
+            {% for error in form.gender.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.home_address.label }}<br>
+            {% if user.homeAddress %}
+                {{ form.home_address(size=58, placeholder = user.homeAddress) }}<br>
+            {% else %} 
+                {{ form.home_address(size=58) }}<br>
+            {% endif %}
+            {% for error in form.home_address.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.languages.label }}<br>
+            {% if user.languages %}
+                {{ form.languages(size=58, placeholder = user.languages) }}<br>
+            {% else %} 
+                {{ form.languages(size=58) }}<br>
+            {% endif %}
+            {% for error in form.languages.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>         
+        <p>
+            {{ form.interests.label }}<br>
+            {% if user.interests %}
+                {{ form.interests(cols=50, rows=3, placeholder = user.interests) }}<br>
+            {% else %} 
+                {{ form.interests(cols=50, rows=3) }}<br>
+            {% endif %}
+            {% for error in form.interests.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>   
+        <p>
+            {{ form.short_bio.label }}<br>
+            {% if user.shortBio %}
+                {{ form.short_bio(cols=50, rows=4, placeholder = user.shortBio) }}<br>
+            {% else %} 
+                {{ form.short_bio(cols=50, rows=4) }}<br>
+            {% endif %}
+            {% for error in form.short_bio.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>           
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
+

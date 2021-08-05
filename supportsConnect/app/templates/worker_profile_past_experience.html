@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Edit Support Worker Past Experience </h1>
+
+    <div>
+        <button onclick="location.href='http://localhost:5000/worker_profile_personal_info'" type="button">
+         Personal Information</button>
+        <button onclick="location.href='http://localhost:5000/worker_profile_past_experience'" type="button">
+         Past Experience</button>
+    </div>
+    <br>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+            <h3> Work History #1 </h3>
+            {{ form.role1.label }}<br>
+            {% if work_history1.role %}
+                {{ form.role1(size=45, placeholder = work_history1.role) }}<br>
+            {% else %} 
+                {{ form.role1(size=45) }}<br>
+            {% endif %}
+            {% for error in form.role1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.location1.label }}<br>
+            {% if work_history1.location %}
+                {{ form.location1(size=45, placeholder = work_history1.location) }}<br>
+            {% else %} 
+                {{ form.location1(size=45) }}<br>
+            {% endif %}
+            {% for error in form.location1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.work_start_date1.label }}<br>
+            {% if work_history1.startDate %} 
+                <text style="color:black"> {{ work_history1.startDate }}  </text>
+            {% endif %}
+            {{ form.work_start_date1() }}
+            {% for error in form.work_start_date1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.work_end_date1.label }}<br>
+            {% if work_history1.endDate %} 
+                <text style="color:black"> {{ work_history1.endDate }}  </text>
+            {% endif %}
+            {{ form.work_end_date1() }}
+            {% for error in form.work_end_date1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+
+        {% if work_history2.role or add_work_history2 %}
+            <p>
+                <h3> Work History #2 </h3>
+                {{ form.role2.label }}<br>
+                {% if work_history2.role %}
+                    {{ form.role2(size=50, placeholder = work_history2.role) }}<br>
+                {% else %} 
+                    {{ form.role2(size=50) }}<br>
+                {% endif %}
+                {% for error in form.role2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.location2.label }}<br>
+                {% if work_history2.location %}
+                    {{ form.location2(size=50, placeholder = work_history2.location) }}<br>
+                {% else %} 
+                    {{ form.location2(size=50) }}<br>
+                {% endif %}
+                {% for error in form.location2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.work_start_date2.label }}<br>
+                {% if work_history2.startDate %} 
+                    <text style="color:black"> {{ work_history1.startDate }}  </text>
+                {% endif %}
+                {{ form.work_start_date2() }}
+                {% for error in form.work_start_date2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.work_end_date2.label }}<br>
+                {% if work_history2.endDate %} 
+                    <text style="color:black"> {{ work_history2.endDate }}  </text>
+                {% endif %}
+                {{ form.work_end_date2() }}
+                {% for error in form.work_end_date2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+        {% else %}
+            {{ form.add_work_history2 }}
+        {% endif %}
+        
+        {% if work_history3.role or add_work_history3%}
+            <p>
+                <h3> Work History #3 </h3>
+                {{ form.role3.label }}<br>
+                {% if work_history3.role %}
+                    {{ form.role3(size=50, placeholder = work_history3.role) }}<br>
+                {% else %} 
+                    {{ form.role3(size=50) }}<br>
+                {% endif %}
+                {% for error in form.role3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.location3.label }}<br>
+                {% if work_history3.location %}
+                    {{ form.location3(size=50, placeholder = work_history3.location) }}<br>
+                {% else %} 
+                    {{ form.location3(size=50) }}<br>
+                {% endif %}
+                {% for error in form.location3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.work_start_date3.label }}<br>
+                {% if work_history3.startDate %} 
+                    <text style="color:black"> {{ work_history3.startDate }}  </text>
+                {% endif %}
+                {{ form.work_start_date3() }}
+                {% for error in form.work_start_date3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.work_end_date3.label }}<br>
+                {% if work_history3.endDate %} 
+                    <text style="color:black"> {{ work_history3.endDate }}  </text>
+                {% endif %}
+                {{ form.work_end_date3() }}
+                {% for error in form.work_end_date3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+        {% elif work_history2.role or work_history2.location %}
+            {{ form.add_work_history3 }}
+        {% endif %}
+
+        <p>
+            <h3> Training #1 </h3>
+            {{ form.course1.label }}<br>
+            {% if training1.course %}
+                {{ form.course1(size=45, placeholder = training1.course) }}<br>
+            {% else %} 
+                {{ form.course1(size=45) }}<br>
+            {% endif %}
+            {% for error in form.course1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.institution1.label }}<br>
+            {% if training1.institution %}
+                {{ form.institution1(size=45, placeholder = training1.institution) }}<br>
+            {% else %} 
+                {{ form.institution1(size=45) }}<br>
+            {% endif %}
+            {% for error in form.institution1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.training_start_date1.label }}<br>
+            {% if training1.startDate %} 
+                <text style="color:black"> {{ training1.startDate }}  </text>
+            {% endif %}
+            {{ form.training_start_date1() }}
+            {% for error in form.training_start_date1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+        <p>
+            {{ form.training_end_date1.label }}<br>
+            {% if training1.endDate %} 
+                <text style="color:black"> {{ training1.endDate }}  </text>
+            {% endif %}
+            {{ form.training_end_date1() }}
+            {% for error in form.training_end_date1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>  
+
+        {% if training2.course or add_training2 %}
+            <p>
+                <h3> Training #2 </h3>
+                {{ form.course2.label }}<br>
+                {% if training2.course %}
+                    {{ form.course2(size=45, placeholder = training2.course) }}<br>
+                {% else %} 
+                    {{ form.course2(size=45) }}<br>
+                {% endif %}
+                {% for error in form.course2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.institution2.label }}<br>
+                {% if training2.institution %}
+                    {{ form.institution2(size=45, placeholder = training2.institution) }}<br>
+                {% else %} 
+                    {{ form.institution2(size=45) }}<br>
+                {% endif %}
+                {% for error in form.institution2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.training_start_date2.label }}<br>
+                {% if training2.startDate %} 
+                    <text style="color:black"> {{ training2.startDate }}  </text>
+                {% endif %}
+                {{ form.training_start_date2() }}
+                {% for error in form.training_start_date2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.training_end_date2.label }}<br>
+                {% if training2.endDate %} 
+                    <text style="color:black"> {{ training2.endDate }}  </text>
+                {% endif %}
+                {{ form.training_end_date2() }}
+                {% for error in form.training_end_date2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p> 
+        {% else %}
+            {{ form.add_training2 }}
+        {% endif %}
+
+        {% if training3.course or add_training3 %}
+            <p>
+                <h3> Training #3 </h3>
+                {{ form.course3.label }}<br>
+                {% if training3.course %}
+                    {{ form.course3(size=45, placeholder = training3.course) }}<br>
+                {% else %} 
+                    {{ form.course3(size=45) }}<br>
+                {% endif %}
+                {% for error in form.course3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.institution3.label }}<br>
+                {% if training3.institution %}
+                    {{ form.institution3(size=45, placeholder = training3.institution) }}<br>
+                {% else %} 
+                    {{ form.institution3(size=45) }}<br>
+                {% endif %}
+                {% for error in form.institution3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.training_start_date3.label }}<br>
+                {% if training3.startDate %} 
+                    <text style="color:black"> {{ training3.startDate }}  </text>
+                {% endif %}
+                {{ form.training_start_date3() }}
+                {% for error in form.training_start_date3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>  
+            <p>
+                {{ form.training_end_date3.label }}<br>
+                {% if training3.endDate %} 
+                    <text style="color:black"> {{ training3.endDate }}  </text>
+                {% endif %}
+                {{ form.training_end_date3() }}
+                {% for error in form.training_end_date3.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p> 
+        {% elif training2.course or training2.institution%}
+            {{ form.add_training3 }}
+        {% endif %}
+        
+        <br>
+        <br>
+        {{ form.submit() }}
+        
+    </form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
