@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 from app import app, db
 from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
-                        ClientInformationForm, WorkerInformationForm, ConnectRequestForm)
+                        ClientInformationForm, WorkerInformationForm, ConnectRequestForm, ReportingForm)
 
 from app.models import *
 
@@ -611,6 +611,56 @@ def worker_profile_past_experience():
                            work_history1 = work_history1, work_history2 = work_history2, work_history3 = work_history3,
                            training1 = training1, training2 = training2, training3 = training3)
 
+#------------------------------------------------------------------------------
+#                             Reporting
+#------------------------------------------------------------------------------
 
+@app.route('/reports/<user_id>', methods=['GET'])
+@login_required
+def view_reports():
+    user_id = current_user.get_id()
+    if Clients.query.get(user_id):
+        u = Clients.query.get(user_id)
+    else:
+        u = SupportWorkers.query.get(user_id)
 
+    pairs = u.pairs.all()
+    if pairs:
+        all_shifts = []
+        for pair in pairs:
+            shifts = pair.shifts.all()
+            if shifts:
+                all_shifts.extend(shifts)
+    else:   # no users connected with current user
+        return
 
+    all_activities = []
+    for shift in all_shifts:
+        activities = shift.activities.all()
+        if activities:
+            all_activities.extend(activities)
+
+    all_reports = []
+    for activity in all_activities:
+        report = activity.report.first()
+        if report:
+            all_reports.append(report)
+
+    return all_reports
+
+@app.route('/filling_report/<shift_id>', methods=['GET', 'POST'])
+@login_required
+def write_reports(shiftid):
+    form = ReportingForm()
+    a = Activities(shift=shiftid, location=form.data.location)
+    db.session.add(a)
+    db.session.commit()
+    a_num = Activities.query(shift=shiftid).id
+    r = Reports(activity=a_num,
+                mood=form.data.mood,
+                incident=form.data.incident,
+                incidentReport=form.data.incidents_text,
+                report_text=form.data.report_text)
+    db.session.add(r)
+    db.session.commit()
+    return redirect(url_for('reports'))

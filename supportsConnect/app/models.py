@@ -25,6 +25,8 @@ class Users(UserMixin, db.Model):
     contactNo = db.Column(db.VARCHAR(15))
     homeAddress = db.Column(Description)
     shortBio = db.Column(db.VARCHAR(140))
+    client = db.relationship('Clients', backref='user', lazy='dynamic')
+    worker = db.relationship('SupportWorkers', backref='user', lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -53,6 +55,7 @@ class Clients(Users):
     ndisPlan = db.Column(db.Enum('self managed', 'plan managed', name = 'ndisPlan'))
     planManager = db.Column(NameValue)
     invoiceEmail = db.Column(db.String(120))
+    pairs = db.relationship('ConnectedUsers', backref='client', lazy='dynamic')
 
     def __repr__(self):
         return '<Client {}>'.format(self.id)
@@ -60,9 +63,10 @@ class Clients(Users):
 
 class SupportWorkers(Users):
 
-    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key = True)
+    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     languages = db.Column(Description)
     interests = db.Column(Description)
+    pairs = db.relationship('ConnectedUsers', backref='worker', lazy='dynamic')
 
     def __repr__(self):
         return '<Client {}>'.format(self.id)
@@ -103,6 +107,7 @@ class ConnectedUsers(db.Model):
     clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
     clientStatus = db.Column(db.Enum('sent', 'accepted','declined', name = 'clientStatus'))
     dateConnected = db.Column(db.Date)
+    shifts = db.relationship('Shifts', backref='users', lazy='dynamic')
 
     def __repr__(self):
         return '<Connected Pairs {}>'.format(self.supportWorkerId)
@@ -119,6 +124,7 @@ class Shifts(db.Model):
     endTime = db.Column(db.TIMESTAMP)
     duration = db.Column(db.Interval)
     frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
+    activities = db.relationship('Activities', backref='shift', lazy='dynamic')
 
 
 class Activities(db.Model):
@@ -126,14 +132,15 @@ class Activities(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     shift = db.Column(db.Integer, db.ForeignKey('shifts.id'))
     location = db.Column(Description)
+    report = db.relationship('Reports', backref='activity', lazy='dynamic')
 
 
 class Reports(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)	
     activity = db.Column(db.Integer, db.ForeignKey('activities.id'))
-    mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name = 'moods'))
-    incident = db.Column(db.BOOLEAN, default = False)
+    mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name='moods'))
+    incident = db.Column(db.BOOLEAN, default=False)
     incidentReport = db.Column(db.Text)
     sessionReport = db.Column(db.Text)
 

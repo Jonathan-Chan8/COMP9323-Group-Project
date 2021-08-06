@@ -166,9 +166,23 @@ class WorkerInformationForm(FlaskForm):
     add_work_history3 = SubmitField('Add Work History #3')
 
     submit = SubmitField('Save Changes')
-    
 
-            
+
+class ReportingForm(FlaskForm):
+    mood = RadioField(label="How was the client's mood",
+                      validators=[DataRequired()],
+                      choices=[('angry', 'Angry'),
+                               ('sad', 'Sad'),
+                               ('moderate', 'Moderate'),
+                               ('happy', 'Happy'),
+                               ('hyperactive', 'Hyperactive')])
+    location = StringField("Which location(s) did you take the client?", validators=[DataRequired()])
+    activities = StringField("What activities did you do?", validators=[DataRequired()])
+    incident = BooleanField("Were there any incidents?")
+    incidents_text = TextField("Incidents")
+    report_text = TextField("Report")
+
+    submit = SubmitField('Submit')
 
 
 
