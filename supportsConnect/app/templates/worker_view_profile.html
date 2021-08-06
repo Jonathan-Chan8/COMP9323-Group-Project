@@ -1,0 +1,24 @@
+{% extends "worker_base.html" %}
+
+{% block content %}
+
+    <h1>Support Worker: Viewing Client Profile  </h1>
+    
+    <h2>{{ client.firstName }} {{ client.lastName }}</h2>
+
+    <a> Phone: {{ client.contactNo }} </a>
+    <br> 
+    <a> Email: {{ client.email }} </a>
+    <br>
+    <a> Address: {{ client.homeAddress }} </a>
+    <br>
+    <br>
+    <a> Short Bio: {{ client.shortBio }} </a>
+    <br>
+    <br>
+    <a> Age: {{ client.age }} </a>
+    <br>
+    <a> Gender: {{ client.gender }} </a>
+    
+{% endblock %}
+

@@ -40,8 +40,40 @@ class RegistrationForm(FlaskForm):
 
 class ConnectForm(FlaskForm):
     
-    email = StringField('Client Email', validators=[DataRequired(), Email()])  
+    email = StringField('Email', validators=[DataRequired(), Email()])  
     send_request = SubmitField('Send Request')
+
+class ConnectRequestForm(FlaskForm):
+    
+    sender_id = IntegerField('ID', validators=[Optional()])
+    first_name = StringField('First Name')
+    view_profile = SubmitField('View Profile')
+    accept = SubmitField('Accept')
+    decline = SubmitField('Decline')
+
+class ConnectRequestForm2(FlaskForm):
+    
+    sender_id = IntegerField('ID', validators=[Optional()])
+    first_name = StringField('First Name')
+    view_profile = SubmitField('View Profile')
+    accept = SubmitField('Accept')
+    decline = SubmitField('Decline')
+
+class ConnectRequestForm3(FlaskForm):
+    
+    sender_id = IntegerField('ID', validators=[Optional()])
+    first_name = StringField('First Name')
+    view_profile = SubmitField('View Profile')
+    accept = SubmitField('Accept')
+    decline = SubmitField('Decline')
+    
+class ConnectRequestForm4(FlaskForm):
+    
+    sender_id = IntegerField('ID', validators=[Optional()])
+    first_name = StringField('First Name')
+    view_profile = SubmitField('View Profile')
+    accept = SubmitField('Accept')
+    decline = SubmitField('Decline')
 
 
 class ClientInformationForm(FlaskForm):

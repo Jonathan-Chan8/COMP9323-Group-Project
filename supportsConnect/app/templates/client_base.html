@@ -11,9 +11,15 @@
         {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
         {% else %}
-        <a href="{{ url_for('client_dashboard', email=current_user.email) }}">Profile</a> 
+        <a href="{{ url_for('client_dashboard', email=current_user.email) }}">Profile</a>
         <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
+    </div>
+    <div>
+        Profile Navigation Bar (tmp):
+        <a href="{{ url_for('client_profile_personal_info') }}">Edit Profile</a> &nbsp;&nbsp; 
+        <a href="{{ url_for('client_connect') }}">Connect</a> &nbsp;&nbsp; 
+
     </div>
     <body>
         <h1> supportsConnect </h1>

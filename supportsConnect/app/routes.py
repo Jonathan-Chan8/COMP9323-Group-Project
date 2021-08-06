@@ -8,7 +8,9 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ConnectForm, ClientInformationForm, WorkerInformationForm
+from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
+                        ClientInformationForm, WorkerInformationForm, ConnectRequestForm)
+
 from app.models import *
 
 from app.test_data import add_test_data_to_database
@@ -17,6 +19,9 @@ from wtforms import StringField
 
 #add_test_data_to_database()
 
+#------------------------------------------------------------------------------
+#                         Homepage and Login 
+#------------------------------------------------------------------------------
 
 @app.route('/')
 @app.route('/index')
@@ -50,6 +55,11 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+#------------------------------------------------------------------------------
+#                                Sign Up 
+#------------------------------------------------------------------------------
 
 @app.route('/sign_up_user_type', methods=['GET', 'POST'])
 def sign_up_user_type():
@@ -145,6 +155,10 @@ def sign_up_client_guardian():
     return render_template('sign_up_client_guardian.html', title='Sign Up', form=form)
 
 
+#------------------------------------------------------------------------------
+#                             Dashboard 
+#------------------------------------------------------------------------------
+
 @app.route('/worker_dashboard/<email>')
 @login_required
 def worker_dashboard(email):
@@ -158,6 +172,10 @@ def client_dashboard(email):
     return render_template('client_dashboard.html', user=user)
 
 
+#------------------------------------------------------------------------------
+#                               Connect 
+#------------------------------------------------------------------------------
+
 @app.route('/worker_connect', methods=['GET', 'POST'])
 @login_required
 def worker_connect():
@@ -167,14 +185,24 @@ def worker_connect():
     form = ConnectForm()
     
     if form.validate_on_submit():
-        
+        # Support Worker submits a connection request to a Client
         if form.send_request.data:
-
             client = Clients.query.filter_by(email = form.email.data).first()
+            
             if client:
-                connection_request = ConnectedUsers(supportWorkerId = user_id, 
-                                                    clientId = client.id,
-                                                    supportWorkerStatus = 'sent')
+                # Check if connection request already exists
+                connection_exists = ConnectedUsers.query.filter_by(supportWorkerId=user_id).filter_by(clientId=client.id).first()
+                if connection_exists:
+                    if connection_exists.clientStatus == 'accepted':
+                        flash("You are already connected with this client")
+                    else:
+                        flash("A connection request has already been made")
+                    return render_template('worker_connect.html', form=form, user=user)
+                else:
+                    # 
+                    connection_request = ConnectedUsers(supportWorkerId = user_id, 
+                                                        clientId = client.id,
+                                                        supportWorkerStatus = 'sent')
                 db.session.add(connection_request)
                 db.session.commit()
                 flash("A request has been sent")
@@ -183,6 +211,153 @@ def worker_connect():
             
     return render_template('worker_connect.html', form=form, user=user)
 
+
+@app.route('/client_connect', methods=['GET', 'POST'])
+@login_required
+def client_connect():
+
+    user_id = current_user.get_id()
+    user = Clients.query.filter_by(id=user_id).first_or_404()
+    form = ConnectForm()
+    
+    if form.validate_on_submit():
+        # Client submits a connection request to a support worker
+        if form.send_request.data:
+            support_worker = SupportWorkers.query.filter_by(email = form.email.data).first()
+            
+            if support_worker:
+                # Check if connection request already exists
+                connection_exists = ConnectedUsers.query.filter_by(clientId=user_id).filter_by(supportWorkerId=support_worker.id).first()
+                if connection_exists:
+                    if connection_exists.supportWorkerStatus == 'accepted':
+                        flash("You are already connected with this support worker")
+                    else:
+                        flash("A connection request has already been made")
+                    return render_template('client_connect.html', form=form, user=user)
+                else:
+                    # 
+                    connection_request = ConnectedUsers(clientId = user_id, 
+                                                        supportWorkerId = support_worker.id,
+                                                        clientStatus = 'sent')
+                db.session.add(connection_request)
+                db.session.commit()
+                flash("A request has been sent")
+            else:
+                flash("This user doesn't exist")
+            
+    return render_template('client_connect.html', form=form, user=user)
+
+@app.route('/client_connect_requests', methods=['GET', 'POST'])
+@login_required
+def client_connect_requests():
+
+    user_id = current_user.get_id()
+    user = Clients.query.filter_by(id=user_id).first_or_404()
+    connections = ConnectedUsers.query.filter_by(clientId=user_id).all()
+    requests = {}
+    
+    # Obtain all support worker connection requests 
+    for connection in connections:
+        if connection.supportWorkerStatus == 'sent':
+                         
+            support_worker_id = connection.supportWorkerId     
+            support_worker = SupportWorkers.query.filter_by(id=support_worker_id).first_or_404()
+            full_name = support_worker.firstName + ' ' +  support_worker.lastName
+            requests[support_worker_id] = full_name
+    
+    return render_template('client_connect_requests.html', user=user, requests=requests)
+
+
+@app.route('/worker_connect_requests', methods=['GET', 'POST'])
+@login_required
+def worker_connect_requests():
+
+    user_id = current_user.get_id()
+    user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
+    connections = ConnectedUsers.query.filter_by(supportWorkerId=user_id).all()
+    requests = {}
+    
+    # Obtain all client connection requests 
+    for connection in connections:
+        if connection.clientStatus == 'sent':
+                         
+            client_id = connection.clientId     
+            client = Clients.query.filter_by(id=client_id).first_or_404()
+            full_name = client.firstName + ' ' +  client.lastName
+            requests[client_id] = full_name
+    
+    return render_template('worker_connect_requests.html', user=user, requests=requests)
+
+@app.route('/accept_request', methods=['GET', 'POST'])
+@login_required
+def accept_request():
+
+    # Current user -> The user that received the request
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
+    # Current user response to the request
+    user_response = request.json
+    response = user_response['response']
+    
+    # Sender -> The person who sent the request
+    sender_id = user_response['sender_id']
+    
+    # Retrieve the connection object from the database
+    # -> Current user is a client
+    if user.accountType == 'client':
+        connection = ConnectedUsers.query.filter_by(clientId=user_id).filter_by(supportWorkerId=sender_id).first()
+
+    # -> Current user is a support worker
+    elif user.accountType == 'support worker':
+        connection = ConnectedUsers.query.filter_by(supportWorkerId=user_id).filter_by(clientId=sender_id).first()
+        
+    if connection:
+        # -> Current user accepted the request
+        if user_response['response'] == 'accept':
+            connection.supportWorkerStatus = 'accepted'
+            connection.clientStatus = 'accepted'
+            flash("You are now connected")
+        # -> Current user declined the request
+        elif user_response['response'] == 'decline':
+            db.session.delete(connection)  # Remove the connection object
+            flash("You have successfully declined the request")
+        db.session.commit()
+        
+    return render_template('accept_request.html')
+
+
+#------------------------------------------------------------------------------
+#                             View Profile 
+#------------------------------------------------------------------------------
+
+## Client viewing a support worker's profile ##
+
+@app.route('/client_view_profile/<worker_id>', methods=['GET'])
+@login_required
+def client_view_profile(worker_id):
+    
+    print(worker_id)    
+    support_worker = SupportWorkers.query.filter_by(id=worker_id).first_or_404()  
+    
+    return render_template('client_view_profile.html', support_worker=support_worker)
+
+
+## Support Worker viewing a client's profile ##
+
+@app.route('/worker_view_profile/<client_id>', methods=['GET'])
+@login_required
+def worker_view_profile(client_id):
+    
+    print(client_id)        
+    client = Clients.query.filter_by(id=client_id).first_or_404()    
+    
+    return render_template('worker_view_profile.html', client=client)
+
+
+#------------------------------------------------------------------------------
+#                             Edit Profile 
+#------------------------------------------------------------------------------
 
 @app.route('/client_profile_personal_info', methods=['GET', 'POST'])
 @login_required
@@ -226,6 +401,7 @@ def client_profile_personal_info():
             user.shortBio = form.short_bio.data
                  
         db.session.commit()
+        flash("Your personal information was successfully updated")
         
     print(form.errors)
 
@@ -252,9 +428,9 @@ def client_profile_payment_details():
             user.invoiceEmail = form.invoice_email.data
     
         db.session.commit()
+        flash("Your payment details were successfully updated")
     
     return render_template('client_profile_payment_details.html', form=form, user=user)
-
 
 
 @app.route('/worker_profile_personal_info', methods=['GET', 'POST'])

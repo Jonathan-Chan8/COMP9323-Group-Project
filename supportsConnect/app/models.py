@@ -101,7 +101,7 @@ class ConnectedUsers(db.Model):
     supportWorkerId = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
     supportWorkerStatus = db.Column(db.Enum('sent', 'accepted', name = 'supportWorkerStatus'))
     clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    clientStatus = db.Column(db.Enum('sent', 'accepted', name = 'clientStatus'))
+    clientStatus = db.Column(db.Enum('sent', 'accepted','declined', name = 'clientStatus'))
     dateConnected = db.Column(db.Date)
 
     def __repr__(self):

@@ -1,13 +1,13 @@
-{% extends "worker_base.html" %}
+{% extends "client_base.html" %}
 
 {% block content %}
 
-    <h1>Support Worker Connect Page </h1>
+    <h1>Client Connect Page </h1>
     
     <div>
-        <button onclick="location.href='http://localhost:5000/worker_connect'" type="button">
+        <button onclick="location.href='http://localhost:5000/client_connect'" type="button">
          Connect</button>
-        <button onclick="location.href='http://localhost:5000/worker_connect_requests'" type="button">
+        <button onclick="location.href='http://localhost:5000/client_connect_requests'" type="button">
          Requests</button>
     </div>
 
@@ -15,7 +15,7 @@
         {{ form.hidden_tag() }}
 
         <p>
-            <a> Client Email Address</a><br>
+            <a> Support Worker Email Address</a><br>
             {{ form.email(size=32) }}<br>
             {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>
@@ -25,4 +25,3 @@
         <p>{{ form.send_request() }}</p>
     </form>
 {% endblock %}
-

@@ -1,0 +1,55 @@
+{% extends "client_base.html" %}
+
+{% block content %}
+
+    <h1>Client Connect Requests Page </h1>
+    
+    <div>
+        <button onclick="location.href='http://localhost:5000/client_connect'" type="button">
+         Connect</button>
+        <button onclick="location.href='http://localhost:5000/client_connect_requests'" type="button">
+         Requests</button>
+    </div>
+    
+    
+    <script>
+
+        function sendJSON(data, response) {
+            var data = {
+                response: response,
+                sender_id: data
+            };
+        
+            var json = JSON.stringify(data);
+        
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/accept_request");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(json);
+        }
+                
+    </script>
+
+    <form action="" method="post">
+
+        <p>
+            {% for key in requests.keys() %}
+                
+                <p>{{requests[key] }}</p>
+                
+                <a href="/client_view_profile/{{ key }}"><button type='button'>View profile</button></a>
+                <button id='btn1' type="button" onclick="sendJSON( {{ key }} , 'accept')">Accept</button> 
+                <button id='btn1' type="button" onclick="sendJSON( {{ key }} , 'decline')">Decline</button> 
+
+            {% endfor %}
+        </p>
+      
+    </form>
+{% endblock %}
+
+
+
+
+
+
+
