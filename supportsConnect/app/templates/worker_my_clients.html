@@ -1,0 +1,22 @@
+{% extends "worker_base.html" %}
+
+{% block content %}
+
+    <h1>Support Worker: My Clients Page </h1>
+    
+
+    <form action="" method="post">
+
+        <p>
+            {% for key in connections.keys() %}
+                
+                <p>{{connections[key] }}</p>
+                
+                <a href="/worker_view_profile/{{ key }}"><button type='button'>View profile</button></a>
+
+
+            {% endfor %}
+        </p>
+      
+    </form>
+{% endblock %}
