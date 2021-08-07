@@ -197,8 +197,26 @@ def worker_reports():
     for row in x:
         print(row.firstName)
 
+    all_reports = db.session.query(Report).join(Shifts, Reports.shift_id == Shifts.id).join(ConnectedUsers, Shifts.connectedId == ConnectedUsers.id).filter(ConnectedUsers.supportWorkerId == user_id).all()
+
     
     return render_template('worker_reports.html', user=user, form=form)
+
+
+@app.route('/filling_report/<shift_id>', methods=['GET', 'POST'])
+@login_required
+def write_reports(shiftid, activity_description):
+    form = ReportingForm()
+    r = Reports(shift_id=shiftid,
+                activity=activity_description,
+                location=form.data.location,
+                mood=form.data.mood,
+                incident=form.data.incident,
+                incidentReport=form.data.incidents_text,
+                report_text=form.data.report_text)
+    db.session.add(r)
+    db.session.commit()
+    return redirect(url_for('reports'))
     
     
 

@@ -109,31 +109,31 @@ class ConnectedUsers(db.Model):
 
 class Shifts(db.Model):
 
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     connectedId = db.Column(db.Integer, db.ForeignKey('connected_users.id'))
-    shiftStatus = db.Column(db.BOOLEAN, default = True)
-    workerStatus = db.Column(db.BOOLEAN, default = True)
-    clientStatus = db.Column(db.BOOLEAN, default = True)
+    shiftStatus = db.Column(db.BOOLEAN, default=True)
+    workerStatus = db.Column(db.BOOLEAN, default=True)
+    clientStatus = db.Column(db.BOOLEAN, default=True)
     startTime = db.Column(db.TIMESTAMP)
     endTime = db.Column(db.TIMESTAMP)
     duration = db.Column(db.Interval)
     frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
 
 
-class Activities(db.Model):
+"""class Activities(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     shift = db.Column(db.Integer, db.ForeignKey('shifts.id'))
     location = db.Column(Description)
-
+"""
 
 class Reports(db.Model):
-
-    id = db.Column(db.Integer, primary_key = True)	
+    id = db.Column(db.Integer, primary_key=True)
     shift_id = db.Column(db.Integer, db.ForeignKey('shifts.id'))
-    activity = db.Column(db.Integer, db.ForeignKey('activities.id'))
-    mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name = 'moods'))
-    incident = db.Column(db.BOOLEAN, default = False)
+    activity = db.Column(db.Description)
+    location = db.Column(db.Description)
+    mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name='moods'))
+    incident = db.Column(db.BOOLEAN, default=False)
     incidentReport = db.Column(db.Text)
     sessionReport = db.Column(db.Text)
 
