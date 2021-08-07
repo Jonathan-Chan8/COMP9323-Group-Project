@@ -78,7 +78,8 @@ Whilst in the COMP9323-Group-Project/supportsConnect directory, run:
 
     $ python add_test_data.py
     
-    It should say "- instance added" a bunch of times
+    If successful, it should say "- instance added" a bunch of times. 
+    -- The user test data (login/password) details are in the add_test_data.py file - 
 
 ## Making changes to the database in models.py ##
 
