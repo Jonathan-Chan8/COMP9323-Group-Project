@@ -13,7 +13,7 @@ from app.forms import (LoginForm, RegistrationForm, ConnectForm,
 
 from app.models import *
 
-from app.test_data import add_test_data_to_database
+# from app.test_data import add_test_data_to_database
 
 from wtforms import StringField
 
@@ -159,16 +159,18 @@ def sign_up_client_guardian():
 #                             Dashboard 
 #------------------------------------------------------------------------------
 
-@app.route('/worker_dashboard/<email>')
+@app.route('/worker_dashboard/')
 @login_required
-def worker_dashboard(email):
-    user = Users.query.filter_by(email=email).first_or_404()
+def worker_dashboard():
+    user_id = current_user.get_id()
+    user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
     return render_template('worker_dashboard.html', user=user)
 
-@app.route('/client_dashboard/<email>')
+@app.route('/client_dashboard/')
 @login_required
-def client_dashboard(email):
-    user = Users.query.filter_by(email=email).first_or_404()
+def client_dashboard():
+    user_id = current_user.get_id()
+    user = Clients.query.filter_by(id=user_id).first_or_404()
     return render_template('client_dashboard.html', user=user)
 
 
@@ -662,7 +664,3 @@ def worker_profile_past_experience():
                            add_work_history2 = add_work_history2, add_work_history3 = add_work_history3, 
                            work_history1 = work_history1, work_history2 = work_history2, work_history3 = work_history3,
                            training1 = training1, training2 = training2, training3 = training3)
-
-
-
-
