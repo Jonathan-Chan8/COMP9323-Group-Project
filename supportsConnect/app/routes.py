@@ -176,7 +176,52 @@ def client_dashboard(email):
 #                        My Clients / Support Workers
 #------------------------------------------------------------------------------
 
+@app.route('/client_my_support_workers')
+@login_required
+def client_my_support_workers():
 
+    # Current user = Client
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
+    # Retrieve all of the client's connected support workers
+    connections = ConnectedUsers.query.filter_by(clientId=user_id).all()
+    connection_data = {}
+    
+    for connection in connections:
+        # Obtain all user connections     
+        if connection.supportWorkerStatus == 'accepted' and connection.clientStatus == 'accepted':
+            
+            support_worker_id = connection.supportWorkerId     
+            support_worker = SupportWorkers.query.filter_by(id=support_worker_id).first_or_404()
+            full_name = support_worker.firstName + ' ' +  support_worker.lastName
+            connection_data[support_worker_id] = full_name
+
+    
+    return render_template('client_my_support_workers.html', connections = connection_data)
+
+@app.route('/worker_my_clients')
+@login_required
+def worker_my_clients():
+    
+    # Current user = Support Worker
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+
+    # Retrieve all of the support worker's connected clients
+    connections = ConnectedUsers.query.filter_by(supportWorkerId=user_id).all()
+    connection_data = {}
+    
+    for connection in connections:
+        # Obtain all user connections     
+        if connection.clientStatus == 'accepted' and connection.supportWorkerStatus == 'accepted':
+            
+            client_id = connection.clientId     
+            client = Clients.query.filter_by(id=client_id).first_or_404()
+            full_name = client.firstName + ' ' +  client.lastName
+            connection_data[client_id] = full_name
+                
+    return render_template('worker_my_clients.html', connections = connection_data)
 
 
 #------------------------------------------------------------------------------
