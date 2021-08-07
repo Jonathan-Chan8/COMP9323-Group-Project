@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from app import app, db
 from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
                         ClientInformationForm, WorkerInformationForm, ConnectRequestForm,
-                        AccountForm)
+                        AccountForm, AddShiftForm, WorkerReportForm)
 
 from app.models import *
 
@@ -170,6 +170,35 @@ def client_dashboard(email):
     user = Users.query.filter_by(email=email).first_or_404()
     return render_template('client_dashboard.html', user=user)
 
+
+#------------------------------------------------------------------------------
+#                                   Reports
+#------------------------------------------------------------------------------
+
+@app.route('/worker_reports')
+@login_required
+def worker_reports():
+
+    # Current user 
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
+    form = WorkerReportForm()
+    
+    #form.group_id.choices = [(g.id, g.name) for g in Group.query.order_by('name')]
+    x = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all() 
+    
+    form.clients.choices = [(row.id, row.firstName) for row in x]
+
+    print(x)
+    #db.session.add(x)
+    for row in x:
+        print(row.firstName)
+
+    
+    return render_template('worker_reports.html', user=user, form=form)
+    
+    
 
 #------------------------------------------------------------------------------
 #                        My Clients / Support Workers
@@ -693,7 +722,7 @@ def account():
     # Current user
     user_id = current_user.get_id()
     user = Users.query.filter_by(id=user_id).first_or_404()
-
+    
     form = AccountForm()
 
     if form.validate_on_submit():

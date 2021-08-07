@@ -130,6 +130,7 @@ class Activities(db.Model):
 class Reports(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)	
+    shift_id = db.Column(db.Integer, db.ForeignKey('shifts.id'))
     activity = db.Column(db.Integer, db.ForeignKey('activities.id'))
     mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name = 'moods'))
     incident = db.Column(db.BOOLEAN, default = False)

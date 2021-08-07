@@ -176,7 +176,14 @@ class AccountForm(FlaskForm):
     submit = SubmitField('Save')
             
 
+class WorkerReportForm(FlaskForm):
+    
+        clients = SelectField(u'Clients', coerce=int)
 
+
+class AddShiftForm(FlaskForm):
+    
+    clients = SelectField(u'Support worker clients', choices = [( 'worker1', 'Darren'),('worker2','Steve')])
 
 
 
