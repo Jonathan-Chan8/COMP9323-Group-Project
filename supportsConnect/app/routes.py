@@ -13,11 +13,9 @@ from app.forms import (LoginForm, RegistrationForm, ConnectForm,
 
 from app.models import *
 
-from app.test_data import add_test_data_to_database
-
 from wtforms import StringField
 
-#add_test_data_to_database()
+
 
 #------------------------------------------------------------------------------
 #                         Homepage and Login 
