@@ -9,15 +9,14 @@ from dateutil.relativedelta import relativedelta
 
 from app import app, db
 from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
-                        ClientInformationForm, WorkerInformationForm, ConnectRequestForm)
+                        ClientInformationForm, WorkerInformationForm, ConnectRequestForm,
+                        AccountForm, AddShiftForm, WorkerReportForm)
 
 from app.models import *
 
-# from app.test_data import add_test_data_to_database
-
 from wtforms import StringField
 
-#add_test_data_to_database()
+
 
 #------------------------------------------------------------------------------
 #                         Homepage and Login 
@@ -173,6 +172,35 @@ def client_dashboard():
     user = Clients.query.filter_by(id=user_id).first_or_404()
     return render_template('client_dashboard.html', user=user)
 
+
+#------------------------------------------------------------------------------
+#                                   Reports
+#------------------------------------------------------------------------------
+
+@app.route('/worker_reports')
+@login_required
+def worker_reports():
+
+    # Current user 
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
+    form = WorkerReportForm()
+    
+    #form.group_id.choices = [(g.id, g.name) for g in Group.query.order_by('name')]
+    x = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all() 
+    
+    form.clients.choices = [(row.id, row.firstName) for row in x]
+
+    print(x)
+    #db.session.add(x)
+    for row in x:
+        print(row.firstName)
+
+    
+    return render_template('worker_reports.html', user=user, form=form)
+    
+    
 
 #------------------------------------------------------------------------------
 #                        My Clients / Support Workers
@@ -391,10 +419,28 @@ def accept_request():
 @login_required
 def client_view_profile(worker_id):
     
-    print(worker_id)    
+
     support_worker = SupportWorkers.query.filter_by(id=worker_id).first_or_404()  
+
+    work_history = WorkHistory.query.filter_by(worker=worker_id).all() 
+    training = Training.query.filter_by(worker=worker_id).order_by(Training.id).all()
     
-    return render_template('client_view_profile.html', support_worker=support_worker)
+    actual_work_history = []
+    actual_training = []
+    
+    # Iterate through the 3 user work history instances 
+    # and obtain those that the user has added to
+    for work in work_history:
+        if work.location or work.role:
+            actual_work_history.append(work)
+   
+    # Iterate through the 3 user training instances 
+    # and obtain those that the user has added to
+    for t in training:
+        if t.course or t.institution:
+            actual_training.append(t)
+
+    return render_template('client_view_profile.html', support_worker=support_worker, training=actual_training, work_history=actual_work_history)
 
 
 ## Support Worker viewing a client's profile ##
@@ -545,7 +591,7 @@ def worker_profile_past_experience():
     add_work_history3 = False   
     
     # If user has no training data
-    # Create new training instance
+    # Create 3 new training instance
     if not user_training:
         training1 = Training(worker = user_id)
         training2 = Training(worker = user_id)
@@ -561,7 +607,7 @@ def worker_profile_past_experience():
         training3 = user_training[2]
         
     # If user has no work history data
-    # Create new work_history instance
+    # Create 3 new work_history instance
     if not user_work_history:
         
         work_history1 = WorkHistory(worker = user_id)  
@@ -664,3 +710,43 @@ def worker_profile_past_experience():
                            add_work_history2 = add_work_history2, add_work_history3 = add_work_history3, 
                            work_history1 = work_history1, work_history2 = work_history2, work_history3 = work_history3,
                            training1 = training1, training2 = training2, training3 = training3)
+
+
+#------------------------------------------------------------------------------
+#                                 Account
+#------------------------------------------------------------------------------
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+
+    # Current user
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
+    form = AccountForm()
+
+    if form.validate_on_submit():
+        
+        # Check if user provides the right email address
+        if user.email == form.email.data:
+            
+            # Update the users password
+            user.set_password(form.password.data)
+            db.session.commit()
+            flash("Your password has been updated!")
+        else:
+            flash("Error: Email Address not found. Please provide the email address used to login to this account.")
+
+    return render_template('account.html', user=user, form=form)
+
+
+
+
+
+
+
+
+
+

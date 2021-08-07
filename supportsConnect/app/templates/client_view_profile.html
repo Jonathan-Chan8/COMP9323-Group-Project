@@ -4,7 +4,7 @@
 
     <h1>Client: Viewing Support Worker Profile  </h1>
     
-    <h2>{{ support_worker.firstName }} {{ support_worker.lastName }}</h2>
+    <h1>{{ support_worker.firstName }} {{ support_worker.lastName }}</h1>
 
     <a> Phone: {{ support_worker.contactNo }} </a>
     <br> 
@@ -15,9 +15,44 @@
     <br>
     <a> Short Bio: {{ support_worker.shortBio }} </a>
     <br>
-    <br>
+    
+    <h3> Personal Details </h3>
     <a> Age: {{ support_worker.age }} </a>
     <br>
     <a> Gender: {{ support_worker.gender }} </a>
+    <br>
+    <a> Language(s): {{ support_worker.languages }}
+    <br>
+    <a> Interests: {{ support_worker.interests }}
+    
+    {% if work_history: %}
+        <h3> Work History </h3>
+        {% for work in work_history %}
+            <a> Role: {{ work.role }} </a>
+            <br>
+            <a> Location: {{ work.location }} </a>
+            <br>
+            <a> Start Date: {{ work.startDate }} </a>       
+            <br>
+            <a> End Date: {{ work.startDate }} </a>         
+            <br>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% if training: %}
+        <h3> Training </h3>
+        {% for train in training %}
+            <a> Course: {{ train.course }} </a>
+            <br>
+            <a> Institution {{ train.institution }} </a>
+            <br>
+            <a> Start Date: {{ train.startDate }} </a>       
+            <br>
+            <a> End Date: {{ train.startDate }} </a>         
+            <br>
+            <br>
+        {% endfor %}
+    {% endif %}
+    
     
 {% endblock %}

@@ -78,7 +78,7 @@ class WorkHistory (db.Model):
     endDate = db.Column(db.Date)
 
     def __repr__(self):
-        return '<Work History {}>'.format(self.location)
+        return '<Work History {}>'.format(self.role)
 
 
 class Training (db.Model):
@@ -91,11 +91,10 @@ class Training (db.Model):
     endDate = db.Column(db.Date)
 
     def __repr__(self):
-        return '<Training {}>'.format(self.subject)
+        return '<Training {}>'.format(self.course)
 
 
 class ConnectedUsers(db.Model):
-    
     
     id = db.Column(db.Integer, primary_key = True)
     supportWorkerId = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
@@ -131,6 +130,7 @@ class Activities(db.Model):
 class Reports(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)	
+    shift_id = db.Column(db.Integer, db.ForeignKey('shifts.id'))
     activity = db.Column(db.Integer, db.ForeignKey('activities.id'))
     mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name = 'moods'))
     incident = db.Column(db.BOOLEAN, default = False)
@@ -141,3 +141,12 @@ class Reports(db.Model):
 @login.user_loader
 def load_user(id):
     return Users.query.get(int(id))
+
+
+
+
+
+
+
+
+

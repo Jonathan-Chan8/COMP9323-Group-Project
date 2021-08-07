@@ -167,10 +167,23 @@ class WorkerInformationForm(FlaskForm):
 
     submit = SubmitField('Save Changes')
     
+class AccountForm(FlaskForm):
+    
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('password')])
 
+    submit = SubmitField('Save')
             
 
+class WorkerReportForm(FlaskForm):
+    
+        clients = SelectField(u'Clients', coerce=int)
 
+
+class AddShiftForm(FlaskForm):
+    
+    clients = SelectField(u'Support worker clients', choices = [( 'worker1', 'Darren'),('worker2','Steve')])
 
 
 
