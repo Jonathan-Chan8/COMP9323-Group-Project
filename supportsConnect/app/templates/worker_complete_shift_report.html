@@ -11,41 +11,40 @@
         {{ form.hidden_tag() }}
 
         <p>
-            {{ form.mood.label}}<br>
-            {{ form.mood() }}<br>
+            <b>{{ form.mood.label}}</b> <br>
+            {{ form.mood() }}
             {% for error in form.mood.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
+        </p> 
+        <p>
+            <br><b> Where did you take the client? </b><br><br>
+            {{ form.locations }}
+            <br><br>
+            {{ form.new_location.label }}
+            {{ form.new_location }}
+            
         </p>
         <p>
-            {{ form.location.label }} <br>
-            {% if shift.location %}
-                {{ form.location(placeholder = shift.location) }}
-            {% else %} 
-                {{ form.location(size = 50) }}
-            {% endif %}
-            {% for error in form.location.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>    
-        </p>
-            <a> What activities did you do? </a><br>
+            <br><b> What activities did you do? </b><br><br>
             {{ form.activities }}
-            <br>
+            <br><br>
             {{ form.new_activity.label }}
             {{ form.new_activity }}
             
+        </p>
         <p>
-            <a> Were there any incidents? </a><br>
+            <br><b> Were there any incidents? </b><br>
             {{ form.incident }}
-            
-            <br>
             <a> If you answered 'Yes', please fill out the Incident Report </a><br>
+
+            <br>
+            <br><b> {{ form.incidents_text.label }} </b><br>
             {{ form.incidents_text(cols=50, rows=4) }}
 
+        <p>
         </p>
-        </p>
-            {{ form.report_text.label }} <br>
+            <br><b>{{ form.report_text.label }}</b> <br>
             {% if form.report_text.data %}
                 {{ form.report_text(placeholder = form.report_text.data) }}
             {% else %} 

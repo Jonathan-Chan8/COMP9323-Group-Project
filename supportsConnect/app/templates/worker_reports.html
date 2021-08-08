@@ -16,22 +16,44 @@
          {{ form.activities }}
          {{ form.activity_submit}} 
          <br><br>
+
+         {{ form.locations.label }}
+         {{ form.locations }}
+         {{ form.location_submit}} 
+         <br><br>
     </form>
 
     {% for report in reports %}
     
-        <a> Client: </a>{{ report.client_name }}<br>
+        <big><b> {{ report.client_name }} </b></big><br>
         <a> Support Worker: </a> {{ report.worker_name }}<br>
-        {{ report.date }} <br>
+        <a> {{ report.date }} <br><br>
         
+        <b> Mood: </b> <a> {{ report.client_mood }} </a><br>
+        <b> Location(s): </b> 
+        {% for location in report.locations %}
+            {{ location.name }}
+        {% endfor %}
+        <br>
+        <b> Activities: </b> 
         {% for activity in report.activities %}
             {{ activity.name }}
         {% endfor %}
         <br>
-        <a> Incident: {{ report.incident }} </a>
+        <b> Incident: </b><a> {{ report.incident }} </a>
+        <br><br>
+        <a href="/worker_view_report/{{ report.report_id }}/{{ report.worker_name }}/{{ report.client_name }}"><button type='button'>Read Report</button></a>
+        <br>
         <br>
         <br>
 
     {% endfor %}
     
 {% endblock %}
+
+
+
+
+
+
+

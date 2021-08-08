@@ -1,0 +1,35 @@
+{% extends "client_base.html" %}
+
+{% block content %}
+
+    <h1>Client: Viewing A Report  </h1>
+    
+    <h2>{{ report.client_name }} </h2> 
+    <a> Client: </a> {{ report.client_name }}<br>
+    {{ report.date }} <br><br>
+    <b> Mood: </b>
+    {{ report.client_mood }}<br>
+    <b> Locations: </b>
+    {% for location in report.locations %}
+        {{ location.name }}
+    {% endfor %}
+    <br>
+    <b> Activities: </b>
+    {% for activity in report.activities %}
+        {{ activity.name }}
+    {% endfor %}
+    <br>
+    {% if report.incident %}
+    <b> Incident: </b><a>{{ report.incident }} </a>
+    <br>
+    <h3> Incident Report </h3>
+    {{ report_text.incidentReport }}
+    {% endif %}
+    <br>
+    <h3> Session Report </h3>
+    {{ report_text.sessionReport }}
+    
+    
+{% endblock %}
+
+

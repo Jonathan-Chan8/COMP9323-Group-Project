@@ -10,11 +10,15 @@ from app import db, login
 NameValue = db.VARCHAR(30)
 Description = db.VARCHAR(50)
 
-subs = db.Table('subs',
-                db.Column('shift_id', db.Integer, db.ForeignKey('shifts.id')),
-                db.Column('activity_id', db.Integer, db.ForeignKey('activities.id'))
-                )
+subs_activities = db.Table('subs_activities',
+                            db.Column('shift_id', db.Integer, db.ForeignKey('shifts.id')),
+                            db.Column('activity_id', db.Integer, db.ForeignKey('activities.id'))
+                            )
 
+subs_locations = db.Table('subs_locations',
+                            db.Column('shift_id', db.Integer, db.ForeignKey('shifts.id')),
+                            db.Column('location_id', db.Integer, db.ForeignKey('locations.id'))
+                            )
 
 class Users(UserMixin, db.Model):
 
@@ -112,12 +116,11 @@ class ConnectedUsers(db.Model):
         return '<Connected Pairs {}>'.format(self.supportWorkerId)
 
 
-
 class Reports(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name='moods'))
-    incident = db.Column(db.BOOLEAN, default=False)
+    incident = db.Column(db.BOOLEAN)
     incidentReport = db.Column(db.Text)
     sessionReport = db.Column(db.Text)
     
@@ -134,9 +137,7 @@ class Shifts(db.Model):
     startTime = db.Column(db.TIME)
     endTime = db.Column(db.TIME)
     duration = db.Column(db.Interval)
-    frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
-    activity = db.Column(Description)
-    location = db.Column(Description)    
+    frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))   
     
     report = db.relationship('Reports', backref = 'shifts', uselist=False)
 
@@ -145,7 +146,14 @@ class Activities(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(NameValue)
     clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    shifts = db.relationship('Shifts', secondary=subs, backref=db.backref('activities', lazy='dynamic'))
+    shifts = db.relationship('Shifts', secondary=subs_activities, backref=db.backref('activities', lazy='dynamic'))
+
+class Locations(db.Model):
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(NameValue)
+    clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    shifts = db.relationship('Shifts', secondary=subs_locations, backref=db.backref('locations', lazy='dynamic'))
 
     
 @login.user_loader

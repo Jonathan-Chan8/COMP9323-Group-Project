@@ -3,8 +3,9 @@ from flask_wtf.recaptcha import validators
 from wtforms import (BooleanField, PasswordField, StringField, SubmitField, 
                     IntegerField, TextField, TextAreaField, RadioField,
                     SelectField, DateTimeField, SelectMultipleField)
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional, InputRequired
 from wtforms.fields.html5 import DateField, TimeField
+
 
 
 from datetime import datetime
@@ -184,17 +185,27 @@ class WorkerReportForm(FlaskForm):
     
     activities = SelectField(u'Activity: ', coerce=int, validators=[Optional()], validate_choice=False)
     activity_submit = SubmitField('Apply', validators=[Optional()])
+
+    locations = SelectField(u'Location: ', coerce=int, validators=[Optional()], validate_choice=False)
+    location_submit = SubmitField('Apply', validators=[Optional()])
     
-    #         <br><br>
-    #     {{ form.activities.label }}
-    #     {{ form.activities }}
-    #     {{ form.activity_submit}}        
-        
+class ClientReportForm(FlaskForm):
+    
+    workers = SelectField(u'Support Worker: ', coerce=int, validators=[Optional()])
+    worker_submit = SubmitField('Apply')
+    
+    incident = SelectField(u'Incident?',choices=[('Yes','Yes'),('No','No')])
+    incident_submit = SubmitField('Apply')
+    
+    moods = SelectField(u'Mood: ', choices=[('happy','happy'),('moderate','moderate'), ('sad', 'sad'), ('angry', 'angry'), ('hyperactive', 'hyperactive')])
+    mood_submit = SubmitField('Apply')
 
 
 class ReportingForm(FlaskForm):
     
     activities = SelectMultipleField(u'Activities', coerce=int, validators=[Optional()])
+    locations = SelectMultipleField(u'Locations', coerce=int, validators=[Optional()])
+
     mood = RadioField(label="How was the client's mood",
                       validators=[DataRequired()],
                       choices=[('angry', 'Angry'),
@@ -202,13 +213,20 @@ class ReportingForm(FlaskForm):
                                ('moderate', 'Moderate'),
                                ('happy', 'Happy'),
                                ('hyperactive', 'Hyperactive')])
-    location = StringField("Which location(s) did you take the client?")
-    new_activity = StringField("add new activity")
+
+    new_activity = StringField("Add new activity: ")
+    new_location = StringField("Add new location: ")
     #incident = BooleanField("Were there any incidents?")
     incidents_text = TextAreaField("Incident Report")
     report_text = TextAreaField("Session Report")
     
-    incident = RadioField(choices=[(1,'Yes'),(2,'No')], coerce=int)
+    incident = RadioField(choices=[('Yes','Yes'),('No','No')], validators=[Optional()])
+    # incident = SelectField(
+    #             choices=[(True, 'Yes'), (False, 'No')],
+    #             validators=[InputRequired()],
+    #             coerce=lambda x: x == 'True'
+    #         )
+    
     
     incident_yes = SubmitField("Yes")
     incident_no = SubmitField("No")

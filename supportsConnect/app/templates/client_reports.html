@@ -1,0 +1,46 @@
+{% extends "client_base.html" %}
+
+{% block content %}
+
+    <h1> Client: View Reports </h1>
+    
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+    
+        {{ form.workers.label }}    
+        {{ form.workers }}
+        {{ form.worker_submit}}
+        <br>
+        <br>
+        {{ form.incident.label }}    
+        {{ form.incident }}
+        {{ form.incident_submit}}
+        <br>        
+        <br>
+        {{ form.moods.label }}    
+        {{ form.moods }}
+        {{ form.mood_submit}}
+        <br>        
+        <br>
+    </form>
+
+    {% for report in reports %}
+    
+        <a> Client: </a>{{ report.client_name }}<br>
+        <a> Support Worker: </a> {{ report.worker_name }}<br>
+        {{ report.date }} <br>
+        
+        <a> Mood: {{ report.client_mood }} </a><br>
+        {% for activity in report.activities %}
+            {{ activity.name }}
+        {% endfor %}
+        <br>
+        <a> Incident: {{ report.incident }} </a>
+        <br>
+        <a href="/client_view_report/{{ report.report_id }}/{{ report.worker_name }}/{{ report.client_name }}"><button type='button'>Read Report</button></a>
+        <br>
+        <br>
+
+    {% endfor %}
+    
+{% endblock %}
