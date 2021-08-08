@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.recaptcha import validators
 from wtforms import (BooleanField, PasswordField, StringField, SubmitField, 
                     IntegerField, TextField, TextAreaField, RadioField,
-                    SelectField, DateTimeField)
+                    SelectField, DateTimeField, SelectMultipleField)
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional
 from wtforms.fields.html5 import DateField, TimeField
 
@@ -179,10 +179,16 @@ class AccountForm(FlaskForm):
 
 class WorkerReportForm(FlaskForm):
     
-        clients = SelectField(u'Clients', coerce=int)
+    clients = SelectField(u'Client: ', coerce=int, validators=[Optional()])
+    client_submit = SubmitField('Apply')
+    activities = SelectField(u'Activity: ', coerce=int, validators=[Optional()])
+    activity_submit = SubmitField('Apply')
+    
 
 
 class ReportingForm(FlaskForm):
+    
+    activities = SelectMultipleField(u'Activities', coerce=int, validators=[Optional()])
     mood = RadioField(label="How was the client's mood",
                       validators=[DataRequired()],
                       choices=[('angry', 'Angry'),
@@ -191,7 +197,7 @@ class ReportingForm(FlaskForm):
                                ('happy', 'Happy'),
                                ('hyperactive', 'Hyperactive')])
     location = StringField("Which location(s) did you take the client?")
-    activity = StringField("What activities did you do?")
+    new_activity = StringField("add new activity")
     incident = BooleanField("Were there any incidents?")
     incidents_text = TextAreaField("Incident Report")
     report_text = TextAreaField("Session Report")

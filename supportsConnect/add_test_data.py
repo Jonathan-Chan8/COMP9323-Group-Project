@@ -1,5 +1,7 @@
 from app import app, db
 from app.models import *
+from datetime import date, time, datetime
+
 
 '''
 
@@ -117,8 +119,55 @@ def create_connections():
     get_or_create(db.session, ConnectedUsers, supportWorkerId = 5,
                     clientId = 3, clientStatus = 'sent')    
 
+def add_shifts():
+    
+    print("Adding shifts")
+    
+    get_or_create(db.session, Shifts, workerId = 4, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    get_or_create(db.session, Shifts, workerId = 5, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
+    get_or_create(db.session, Shifts, workerId = 6, clientId = 1, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
+
+    get_or_create(db.session, Shifts, workerId = 4, clientId = 2, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    get_or_create(db.session, Shifts, workerId = 5, clientId = 2, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
+    get_or_create(db.session, Shifts, workerId = 6, clientId = 2, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
+
+    get_or_create(db.session, Shifts, workerId = 4, clientId = 3, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    get_or_create(db.session, Shifts, workerId = 5, clientId = 3, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
+    get_or_create(db.session, Shifts, workerId = 6, clientId = 3, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
+
+
+def add_activities():
+    
+    print("Adding activities")
+    get_or_create(db.session, Activities, name = 'Football', clientId = 1)  
+    get_or_create(db.session, Activities, name = 'Golf', clientId = 1)  
+    get_or_create(db.session, Activities, name = 'Hockey', clientId = 1)  
+ 
+    get_or_create(db.session, Activities, name = 'Football', clientId = 2)  
+    get_or_create(db.session, Activities, name = 'Golf', clientId = 2)  
+    get_or_create(db.session, Activities, name = 'Hockey', clientId = 2)  
+        
+    get_or_create(db.session, Activities, name = 'Tennis', clientId = 3)  
+    get_or_create(db.session, Activities, name = 'Golf', clientId = 3)  
+    get_or_create(db.session, Activities, name = 'Hockey', clientId = 3)     
+
+
 add_users_to_database()
 create_connections()
+add_shifts()
+add_activities()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

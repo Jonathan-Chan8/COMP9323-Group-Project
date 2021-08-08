@@ -22,23 +22,19 @@
             {% if shift.location %}
                 {{ form.location(placeholder = shift.location) }}
             {% else %} 
-                {{ form.location() }}
+                {{ form.location(size = 50) }}
             {% endif %}
             {% for error in form.location.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>    
         </p>
-            {{ form.activity.label }} <br>
-            {% if shift.activity %}
-                {{ form.activity(placeholder = shift.activity) }}
-            {% else %} 
-                {{ form.activity() }}
-            {% endif %}
-            {% for error in form.activity.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>    
+            <a> What activities did you do? </a><br>
+            {{ form.activities }}
+            <br>
+            {{ form.new_activity.label }}
+            {{ form.new_activity }}
+            
         <p>
             <a> Were there any incidents? </a><br>
             {{ form.incident_yes() }} &nbsp;

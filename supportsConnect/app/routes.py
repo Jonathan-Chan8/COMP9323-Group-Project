@@ -12,7 +12,7 @@ from app import app, db
 from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
                         ClientInformationForm, WorkerInformationForm, ConnectRequestForm,
                         AccountForm, AddShiftForm, WorkerReportForm, ReportingForm)
-
+from sqlalchemy import desc
 from app.models import *
 
 from wtforms import StringField
@@ -178,49 +178,119 @@ def client_dashboard():
 #                                   Reports
 #------------------------------------------------------------------------------
 
-@app.route('/worker_reports')
+class Report_Card:
+    
+    def __init__(self, client_name): #, worker_name, date, locations, activities, incidents):
+        
+        self.client_name = client_name
+        # self.worker_name = worker_name
+        # self.date = date
+        # self.locations = locations
+        # self.activities = activities
+        # self.incidents = incidents
+        
+
+@app.route('/worker_reports', methods=['GET', 'POST'])
 @login_required
 def worker_reports():
 
-    
     # Current user 
     user_id = current_user.get_id()
     user = Users.query.filter_by(id=user_id).first_or_404()
     
     form = WorkerReportForm()
-    
+        
     
     # FILTER FOR CLIENTS
     x = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all()
     form.clients.choices = [(row.id, row.firstName) for row in x]
     
-   
-    # worker_reports = []
+    reports = []
+    
+    if form.validate_on_submit():    
+        
+        # Client filter selected 
+        if form.client_submit.data:
+            
+            # Retrieve the client instance
+            
+            
+            # Update the list of activities 
+            client_activities = Activities.query.filter_by(clientId = client.id).distinct().all()   
+            form.activities.choices = [(row.id, row.name) for row in client_activities] 
+    
+    else:
+        
+        # FILTER FOR ACTIVITIES
+        activities = Activities.query.distinct().all()   
+        form.activities.choices = [(row.id, row.name) for row in activities]
+        
+        
+        
+        shifts = Shifts.query.filter_by(shiftStatus = 'completed').order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
+        
+        for shift in shifts:
+            print(shift.date)
+            # JOIN REPORTS ON SHIFTS
+            
+                                
+    return render_template('worker_reports.html', user=user, form=form, reports=reports)
+
+
+    ## Append every activity to every shift ##
+    
+    # shifts = Shifts.query.all()
+    
+    # activities = Activities.query.all()
+    
+    # for shift in shifts:
+    #     for activity in activities:
+    #         shift.activities.append(activity)
+    
+    # db.session.commit()
+    
+    ## Creating activities and adding them to shifts ##
+    
+    # shift = Shifts.query.first()
+    # activity = Activities(name = 'Tennis', clientId = 1)  
+        
+    # shift.activities.append(activity)
+    # db.session.commit()
+    
+    ## Getting a shifts activities ##
+    
+    # shift = Shifts.query.first()
+    # for activity in shift.activities:
+    #     print(activity.name)
+    
+    ## Getting a client's activities ##
+    
+    # client_activities = Activities.query.filter_by(clientId = 1).distinct().all()
+    
+    # for activity in client_activities:
+    #     print(activity.name)
+    
+    ## Filtering reports for a given activity ##
+    
+    # shifts_refined = []
+    # shifts = Shifts.query.filter_by(clientId = 1).all() # Retrieve shifts for a given client
+    # print(shifts)
+    
+    # for shift in shifts:
+    #     for activity in shift.activities:
+    #         print(activity.name)
+    #         if activity.name == 'Tennis':       # Put the activity here
+    #             shifts_refined.append(shift)
+    # print(shifts_refined)
+
+    
+    ## Get a support worker's clients ##
     
     # clients = ConnectedUsers.query.filter_by(supportWorkerId = user_id).filter_by(clientStatus = 'accepted').all()
     # for client in clients:
     #     print(client.firstName)
         
-    # Query to get a worker's reports
-    #reports = Reports.query
     
-    ## TEST ADDING DATA
-    
-    # shift = Shifts(workerId = 4, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
-    # report = Reports(sessionReport = 'Went really well haha', shifts = shift)
-    # db.session.add(shift)
-    # db.session.add(report)
-    # db.session.commit()
-    
-    shift = Shifts.query.first()
-    print(shift.workerId)
-    report = Reports.query.filter_by(shift_id = shift.id).first()
-    print(report.sessionReport)
-    #print(report)
-    #get_or_created(db.session, Reports, sessionReport = 'Went really well haha', shifts = shift)   
-    
-    
-    return render_template('worker_reports.html', user=user, form=form)
 
 
 @app.route('/worker_complete_shift_report', methods=['GET', 'POST'])
@@ -240,6 +310,11 @@ def worker_complete_shift_report():
     
     form = ReportingForm()
     
+    # Retrieve the client's activities
+    client_activities = Activities.query.filter_by(clientId = client.id).distinct().all()   
+    form.activities.choices = [(row.id, row.name) for row in client_activities]
+    
+        
     if form.validate_on_submit():
         
         # Support Worker click's YES for incident
@@ -258,17 +333,32 @@ def worker_complete_shift_report():
                         incident=form.incident.data,
                         incidentReport=form.incidents_text.data,
                         sessionReport=form.report_text.data)
-            if form.activity.data:
-                shift.activity = form.activity.data
-            if form.location.data:
-                shift.location = form.location.data
+            
+            # if form.activity.data:
+            #     shift.activity = form.activity.data
+            # if form.location.data:
+            #     shift.location = form.location.data
+            
+            # User creates a new activity
+            if form.new_activity.data:
+                activity = Activities(name = form.new_activity.data, clientId = client.id)  
+                shift.activities.append(activity)
+                db.session.add(activity)
+            
+            # User chooses some activities
+            for activity_id in form.activities.data:
+
+                selected_activity = Activities.query.filter_by(id = activity_id).distinct().first() 
+                shift.activities.append(selected_activity)
+                
             
             db.session.add(report)
             db.session.commit()
             return redirect(url_for('worker_reports')) # CHANGE THIS TO 'shifts_completed'
         
     
-    return render_template('worker_complete_shift_report.html', shift=shift, form=form, client_full_name=client_full_name, incidents=incidents_check)
+    return render_template('worker_complete_shift_report.html', shift=shift, 
+                           form=form, client_full_name=client_full_name, incidents=incidents_check)
     
 
 #------------------------------------------------------------------------------

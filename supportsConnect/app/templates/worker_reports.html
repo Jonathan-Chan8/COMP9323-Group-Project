@@ -4,7 +4,23 @@
 
     <h1> Support Worker: View Reports </h1>
     
-    {{ form.clients }}
+
+    <form action="" method="post">
     
+        {{ form.hidden_tag() }}
+    
+        {{ form.clients.label }}    
+        {{ form.clients }}
+        {{ form.client_submit}}
+        <br><br>
+        {{ form.activities.label }}
+        {{ form.activities }}
+        {{ form.activity_submit}}        
+        
+        {{ form.submit }}
+                    
+            
+        
+    </form>
     
 {% endblock %}
