@@ -4,13 +4,14 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 #from flask_login.utils import login_required
 from werkzeug.urls import url_parse
-from datetime import date
+
+from datetime import date, time, datetime
 from dateutil.relativedelta import relativedelta
 
 from app import app, db
 from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
                         ClientInformationForm, WorkerInformationForm, ConnectRequestForm,
-                        AccountForm, AddShiftForm, WorkerReportForm)
+                        AccountForm, AddShiftForm, WorkerReportForm, ReportingForm)
 
 from app.models import *
 
@@ -181,43 +182,93 @@ def client_dashboard():
 @login_required
 def worker_reports():
 
+    
     # Current user 
     user_id = current_user.get_id()
     user = Users.query.filter_by(id=user_id).first_or_404()
     
     form = WorkerReportForm()
     
-    #form.group_id.choices = [(g.id, g.name) for g in Group.query.order_by('name')]
-    x = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all() 
     
+    # FILTER FOR CLIENTS
+    x = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all()
     form.clients.choices = [(row.id, row.firstName) for row in x]
-
-    print(x)
-    #db.session.add(x)
-    for row in x:
-        print(row.firstName)
-
-    all_reports = db.session.query(Report).join(Shifts, Reports.shift_id == Shifts.id).join(ConnectedUsers, Shifts.connectedId == ConnectedUsers.id).filter(ConnectedUsers.supportWorkerId == user_id).all()
-
+    
+   
+    # worker_reports = []
+    
+    # clients = ConnectedUsers.query.filter_by(supportWorkerId = user_id).filter_by(clientStatus = 'accepted').all()
+    # for client in clients:
+    #     print(client.firstName)
+        
+    # Query to get a worker's reports
+    #reports = Reports.query
+    
+    ## TEST ADDING DATA
+    
+    # shift = Shifts(workerId = 4, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    # report = Reports(sessionReport = 'Went really well haha', shifts = shift)
+    # db.session.add(shift)
+    # db.session.add(report)
+    # db.session.commit()
+    
+    shift = Shifts.query.first()
+    print(shift.workerId)
+    report = Reports.query.filter_by(shift_id = shift.id).first()
+    print(report.sessionReport)
+    #print(report)
+    #get_or_created(db.session, Reports, sessionReport = 'Went really well haha', shifts = shift)   
+    
     
     return render_template('worker_reports.html', user=user, form=form)
 
 
-@app.route('/filling_report/<shift_id>', methods=['GET', 'POST'])
+@app.route('/worker_complete_shift_report', methods=['GET', 'POST'])
 @login_required
-def write_reports(shiftid, activity_description):
-    form = ReportingForm()
-    r = Reports(shift_id=shiftid,
-                activity=activity_description,
-                location=form.data.location,
-                mood=form.data.mood,
-                incident=form.data.incident,
-                incidentReport=form.data.incidents_text,
-                report_text=form.data.report_text)
-    db.session.add(r)
-    db.session.commit()
-    return redirect(url_for('reports'))
+def worker_complete_shift_report():
     
+    # ASSUMES THAT A SHIFT OBJECT IS PASSED FROM shift_pending
+    # Add 'shift' as an argument 
+    
+    # But in the mean time
+    shift = Shifts.query.first()
+    
+    # Retrieve the client's name 
+    client = Clients.query.filter_by(id=shift.clientId).first_or_404()
+    client_full_name = client.firstName + ' ' +  client.lastName
+    incidents_check = ''
+    
+    form = ReportingForm()
+    
+    if form.validate_on_submit():
+        
+        # Support Worker click's YES for incident
+        if form.incident_yes.data:
+            incidents_check = 'yes'
+            
+        # Support Worker click's NO for incident
+        elif form.incident_no.data:
+            incidents_check = 'no'
+            
+        # Support Worker click's SUBMIT
+        else:
+    
+            report = Reports(shift_id=shift.id,
+                        mood=form.mood.data,
+                        incident=form.incident.data,
+                        incidentReport=form.incidents_text.data,
+                        sessionReport=form.report_text.data)
+            if form.activity.data:
+                shift.activity = form.activity.data
+            if form.location.data:
+                shift.location = form.location.data
+            
+            db.session.add(report)
+            db.session.commit()
+            return redirect(url_for('worker_reports')) # CHANGE THIS TO 'shifts_completed'
+        
+    
+    return render_template('worker_complete_shift_report.html', shift=shift, form=form, client_full_name=client_full_name, incidents=incidents_check)
     
 
 #------------------------------------------------------------------------------
@@ -247,6 +298,7 @@ def client_my_support_workers():
 
     
     return render_template('client_my_support_workers.html', connections = connection_data)
+
 
 @app.route('/worker_my_clients')
 @login_required
@@ -437,7 +489,6 @@ def accept_request():
 @login_required
 def client_view_profile(worker_id):
     
-
     support_worker = SupportWorkers.query.filter_by(id=worker_id).first_or_404()  
 
     work_history = WorkHistory.query.filter_by(worker=worker_id).all() 

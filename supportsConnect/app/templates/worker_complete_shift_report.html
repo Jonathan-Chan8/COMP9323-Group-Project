@@ -1,0 +1,76 @@
+{% extends "worker_base.html" %}
+
+{% block content %}
+
+    <h1>Support Worker: Complete Shift Report </h1>
+    
+    <h2> {{ client_full_name }} </h2>
+    <h3> {{ shift.date }} </h3>
+    
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.mood.label}}<br>
+            {{ form.mood() }}<br>
+            {% for error in form.mood.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.location.label }} <br>
+            {% if shift.location %}
+                {{ form.location(placeholder = shift.location) }}
+            {% else %} 
+                {{ form.location() }}
+            {% endif %}
+            {% for error in form.location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>    
+        </p>
+            {{ form.activity.label }} <br>
+            {% if shift.activity %}
+                {{ form.activity(placeholder = shift.activity) }}
+            {% else %} 
+                {{ form.activity() }}
+            {% endif %}
+            {% for error in form.activity.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>    
+        <p>
+            <a> Were there any incidents? </a><br>
+            {{ form.incident_yes() }} &nbsp;
+            {{ form.incident_no() }}
+            {% if incidents == 'yes' %}
+                &nbsp;&nbsp;&nbsp;<a> Yes </a>
+            <br><br>{{ form.incidents_text.label }}<br>
+                
+                {{ form.incidents_text(cols=50, rows=4) }}
+            {% elif incidents == 'no' %}
+                &nbsp;&nbsp;&nbsp;<a> No. We're glad to hear :) </a>
+            {% endif %}
+        </p>
+        </p>
+            {{ form.report_text.label }} <br>
+            {% if form.report_text.data %}
+                {{ form.report_text(placeholder = form.report_text.data) }}
+            {% else %} 
+                {{ form.report_text(cols=50, rows=4) }}
+            {% endif %}
+            {% for error in form.report_text.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>    
+      
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
+
+
+
+
+
+
+

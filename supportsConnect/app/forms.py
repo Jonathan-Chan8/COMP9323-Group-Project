@@ -2,9 +2,10 @@ from flask_wtf import FlaskForm
 from flask_wtf.recaptcha import validators
 from wtforms import (BooleanField, PasswordField, StringField, SubmitField, 
                     IntegerField, TextField, TextAreaField, RadioField,
-                    SelectField)
+                    SelectField, DateTimeField)
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional
-from wtforms.fields.html5 import DateField
+from wtforms.fields.html5 import DateField, TimeField
+
 
 from datetime import datetime
 from datetime import date
@@ -189,12 +190,15 @@ class ReportingForm(FlaskForm):
                                ('moderate', 'Moderate'),
                                ('happy', 'Happy'),
                                ('hyperactive', 'Hyperactive')])
-    location = StringField("Which location(s) did you take the client?", validators=[DataRequired()])
-    activities = StringField("What activities did you do?", validators=[DataRequired()])
+    location = StringField("Which location(s) did you take the client?")
+    activity = StringField("What activities did you do?")
     incident = BooleanField("Were there any incidents?")
-    incidents_text = TextField("Incidents")
-    report_text = TextField("Report")
-
+    incidents_text = TextAreaField("Incident Report")
+    report_text = TextAreaField("Session Report")
+    
+    incident_yes = SubmitField("Yes")
+    incident_no = SubmitField("No")
+    
     submit = SubmitField('Submit')
 
 

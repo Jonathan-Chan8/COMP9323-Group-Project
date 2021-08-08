@@ -110,34 +110,33 @@ class ConnectedUsers(db.Model):
 class Shifts(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    connectedId = db.Column(db.Integer, db.ForeignKey('connected_users.id'))
     shiftStatus = db.Column(db.BOOLEAN, default=True)
+    workerId = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
+    clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
     workerStatus = db.Column(db.BOOLEAN, default=True)
     clientStatus = db.Column(db.BOOLEAN, default=True)
-    startTime = db.Column(db.TIMESTAMP)
-    endTime = db.Column(db.TIMESTAMP)
+    date = db.Column(db.DATE)
+    startTime = db.Column(db.TIME)
+    endTime = db.Column(db.TIME)
     duration = db.Column(db.Interval)
     frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
-
-
-"""class Activities(db.Model):
-
-    id = db.Column(db.Integer, primary_key = True)
-    shift = db.Column(db.Integer, db.ForeignKey('shifts.id'))
-    location = db.Column(Description)
-"""
+    activity = db.Column(Description)
+    location = db.Column(Description)    
+    
+    report = db.relationship('Reports', backref = 'shifts', uselist=False)
+    
 
 class Reports(db.Model):
+    
     id = db.Column(db.Integer, primary_key=True)
-    shift_id = db.Column(db.Integer, db.ForeignKey('shifts.id'))
-    activity = db.Column(db.Description)
-    location = db.Column(db.Description)
     mood = db.Column(db.Enum('angry', 'sad', 'moderate', 'happy', 'hyperactive', name='moods'))
     incident = db.Column(db.BOOLEAN, default=False)
     incidentReport = db.Column(db.Text)
     sessionReport = db.Column(db.Text)
+    
+    shift_id = db.Column(db.Integer, db.ForeignKey('shifts.id'))
 
-
+    
 @login.user_loader
 def load_user(id):
     return Users.query.get(int(id))
