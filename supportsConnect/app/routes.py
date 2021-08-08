@@ -15,7 +15,7 @@ from app.test_data import add_test_data_to_database
 
 from wtforms import StringField
 
-#add_test_data_to_database()
+# add_test_data_to_database()
 
 
 @app.route('/')
