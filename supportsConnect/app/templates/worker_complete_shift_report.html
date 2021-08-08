@@ -37,16 +37,12 @@
             
         <p>
             <a> Were there any incidents? </a><br>
-            {{ form.incident_yes() }} &nbsp;
-            {{ form.incident_no() }}
-            {% if incidents == 'yes' %}
-                &nbsp;&nbsp;&nbsp;<a> Yes </a>
-            <br><br>{{ form.incidents_text.label }}<br>
-                
-                {{ form.incidents_text(cols=50, rows=4) }}
-            {% elif incidents == 'no' %}
-                &nbsp;&nbsp;&nbsp;<a> No. We're glad to hear :) </a>
-            {% endif %}
+            {{ form.incident }}
+            
+            <br>
+            <a> If you answered 'Yes', please fill out the Incident Report </a><br>
+            {{ form.incidents_text(cols=50, rows=4) }}
+
         </p>
         </p>
             {{ form.report_text.label }} <br>

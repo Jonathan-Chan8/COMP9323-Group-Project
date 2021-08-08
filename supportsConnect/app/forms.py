@@ -181,9 +181,15 @@ class WorkerReportForm(FlaskForm):
     
     clients = SelectField(u'Client: ', coerce=int, validators=[Optional()])
     client_submit = SubmitField('Apply')
-    activities = SelectField(u'Activity: ', coerce=int, validators=[Optional()])
-    activity_submit = SubmitField('Apply')
     
+    activities = SelectField(u'Activity: ', coerce=int, validators=[Optional()], validate_choice=False)
+    activity_submit = SubmitField('Apply', validators=[Optional()])
+    
+    #         <br><br>
+    #     {{ form.activities.label }}
+    #     {{ form.activities }}
+    #     {{ form.activity_submit}}        
+        
 
 
 class ReportingForm(FlaskForm):
@@ -198,9 +204,11 @@ class ReportingForm(FlaskForm):
                                ('hyperactive', 'Hyperactive')])
     location = StringField("Which location(s) did you take the client?")
     new_activity = StringField("add new activity")
-    incident = BooleanField("Were there any incidents?")
+    #incident = BooleanField("Were there any incidents?")
     incidents_text = TextAreaField("Incident Report")
     report_text = TextAreaField("Session Report")
+    
+    incident = RadioField(choices=[(1,'Yes'),(2,'No')], coerce=int)
     
     incident_yes = SubmitField("Yes")
     incident_no = SubmitField("No")

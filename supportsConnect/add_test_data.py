@@ -122,40 +122,104 @@ def create_connections():
 def add_shifts():
     
     print("Adding shifts")
+   
+   ## SHIFTS COMPLETED ##
+   # ID: 1,2,4,6,9
+   
+    #get_or_create(db.session, Shifts, shiftStatus = 'completed', workerId = 4, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    shift1 = Shifts(shiftStatus = 'completed', workerId = 4, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    shift2 = Shifts(shiftStatus = 'completed', workerId = 5, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
+    shift4 = Shifts(shiftStatus = 'completed', workerId = 4, clientId = 2, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    shift6 = Shifts(shiftStatus = 'completed', workerId = 6, clientId = 2, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
+    shift9 = Shifts(shiftStatus = 'completed', workerId = 6, clientId = 3, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
+    db.session.add(shift1)
+    db.session.add(shift2)
+    db.session.add(shift4)
+    db.session.add(shift6)
+    db.session.add(shift9)
     
-    get_or_create(db.session, Shifts, workerId = 4, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
-    get_or_create(db.session, Shifts, workerId = 5, clientId = 1, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
-    get_or_create(db.session, Shifts, workerId = 6, clientId = 1, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
-
-    get_or_create(db.session, Shifts, workerId = 4, clientId = 2, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
-    get_or_create(db.session, Shifts, workerId = 5, clientId = 2, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
-    get_or_create(db.session, Shifts, workerId = 6, clientId = 2, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
-
-    get_or_create(db.session, Shifts, workerId = 4, clientId = 3, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
-    get_or_create(db.session, Shifts, workerId = 5, clientId = 3, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=30))
-    get_or_create(db.session, Shifts, workerId = 6, clientId = 3, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
-
-
-def add_activities():
+    print("Adding Activities")
+    activity1 = Activities(name = 'Football', clientId = 1)
+    activity2 = Activities(name = 'Golf', clientId = 1)    
+    activity3 = Activities(name = 'Hockey', clientId = 1)
     
-    print("Adding activities")
-    get_or_create(db.session, Activities, name = 'Football', clientId = 1)  
-    get_or_create(db.session, Activities, name = 'Golf', clientId = 1)  
-    get_or_create(db.session, Activities, name = 'Hockey', clientId = 1)  
+    activity4 = Activities(name = 'Tennis', clientId = 2)
+    activity5 = Activities(name = 'Golf', clientId = 2)    
+    activity6 = Activities(name = 'Rugby', clientId = 2)
+
+    activity7 = Activities(name = 'Hockey', clientId = 3)
+    activity8 = Activities(name = 'Badminton', clientId = 3)    
+    activity9 = Activities(name = 'Ice Skating', clientId = 3)
+    db.session.add(activity1)
+    db.session.add(activity2)
+    db.session.add(activity3)
+    db.session.add(activity4)
+    db.session.add(activity5)
+    db.session.add(activity6)
+    db.session.add(activity7)
+    db.session.add(activity8)
+    db.session.add(activity9)
+    
+    print("Appending shifts to activities")
+    shift1.activities.append(activity1)
+    shift1.activities.append(activity3) 
+    
+    shift2.activities.append(activity1)
+    shift2.activities.append(activity2)
+    
+    shift4.activities.append(activity6)
+
+    shift6.activities.append(activity4)
+    shift6.activities.append(activity5)
+    
+    shift9.activities.append(activity8)
+    shift9.activities.append(activity9)
+    
+    db.session.commit()
+    
+
+    get_or_create(db.session, Shifts, shiftStatus = 'pending', workerId = 6, clientId = 1, startTime = time(1,24,12), endTime = time(2,24,12), date = date(year=2020, month=1, day=30))
+    get_or_create(db.session, Shifts, shiftStatus = 'scheduled', workerId = 5, clientId = 2, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2021, month=1, day=30))
+
+    get_or_create(db.session, Shifts, shiftStatus = 'pending', workerId = 4, clientId = 3, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2020, month=1, day=31))
+    get_or_create(db.session, Shifts, shiftStatus = 'scheduled', workerId = 5, clientId = 3, startTime = time(3,24,12), endTime = time(5,24,12), date = date(year=2021, month=1, day=30))
+    
+
+def add_reports():
+    
+    print("Adding reports")
+    
+    get_or_create(db.session, Reports, mood = 'sad', incident = True, incidentReport = 'He bit me.', sessionReport = 'Reall good fun', shift_id = 1)
+    get_or_create(db.session, Reports, mood = 'hyperactive', incident = True, incidentReport = 'He ran at me.', sessionReport = 'Not very good', shift_id = 2)
+    get_or_create(db.session, Reports, mood = 'happy', incident = False,  sessionReport = 'Such a good time', shift_id = 4)
+    get_or_create(db.session, Reports, mood = 'happy', incident = False,  sessionReport = 'Really good session', shift_id = 6)
+    get_or_create(db.session, Reports, mood = 'sad', incident = True, incidentReport = 'He cried the whole time',  sessionReport = 'Pretty embarrassing', shift_id = 9)
+
+# def add_activities():
+    
+#     print("Adding activities")
+#     get_or_create(db.session, Activities, name = 'Football', clientId = 1)  
+#     get_or_create(db.session, Activities, name = 'Golf', clientId = 1)  
+#     get_or_create(db.session, Activities, name = 'Hockey', clientId = 1)  
  
-    get_or_create(db.session, Activities, name = 'Football', clientId = 2)  
-    get_or_create(db.session, Activities, name = 'Golf', clientId = 2)  
-    get_or_create(db.session, Activities, name = 'Hockey', clientId = 2)  
+#     get_or_create(db.session, Activities, name = 'Football', clientId = 2)  
+#     get_or_create(db.session, Activities, name = 'Golf', clientId = 2)  
+#     get_or_create(db.session, Activities, name = 'Hockey', clientId = 2)  
         
-    get_or_create(db.session, Activities, name = 'Tennis', clientId = 3)  
-    get_or_create(db.session, Activities, name = 'Golf', clientId = 3)  
-    get_or_create(db.session, Activities, name = 'Hockey', clientId = 3)     
+#     get_or_create(db.session, Activities, name = 'Tennis', clientId = 3)  
+#     get_or_create(db.session, Activities, name = 'Golf', clientId = 3)  
+#     get_or_create(db.session, Activities, name = 'Hockey', clientId = 3)     
+
+#def append_activities_to_shifts():
+    
+    #shift.activities.append(activity)
 
 
 add_users_to_database()
 create_connections()
 add_shifts()
-add_activities()
+add_reports()
+
 
 
 

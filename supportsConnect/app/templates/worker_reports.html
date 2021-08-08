@@ -4,23 +4,34 @@
 
     <h1> Support Worker: View Reports </h1>
     
-
     <form action="" method="post">
-    
         {{ form.hidden_tag() }}
     
         {{ form.clients.label }}    
         {{ form.clients }}
         {{ form.client_submit}}
+
         <br><br>
-        {{ form.activities.label }}
-        {{ form.activities }}
-        {{ form.activity_submit}}        
-        
-        {{ form.submit }}
-                    
-            
-        
+         {{ form.activities.label }}
+         {{ form.activities }}
+         {{ form.activity_submit}} 
+         <br><br>
     </form>
+
+    {% for report in reports %}
+    
+        <a> Client: </a>{{ report.client_name }}<br>
+        <a> Support Worker: </a> {{ report.worker_name }}<br>
+        {{ report.date }} <br>
+        
+        {% for activity in report.activities %}
+            {{ activity.name }}
+        {% endfor %}
+        <br>
+        <a> Incident: {{ report.incident }} </a>
+        <br>
+        <br>
+
+    {% endfor %}
     
 {% endblock %}

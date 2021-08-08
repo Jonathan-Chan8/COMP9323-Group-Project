@@ -180,14 +180,14 @@ def client_dashboard():
 
 class Report_Card:
     
-    def __init__(self, client_name): #, worker_name, date, locations, activities, incidents):
+    def __init__(self, client_name, worker_name, date, activities, incident): #locations,  
         
         self.client_name = client_name
-        # self.worker_name = worker_name
-        # self.date = date
+        self.worker_name = worker_name
+        self.date = date
         # self.locations = locations
-        # self.activities = activities
-        # self.incidents = incidents
+        self.activities = activities
+        self.incident = incident
         
 
 @app.route('/worker_reports', methods=['GET', 'POST'])
@@ -200,39 +200,87 @@ def worker_reports():
     
     form = WorkerReportForm()
         
+    # Retrieve all of the current user's clients
+    connected_clients = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all()
     
-    # FILTER FOR CLIENTS
-    x = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all()
-    form.clients.choices = [(row.id, row.firstName) for row in x]
+    connected_clients_ids = [row.id for row in connected_clients]
+    print(connected_clients_ids)
     
-    reports = []
+    # Add these client's to the Client FILTER
+    form.clients.choices = [(row.id, row.firstName) for row in connected_clients]
     
+    
+    # FILTER SELECTED
     if form.validate_on_submit():    
         
+        print("GETS HERE")
+        print(form.clients.data)
         # Client filter selected 
         if form.client_submit.data:
             
             # Retrieve the client instance
-            
+            client = Clients.query.filter_by(id=form.clients.data).first()
             
             # Update the list of activities 
             client_activities = Activities.query.filter_by(clientId = client.id).distinct().all()   
             form.activities.choices = [(row.id, row.name) for row in client_activities] 
-    
-    else:
+            
+            shifts = Shifts.query.filter_by(shiftStatus = 'completed').filter_by(clientId = form.clients.data).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
         
-        # FILTER FOR ACTIVITIES
-        activities = Activities.query.distinct().all()   
+        # Activity filter selected 
+        if form.activity_submit.data:
+
+            shifts = db.session.query(Shifts).filter(Shifts.shiftStatus == 'completed').order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime))
+            shifts_refined = []
+            for shift in shifts:
+                for activity in shift.activities:
+                    if activity.id == form.activities.data:
+                        shifts_refined.append(shift)
+            
+            shifts = shifts_refined
+            
+    # NO FILTER SELECTED
+    else:
+         
+        # Retrieve all connected client activities 
+        activities = db.session.query(Activities).filter(Activities.clientId.in_(connected_clients_ids)).distinct()
         form.activities.choices = [(row.id, row.name) for row in activities]
         
+        # Retrieve all completed shifts (i.e. Shifts that have reports) 
         
+        shifts = db.session.query(Shifts).filter(Shifts.shiftStatus == 'completed').filter(Shifts.clientId.in_(connected_clients_ids)).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime))
         
-        shifts = Shifts.query.filter_by(shiftStatus = 'completed').order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
+    reports = []
+
+    for shift in shifts:
         
-        for shift in shifts:
-            print(shift.date)
-            # JOIN REPORTS ON SHIFTS
-            
+        # Grab the shift report
+        report = Reports.query.filter_by(shift_id=shift.id).first()
+
+        # Grab the client of the shift
+        client = Clients.query.filter_by(id=shift.clientId).first()
+        client_full_name = client.firstName + ' ' +  client.lastName
+        
+        # Grab the support worker of the shift
+        support_worker = SupportWorkers.query.filter_by(id=shift.workerId).first()
+        support_worker_full_name = support_worker.firstName + ' ' +  support_worker.lastName 
+        
+        # Shift Incidents?
+        incident = 'No'
+        if report: # GET RID OF THIS LINE ONCE FULLY IMPLIMENTED
+            if report.incident:
+                incident = 'Yes'
+            else:
+                incident = 'No'
+        
+        # Create the report card for the shift
+        report_card = Report_Card(client_full_name,
+                                  support_worker_full_name,
+                                  shift.date,
+                                  shift.activities,
+                                  incident)
+        
+        reports.append(report_card)
                                 
     return render_template('worker_reports.html', user=user, form=form, reports=reports)
 
@@ -249,6 +297,7 @@ def worker_reports():
     
     # db.session.commit()
     
+    
     ## Creating activities and adding them to shifts ##
     
     # shift = Shifts.query.first()
@@ -256,6 +305,7 @@ def worker_reports():
         
     # shift.activities.append(activity)
     # db.session.commit()
+    
     
     ## Getting a shifts activities ##
     
@@ -269,6 +319,7 @@ def worker_reports():
     
     # for activity in client_activities:
     #     print(activity.name)
+    
     
     ## Filtering reports for a given activity ##
     
@@ -313,48 +364,32 @@ def worker_complete_shift_report():
     # Retrieve the client's activities
     client_activities = Activities.query.filter_by(clientId = client.id).distinct().all()   
     form.activities.choices = [(row.id, row.name) for row in client_activities]
-    
         
     if form.validate_on_submit():
         
-        # Support Worker click's YES for incident
-        if form.incident_yes.data:
-            incidents_check = 'yes'
-            
-        # Support Worker click's NO for incident
-        elif form.incident_no.data:
-            incidents_check = 'no'
-            
-        # Support Worker click's SUBMIT
-        else:
-    
-            report = Reports(shift_id=shift.id,
-                        mood=form.mood.data,
-                        incident=form.incident.data,
-                        incidentReport=form.incidents_text.data,
-                        sessionReport=form.report_text.data)
-            
-            # if form.activity.data:
-            #     shift.activity = form.activity.data
-            # if form.location.data:
-            #     shift.location = form.location.data
-            
-            # User creates a new activity
-            if form.new_activity.data:
-                activity = Activities(name = form.new_activity.data, clientId = client.id)  
-                shift.activities.append(activity)
-                db.session.add(activity)
-            
-            # User chooses some activities
-            for activity_id in form.activities.data:
+    # Support Worker click's SUBMIT
+        report = Reports(shift_id=shift.id,
+                    mood=form.mood.data,
+                    incident=form.incident.data,
+                    incidentReport=form.incidents_text.data,
+                    sessionReport=form.report_text.data)
+        
 
-                selected_activity = Activities.query.filter_by(id = activity_id).distinct().first() 
-                shift.activities.append(selected_activity)
-                
+        # User creates a new activity
+        if form.new_activity.data:
+            activity = Activities(name = form.new_activity.data, clientId = client.id)  
+            shift.activities.append(activity)
+            db.session.add(activity)
+        
+        # User chooses some activities
+        for activity_id in form.activities.data:
+            selected_activity = Activities.query.filter_by(id = activity_id).distinct().first() 
+            shift.activities.append(selected_activity)
             
-            db.session.add(report)
-            db.session.commit()
-            return redirect(url_for('worker_reports')) # CHANGE THIS TO 'shifts_completed'
+        shift.shiftStatus = 'completed'
+        db.session.add(report)
+        db.session.commit()
+        return redirect(url_for('worker_reports')) # CHANGE THIS TO 'shifts_completed'
         
     
     return render_template('worker_complete_shift_report.html', shift=shift, 
