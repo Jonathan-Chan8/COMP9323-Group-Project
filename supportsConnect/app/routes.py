@@ -165,14 +165,14 @@ def sign_up_client_guardian():
 def worker_dashboard():
     user_id = current_user.get_id()
     user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
-    return render_template('worker_dashboard.html', user=user)
+    return render_template('Dashboard.html', user=user)
 
 @app.route('/client_dashboard/')
 @login_required
 def client_dashboard():
     user_id = current_user.get_id()
     user = Clients.query.filter_by(id=user_id).first_or_404()
-    return render_template('client_dashboard.html', user=user)
+    return render_template('Dashboard.html', user=user)
 
 
 #------------------------------------------------------------------------------
@@ -393,7 +393,7 @@ def worker_reports():
         
         reports.append(report_card)
                                 
-    return render_template('worker_reports.html', user=user, form=form, reports=reports)
+    return render_template('Reports.html', user=user, form=form, reports=reports)
 
 
 
@@ -575,7 +575,7 @@ def worker_my_clients():
             full_name = client.firstName + ' ' +  client.lastName
             connection_data[client_id] = full_name
                 
-    return render_template('worker_my_clients.html', connections = connection_data)
+    return render_template('worker_my_clients.html', user=user, connections=connection_data)
 
 
 #------------------------------------------------------------------------------

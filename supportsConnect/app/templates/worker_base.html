@@ -16,14 +16,33 @@
         {% endif %}
     </div>
     <div>
-        Profile Navigation Bar (tmp):
-        <a href="{{ url_for('worker_profile_personal_info') }}">Edit Profile</a>&nbsp;&nbsp; 
-        <a href="{{ url_for('worker_connect') }}">Connect</a>&nbsp;&nbsp; 
-        <a href="{{ url_for('worker_dashboard') }}">My Dashboard</a> &nbsp;&nbsp; 
-        <a href="{{ url_for('worker_my_clients') }}">My Clients</a> &nbsp;&nbsp; 
-        <a href="{{ url_for('account') }}">Account</a> &nbsp;&nbsp; 
-        <a href="{{ url_for('worker_reports') }}">Reports</a>&nbsp;&nbsp;
-        
+        <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <div class="profile-sidebar">
+            <div class="profile-userpic">
+                <img src="images/img1.jpg" class="img-responsive" alt="">
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">{{user.firstName}} {{user.lastName}}</div>
+                    <div class="profile-usertitle-status">{{user.accountType}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="divider"></div>
+        <hr>
+        <ul class="nav menu">
+            <li class="active"><a href="worker_dashboard"><em class="fa fa-home">&nbsp;</em>Dashboard</a></li>
+            <li><a href="worker_shift"><em class="fa fa-bars">&nbsp;</em>Shift</a></li>
+            <li><a href="worker_my_clients"><em class="fa fa-users">&nbsp;</em>My Clients</a></li>
+            <li><a href="worker_connect"><em class="fa fa-user-plus">&nbsp;</em>Connect</a></li>
+            <li><a href="worker_reports"><em class="fa fa-file">&nbsp;</em>Reports</a></li>
+            <li><a href="account"><em class="fa fa-cog">&nbsp;</em>Account</a></li>
+            <div class="h_line"></div>
+            <hr>
+            <div class="information1">
+                <li><a class="information" href="#">Contact</a></li>
+                <li><a class="information" href="#"> Help</a></li>
+            </div>
+        </ul>
     </div>
     <body>
         <h1> supportsConnect </h1>

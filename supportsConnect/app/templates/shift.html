@@ -1,0 +1,204 @@
+{% if user.accountType == 'support worker' %}
+    {% extends "worker_base.html" %}
+{% elif user.accountType == 'client' %}
+    {% extends "client_base.html" %}
+{% endif %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>supports Connect</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/datepicker3.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="Js/shift.js"></script>
+    <!--Custom Font-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span></button>
+                <a class="navbar-brand" href="#"><img src="images/vector.png" class="img-responsive" alt="" width="50px"
+                        height="50 px"></a>
+                <a class="navbar-brand" href="#"> <span>Supports Connect</a>
+                <div class="logoutnav">
+                    <a class="navbar-brand" href="#">
+                        <form action="" method="post">
+                            <button type="submit" name="logout" class="logout"> &nbsp;&nbsp;Log out&nbsp;&nbsp;
+                            </button>
+
+                        </form>
+                    </a>
+                </div>
+
+            </div>
+    </nav>
+    <!--/.row-->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default articles">
+
+                <div class="panel-body articles-container">
+
+                    <div class="article border-bottom">
+                        <div class="col-xs-12">
+                            <div class="col">
+                                <button class="tablink" onclick="openPage('Requests', this, 'White')">Requests</button>
+                                <button class="tablink" onclick="openPage('scheduled', this, 'White')"
+                                    id="defaultOpen">scheduled</button>
+                                <button class="tablink" onclick="openPage('Pending', this, 'White')">Pending</button>
+                                <button class="tablink"
+                                    onclick="openPage('Completed', this, 'White')">Completed</button>
+
+                                <div id="Requests" class="tabcontent">
+                                    <div class="articles-container">
+                                        <div class="v6_5870">
+                                            <div class="v6_5875">
+                                                <div class="v6_5876"><span class="v6_5877">E</span></div>
+                                                <div class="v6_5878">
+                                                    <div class="v6_5879"></div><button class="tablink"
+                                                        onclick="openPage('Pending', this, 'White')"><span
+                                                            class="v6_5880">Cancel</span></button>
+                                                </div>
+                                                <div class="v6_5881">
+                                                    <div class="v6_5882"><button></div><span
+                                                        class="v6_5883">Update</span></button>
+                                                </div><span class="v6_5884">Esther Paul</span>
+                                                <div class="v6_5885"></div><span class="v6_5886">Date</span><span
+                                                    class="v6_5887">Sunday, 23/5/21</span><span class="v6_5888">2pm -
+                                                    6pm</span><span class="v6_5889">One-off</span><span
+                                                    class="v6_5890">Maroubra</span><span
+                                                    class="v6_5891">Time</span><span
+                                                    class="v6_5892">Frequency</span><span
+                                                    class="v6_5893">Location</span>
+                                                <div class="v6_5894"></div>
+                                            </div>
+                                            <div class="v6_5870">
+                                                <div class="v6_5875">
+                                                    <div class="v6_5876"><span class="v6_5877">E</span></div>
+                                                    <div class="v6_5878">
+                                                        <div class="v6_5879"></div><button class="tablink"
+                                                            onclick="openPage('Pending', this, 'White')"><span
+                                                                class="v6_5880">Cancel</span></button>
+                                                    </div>
+                                                    <div class="v6_5881">
+                                                        <div class="v6_5882"><button></div><span
+                                                            class="v6_5883">Update</span></button>
+                                                    </div><span class="v6_5884">Esther Paul</span>
+                                                    <div class="v6_5885"></div><span class="v6_5886">Date</span><span
+                                                        class="v6_5887">Sunday, 23/5/21</span><span class="v6_5888">2pm
+                                                        -
+                                                        6pm</span><span class="v6_5889">One-off</span><span
+                                                        class="v6_5890">Maroubra</span><span
+                                                        class="v6_5891">Time</span><span
+                                                        class="v6_5892">Frequency</span><span
+                                                        class="v6_5893">Location</span>
+                                                    <div class="v6_5894"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="scheduled" class="tabcontent">
+                                    <div class="articles-container">
+                                        <div class="v6_5870">
+                                            <div class="v6_5875">
+                                                <div class="v6_5876"><span class="v6_5877">E</span></div>
+                                                <div class="v6_5878">
+                                                    <div class="v6_5879"></div><button class="tablink"
+                                                        onclick="openPage('Pending', this, 'White')"><span
+                                                            class="v6_5880">Cancel</span></button>
+                                                </div>
+                                                <div class="v6_5881">
+                                                    <div class="v6_5882"><button></div><span
+                                                        class="v6_5883">Update</span></button>
+                                                </div><span class="v6_5884">Esther Paul</span>
+                                                <div class="v6_5885"></div><span class="v6_5886">Date</span><span
+                                                    class="v6_5887">Sunday, 23/5/21</span><span class="v6_5888">2pm -
+                                                    6pm</span><span class="v6_5889">One-off</span><span
+                                                    class="v6_5890">Maroubra</span><span
+                                                    class="v6_5891">Time</span><span
+                                                    class="v6_5892">Frequency</span><span
+                                                    class="v6_5893">Location</span>
+                                                <div class="v6_5894"></div>
+                                            </div>
+                                            <div class="v6_5870">
+                                                <div class="v6_5875">
+                                                    <div class="v6_5876"><span class="v6_5877">E</span></div>
+                                                    <div class="v6_5878">
+                                                        <div class="v6_5879"></div><button class="tablink"
+                                                            onclick="openPage('Pending', this, 'White')"><span
+                                                                class="v6_5880">Cancel</span></button>
+                                                    </div>
+                                                    <div class="v6_5881">
+                                                        <div class="v6_5882"><button></div><span
+                                                            class="v6_5883">Update</span></button>
+                                                    </div><span class="v6_5884">Esther Paul</span>
+                                                    <div class="v6_5885"></div><span class="v6_5886">Date</span><span
+                                                        class="v6_5887">Sunday, 23/5/21</span><span class="v6_5888">2pm
+                                                        -
+                                                        6pm</span><span class="v6_5889">One-off</span><span
+                                                        class="v6_5890">Maroubra</span><span
+                                                        class="v6_5891">Time</span><span
+                                                        class="v6_5892">Frequency</span><span
+                                                        class="v6_5893">Location</span>
+                                                    <div class="v6_5894"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="Pending" class="tabcontent">
+                                    <h3>Pending</h3>
+                                    <p>Get in touch, or swing by for a cup of coffee.</p>
+                                </div>
+
+                                <div id="Completed" class="tabcontent">
+                                    <h3>Completed</h3>
+                                    <p>Who we are and what we do.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <!--End .article-->
+
+
+                    <!--End .article-->
+
+
+                    <!--End .article-->
+                </div>
+            </div>
+            <!--End .articles-->
+        </div>
+
+
+    </div>
+    <nav class="navbar1 navbar-custom1 navbar-fixed-bottom" role="navigation">
+        <div class="container-fluid1">
+            <div class="navbar-footer">
+            </div>
+
+        </div>
+    </nav>
+
+</body>
+
+</html>

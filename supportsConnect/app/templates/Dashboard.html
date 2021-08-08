@@ -1,0 +1,155 @@
+{% if user.accountType == 'support worker' %}
+    {% extends "worker_base.html" %}
+{% elif user.accountType == 'client' %}
+    {% extends "client_base.html" %}
+{% endif %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+    <link href="Dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-center-horizontal">
+
+        <div class="account screen">
+
+            <div class="header">
+
+                <img class="vector" src="vector-12.svg">
+                <h1 class="text-1 valign-text-middle roboto-bold-white
+        
+        33px">Supports Connect</h1>
+
+                <div class="group-28">
+
+                    <div class="overlap-group border-1px-white">
+
+                        <div class="text-2 valign-text-middle roboto-medium-white
+        
+        18px">Log out</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flex-row">
+
+                <div class="nav-bar-support-worker"> <img class="image-3" src="image-3.png">
+
+                    <div class="name valign-text-middle roboto-medium-black
+        
+        18px">Jesse French</div>
+
+                    <div class="text-9 valign-text-middle roboto-normal-black
+        
+        13px">Support Worker</div>
+
+                    <img class="line-6" src="line-6.svg">
+
+                    <div class="flex-row-1">
+
+                        <img class="dash" src="dash-2.svg">
+
+                        <div class="text-8 valign-text-middle roboto-normal-black
+        
+        16px-2">Dashboard</div>
+                    </div>
+
+                    <div class="flex-row-2">
+
+                        <img class="shifts" src="shifts-1.svg">
+
+                        <div class="text-7 valign-text-middle roboto-normal-black
+    
+    16px">Shifts</div>
+
+                    </div>
+
+                    <div class="flex-row-3">
+
+                        <img class="vector-1" src="vector-10.svg">
+
+                        <div class="text-6 valign-text-middle roboto-normal-black
+    
+    16px">My clients</div>
+
+                    </div>
+
+                    <div class="flex-row-4">
+
+                        <img class="resources" src="resources-1.svg">
+
+                        <div class="text-10 valign-text-middle roboto-normal-black
+    
+    16px">Connect</div>
+
+                    </div>
+
+                    <div class="flex-row-5">
+
+                        <img class="vector-2" src="vector-11.svg">
+
+                        <div class="text-5 valign-text-middle roboto-normal-black
+    
+    16px">Reports</div>
+
+                    </div>
+
+                    <div class="flex-row-6">
+
+                        <img class="account-1" src="7.svg"> <a href="account.html">
+                            <div class="text-4 valign-text
+    
+    middle roboto-normal-elf-green-16px">
+                            </div>
+
+                            <div class="flex-row-5">
+
+                                <img class="vector-2" src="vector-11.svg">
+
+                                <div class="text-5 valign-text-middle roboto-normal-black
+
+16px">Reports</div>
+
+                            </div>
+
+                            <div class="flex-row-6">
+
+                                <img class="account-1" src="7.svg">
+
+                                <a href="account.html">
+                                    <div class="text-4 valign-text middle roboto-normal-elf-green-16px">
+
+                                        Account </div>
+                                </a>
+
+                            </div>
+
+                            <img class="line-7" src="line-6.svg">
+                            <div class="place valign-text-middle roboto-normal-black
+
+10px">Contact</div>
+
+                            <div class="text-3 valign-text-middle roboto-normal-black
+
+10px">Help</div>
+
+                    </div>
+
+                    <div class="overview valign-text-middle">Overview</div>
+
+                </div>
+
+            </div>
+
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+{% if user.accountType == 'support worker' %}
+    {% extends "worker_base.html" %}
+{% elif user.accountType == 'client' %}
+    {% extends "client_base.html" %}
+{% endif %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>supports Connect</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/datepicker3.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+        <script src="Js/shift.js"></script>
+        <!--Custom Font-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet">
+
+    </head>
+
+    <body>
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="#"><img src="images/vector.png" class="img-responsive" alt=""
+                            width="50px" height="50 px"></a>
+                    <a class="navbar-brand" href="#"> <span>Supports Connect</a>
+                    <div class="logoutnav">
+                        <a class="navbar-brand" href="#">
+                            <form action="" method="post">
+                                <button type="submit" name="logout" class="logout"> &nbsp;&nbsp;Log out&nbsp;&nbsp;
+                                </button>
+
+                            </form>
+                        </a>
+                    </div>
+
+                </div>
+        </nav>
+        <!--/.row-->
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default articles">
+
+                    <div class="panel-body articles-container">
+
+                        <div class="article border-bottom">
+                            <div class="col-xs-12">
+                                <div class="col">
+                                    <h2 id="heading">View Reports
+                                    </h2>
+
+                                    <div class="row">
+                                        <div class="dropdown">
+                                            <button class="dropbtn">Select Support Worker</button>
+                                            <div class="dropdown-content">
+                                                <a href="#">Jono chan</a>
+                                                <a href="#">Jesse French</a>
+                                                <a href="#">Tom Hewitt</a>
+                                                <a href="#">Imogen Hunter</a>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="dropbtn">Incident Report</button>
+                                            <div class="dropdown-content">
+                                                <a href="#">Yes</a>
+                                                <a href="#">No</a>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="dropbtn">Select Activity</button>
+                                            <div class="dropdown-content">
+                                                <a href="#">Sad</a>
+                                                <a href="#">Angry</a>
+                                                <a href="#">Happy</a>
+                                                <a href="#">Hyperactive</a>
+                                                <a href="#">Moderate</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="connectcard">
+                                        <div class="row">
+                                            <div class="profile-userpicconnect">
+                                                <img src="images/img1.jpg" class="img-responsive" alt="">
+                                            </div>
+                                            <div>
+                                                <div>Jenny Hollard</div>
+                                                <div>Day,23/02/2020</div>
+                                            </div>
+                                        </div>
+                                        <div id="mood">
+
+                                        </div>
+                                        <div id="Location">
+
+                                        </div>
+                                        <div id="Activities">
+
+                                        </div>
+                                        <div id="incidents">
+
+                                        </div>
+                                        <div id="Read More">
+
+                                        </div>
+                                        <div style="padding: 4px;"><button type="submit" class="btn btn-primary"
+                                                style="background-color: transparent; color: black;">View
+                                                Profile</button> </div>
+                                        <div style="padding: 4px;margin-bottom: 20px;">
+                                            <button type="submit" class="btn btn-primary"
+                                                style="background-color: aqua;color: black;">Accept</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                style="background-color: gray;color: black;">Decline</button>
+                                        </div>
+
+                                    </div>
+
+                                    <div></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+        <nav class="navbar1 navbar-custom1 navbar-fixed-bottom" role="navigation">
+            <div class="container-fluid1">
+                <div class="navbar-footer">
+                </div>
+
+            </div>
+        </nav>
+
+    </body>
+
+    </html>
+</body>
+
+</html>
