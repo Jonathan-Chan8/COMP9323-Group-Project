@@ -11,24 +11,24 @@
     
     <h1>{{ support_worker.firstName }} {{ support_worker.lastName }}</h1>
 
-    <a> Phone: {{ support_worker.contactNo }} </a>
+    <b> Phone:</b> {{ support_worker.contactNo }} 
     <br> 
-    <a> Email: {{ support_worker.email }} </a>
+    <b> Email: </b>{{ support_worker.email }} 
     <br>
-    <a> Address: {{ support_worker.homeAddress }} </a>
+    <b> Address:</b> {{ support_worker.homeAddress }} 
     <br>
     <br>
-    <a> Short Bio: {{ support_worker.shortBio }} </a>
+    <b> Short Bio:</b> {{ support_worker.shortBio }} 
     <br>
     
     <h3> Personal Details </h3>
-    <a> Age: {{ support_worker.age }} </a>
+    <b> Age:</b> {{ support_worker.age }} 
     <br>
-    <a> Gender: {{ support_worker.gender }} </a>
+    <b> Gender:</b> {{ support_worker.gender }} 
     <br>
-    <a> Language(s): {{ support_worker.languages }}
+    <b> Language(s):</b> {{ support_worker.languages }}
     <br>
-    <a> Interests: {{ support_worker.interests }}
+    <b> Interests:</b> {{ support_worker.interests }}
     
     {% if work_history: %}
         <h3> Work History </h3>
@@ -47,13 +47,13 @@
     {% if training: %}
         <h3> Training </h3>
         {% for train in training %}
-            <a> Course: {{ train.course }} </a>
+            <b> Course: </b>{{ train.course }}
             <br>
-            <a> Institution {{ train.institution }} </a>
+            <b> Institution: </b> {{ train.institution }} 
             <br>
-            <a> Start Date: {{ train.startDate }} </a>       
+            <b> Start Date: </b> {{ train.startDate }}       
             <br>
-            <a> End Date: {{ train.startDate }} </a>         
+            <b> End Date: </b>  {{ train.startDate }}         
             <br>
             <br>
         {% endfor %}

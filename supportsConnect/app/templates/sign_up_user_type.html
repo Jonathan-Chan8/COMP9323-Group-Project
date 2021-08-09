@@ -2,18 +2,25 @@
 
 {% block content %}
 
-    <h1>Welcome! </h1>
-    <h3> Which of the following best describes you? </h3>
+<div class="grid12-6">
 
+    <img src="/static/images/signup.jpg" width="1598" height="821">
+    <div class="inner_box">
+    </br>   <h2>Welcome!</h2>
+    </br><p>Which of the following best describes you?</p>
+    </br> </br> 
     <form action="" method="post">
         {{ form.hidden_tag() }}
-
-        <p>
-            {{ form.client() }}<br>
-            {{ form.support_worker() }}<br>
-
-        </p>
+    <a href="{{ url_for('sign_up_client_type') }}">{{ form.client() }}</a>
+    </br>
+    </br>
+    </br>
+    </br> 
+    <a href="#">{{ form.support_worker() }}</a>
     </form>
-{% endblock %}
+    </div>
+</div>
 
+    
+{% endblock %}
 

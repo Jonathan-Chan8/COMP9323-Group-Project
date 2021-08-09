@@ -14,13 +14,14 @@
          Connect</button>
         <button onclick="location.href='http://localhost:5000/worker_connect_requests'" type="button">
          Requests</button>
+        <br></br>
     </div>
 
     <form action="" method="post">
         {{ form.hidden_tag() }}
 
         <p>
-            <a> Client Email Address</a><br>
+            <b> Client Email Address</b><br>
             {{ form.email(size=32) }}<br>
             {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>

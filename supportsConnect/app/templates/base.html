@@ -3,24 +3,21 @@
 <html>
     <head>
         <title> {% block title %}{% endblock %} </title>
+        <link rel="icon" href="/static/images/icon.png" type="image/icon type">
+        <link rel="stylesheet" href="/static/style.css">
     </head>
-
-    <div>
-        SupportsConnect:
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('sign_up_user_type') }}">Sign Up</a>
-        {% else %}
-        <a href="{{ url_for('user', email=current_user.email) }}">Profile</a> 
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
-    </div>
     <body>
-        <h1> supportsConnect </h1>
-        <p> This is stuff from the base.html file. Put stuff here that should be on every page. E.g. header/footer </p>
-
-        <hr>
+        <div class="main">
+            <nav>
+                <label class="logo"><a href="{{ url_for('index') }}">Supports Connect</a></label>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="{{ url_for('login') }}" class='login' style="border: 1px solid white; border-radius: 25px;">Login</a></li>
+                </ul>
+            </nav>
+        </div>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -33,5 +30,3 @@
    		{% block content %}{% endblock %}
     </body>
 </html>
-
-

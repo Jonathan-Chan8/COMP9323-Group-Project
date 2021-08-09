@@ -2,16 +2,25 @@
 
 {% block content %}
 
-    <h2>Who will be using this platform! </h2>
-    <h3> Will you be using this platform for yourself or someone else? </h3>
+    <div class="grid12-6">
 
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-
-        <p>
-            {{ form.client_self_managed() }}<br>
-            {{ form.client_guardian() }}<br>
-
-        </p>
-    </form>
+        <img src="/static/images/signup.jpg" width="1598" height="821">
+        <div class="inner_box">
+        </br>   <h2>Who will be using this platform?</h2>
+        </br><p>Will you be using this platform for yourself or for someone else?</p>
+        </br> 
+        </br>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            
+        <a href="{{ url_for('sign_up_client') }}"> {{ form.client_self_managed() }} </a>
+        </br>   
+        </br> 
+        </br> 
+        </br> 
+        <a href="{{ url_for('sign_up_client_guardian') }}"> {{ form.client_guardian() }} </a>
+        </form>
+        </div>
+        
+    </div>
 {% endblock %}

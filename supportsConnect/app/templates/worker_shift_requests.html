@@ -18,6 +18,7 @@
          Pending</button>
           <button onclick="location.href='http://localhost:5000/worker_shift_completed'" type="button">
          Completed</button>
+         <br></br>
     </div>
 
     <script>
@@ -45,13 +46,13 @@
         <p>
             {% for shift in shifts %}
             
-                <big><b> {{ shift.client_name }} </b></big><br>
+                <big><b> {{ shift.client_name }} </b></big><br></br>
         
-                <a> {{ shift.date }} <br><br>
+                {{ shift.date }} <br><br>
         
-                <b> Start Time: </b> <a> {{ shift.start_time }} </a><br>
+                <b> Start Time: </b> {{ shift.start_time }} <br>
         
-                <b> End Time: </b> <a> {{ shift.end_time }} </a><br>
+                <b> End Time: </b> {{ shift.end_time }} <br>
                 
         
                 <button id='btn1' type="button" onclick="sendJSON( {{ shift.shift_id }} , 'accept')">Accept</button> 

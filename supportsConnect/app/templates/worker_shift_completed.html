@@ -17,24 +17,25 @@
     Pending</button>
     <button onclick="location.href='http://localhost:5000/worker_shift_completed'" type="button">
     Completed</button>
+    <br></br>
 </div>
 <form action="" method="post">
 
-    <p>
+    <div>
         {% for shift in shifts %}
         
-            <big><b> {{ shift.client_name }} </b></big><br>
+            <big><b> {{ shift.client_name }} </b></big><br></br>
     
-            <a> {{ shift.date }} <br><br>
+            {{ shift.date }} <br><br>
     
-            <b> Start Time: </b> <a> {{ shift.start_time }} </a><br>
+            <b> Start Time: </b> {{ shift.start_time }}<br>
     
-            <b> End Time: </b> <a> {{ shift.end_time }} </a><br>
+            <b> End Time: </b>{{ shift.end_time }}<br>
             
             <a href="/worker_view_report/{{ shift.report_id }}/{{ shift.worker_name }}/{{ shift.client_name }}"><button type='button'>Read Report</button></a>
 
             <br><br><br>
         {% endfor %}
-    </p>
+    </div>
 </form>
 {% endblock %}

@@ -31,16 +31,16 @@
 
     {% for report in reports %}
     
-        <a> Client: </a>{{ report.client_name }}<br>
-        <a> Support Worker: </a> {{ report.worker_name }}<br>
+        <b> Client: </b>{{ report.client_name }}<br>
+        <b> Support Worker: </b> {{ report.worker_name }}<br>
         {{ report.date }} <br>
         
-        <a> Mood: {{ report.client_mood }} </a><br>
+        <b> Mood:</b> {{ report.client_mood }} <br>
         {% for activity in report.activities %}
             {{ activity.name }}
         {% endfor %}
         <br>
-        <a> Incident: {{ report.incident }} </a>
+        <b> Incident:</b> {{ report.incident }} 
         <br>
         <a href="/client_view_report/{{ report.report_id }}/{{ report.worker_name }}/{{ report.client_name }}"><button type='button'>Read Report</button></a>
         <br>

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/static/scss/report.css"> 
     
     <h2>{{ report.client_name }} </h2> 
-    <a> Support Worker:</a> {{ report.worker_name }}<br>
+    <b> Support Worker:</b> {{ report.worker_name }}<br>
     {{ report.date }} <br><br>
     <b> Mood: </b>
     {{ report.client_mood }}<br>
@@ -25,7 +25,7 @@
     {% endfor %}
     <br>
     {% if report.incident %}
-    <b> Incident: </b><a>{{ report.incident }} </a>
+    <b> Incident: </b>{{ report.incident }}
     <br>
     <h3> Incident Report </h3>
     {{ report_text.incidentReport }}

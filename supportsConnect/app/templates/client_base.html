@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
+<body style="overflow: visible">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-brand" href="#">
@@ -40,7 +40,7 @@
         <p style=" color: #989795;">Help</p>
     </div>
     <div class="main-wrapper">
-        <h3 style="padding: 15px 0;font-weight: bold;" >{% block header %}{% endblock %}</h3>
+        {% block header %}{% endblock %}
         <div class="main-content">{% block content %}{% endblock %}</div>
     </div>
 </div>
