@@ -12,10 +12,10 @@
             events: [
                 {% for event in events %}
                 {
-                    title: '{{ event.activity }}',
-                    start: '{{ (event.date) + "T" + (event.start_time) + ":00+10:00" }}'
-                    end: '{{ (event.date) + "T" + (event.end_time) + ":00+10:00" }}'
-                }
+                    title: '{{ event.title }}',
+                    start: '{{ event.start }}',
+                    end: '{{ event.end }}'
+                },
                 {% endfor %}
             ],
             initialView: 'timeGridWeek',

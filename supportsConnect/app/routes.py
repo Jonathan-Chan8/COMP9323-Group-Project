@@ -5,9 +5,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 #from flask_login.utils import login_required
 from werkzeug.urls import url_parse
 
-from datetime import date, time, datetime
-from dateutil.relativedelta import relativedelta
 
+from dateutil.relativedelta import relativedelta
+from datetime import date, time, datetime
 import datetime as dt
 from app import app, db
 from app.forms import (ClientAddShiftForm, LoginForm, RegistrationForm, ConnectForm, 
@@ -16,6 +16,7 @@ from app.forms import (ClientAddShiftForm, LoginForm, RegistrationForm, ConnectF
                         ClientReportForm)
 
 from sqlalchemy import desc
+
 
 from app.models import *
 
@@ -168,26 +169,35 @@ def sign_up_client_guardian():
 def worker_dashboard():
     user_id = current_user.get_id()
     user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
-    return render_template('worker_dashboard.html', user=user)
+    
+    q = db.session.query(Users, Shifts).join(Shifts, Shifts.clientId == Users.id).filter(Shifts.workerId == user_id).all()
+    events = []
+    for row in q:
+        events.append({
+            'title': f'{row[0].firstName}-{row[1].activity}',
+            'start': dt.datetime.combine(row[1].date, row[1].startTime),
+            'end': dt.datetime.combine(row[1].date, row[1].endTime)
+            })
+    
+    return render_template('worker_dashboard.html', user=user, events=events)
 
 @app.route('/client_dashboard')
 @login_required
 def client_dashboard():
     user_id = current_user.get_id()
     user = Clients.query.filter_by(id=user_id).first_or_404()
-    # q = db.session.query(Users).join(Shifts, Shifts.workerId == Users.id).filter(Shifts.clientId == user_id)
-    # events = []
-    # for row in q:
-    #     events.append({
-    #         'title': f'{row.firstName}-{row.activity}'
-    #         })
-    
-    
-    # print(events)
-    # for event in Shifts.query.filter_by(clientId=user_id).all():
-    #     events.append({'title': event.activity})
-    # print(events)
-    return render_template('client_dashboard.html', user=user)
+
+    q = db.session.query(Users, Shifts).join(Shifts, Shifts.workerId == Users.id).filter(Shifts.clientId == user_id).all()
+    events = []
+    for row in q:
+        events.append({
+           # 'title': f'{row[0].firstName}-{row[1].activity}',
+            'title': f'{row[0].firstName}',
+            'start': dt.datetime.combine(row[1].date, row[1].startTime),
+            'end': dt.datetime.combine(row[1].date, row[1].endTime)
+            })
+
+    return render_template('client_dashboard.html', user=user, events=events)
 
 
 #------------------------------------------------------------------------------
@@ -511,6 +521,36 @@ def accept_shift_request():
         db.session.commit()
         
     return render_template('accept_shift_requests.html')    
+
+@app.route('/worker_add_shift', methods=['GET', 'POST'])
+@login_required
+def worker_add_shift():
+    user_id = current_user.get_id()
+    user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
+    form = WorkerAddShiftForm()
+    
+    q = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.clientId == Users.id).filter(ConnectedUsers.supportWorkerId == user_id).filter(ConnectedUsers.supportWorkerStatus == 'accepted').all()
+            
+    form.client.choices = [(row.id, row.firstName) for row in q]
+
+    if form.validate_on_submit():
+        shift = Shifts()
+        shift.shiftStatus = 'pending'
+        shift.clientId = form.client.data
+        shift.workerId = user_id
+        shift.requestedFrom = 'worker'
+        shift.date = form.date.data
+        shift.startTime = form.start_time.data
+        shift.endTime = form.end_time.data
+        shift.frequency = form.frequency.data
+        shift.activity = form.activity.data
+        shift.location = form.location.data
+        db.session.add(shift)
+        db.session.commit()
+        flash('Shift added')
+        return redirect(url_for('worker_dashboard'))
+    return render_template('worker_add_shift.html', form=form, user=user)
+
 
 
 #------------------------------------------------------------------------------

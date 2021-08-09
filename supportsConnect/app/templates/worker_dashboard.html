@@ -1,23 +1,42 @@
 {% extends "worker_base.html" %}
-{% block title%} Support Worker Profile {% endblock %}
+{% block title%} Worker Dashboard {% endblock %}
 
 {% block content %} 
-<table>
-    <tr valign="top">
-        <td><img src="{{ user.avatar(128) }}"></td>
-        <td><h1>Support Worker: {{ user.email }}</h1></td>
-    </tr>
-</table>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
+    <div id="calendar"></div>
+    <script>
+        let calendarEl = document.getElementById('calendar');
 
-<h1> Welcome to your account {{ user.email }} </h1>
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            events: [
+                {% for event in events %}
+                {
+                    title: '{{ event.title }}',
+                    start: '{{ event.start }}',
+                    end: '{{ event.end }}'
+                },
+                {% endfor %}
+            ],
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'title',
+                center: '',
+                right: 'today timeGridDay,timeGridWeek,dayGridMonth'
+            },
+            footerToolbar: {
+                left: '',
+                center: '',
+                right: 'prevYear,prev,next,nextYear'
+            },
+            
+            allDaySlot: false,
+            selectable: true,
+            nowIndicator: true
+        });
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for msg in messages %}
-            <p style="color:green;">{{msg}}</p>	
-        {% endfor %}
-    {% endif %}
-{% endwith%}
+        calendar.render();
+    </script>
+    <button onclick="location.href='http://localhost:5000/worker_add_shift'" type="button">Add Shift</button>
 
 {% endblock %}
-

@@ -141,7 +141,7 @@ class Shifts(db.Model):
     endTime = db.Column(db.TIME)
 
     duration = db.Column(db.Interval)
-    frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))   
+    frequency = db.Column(db.Enum('one-off', 'daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
     
     report = db.relationship('Reports', backref = 'shifts', uselist=False)
 
@@ -162,6 +162,12 @@ class Locations(db.Model):
     # frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
     # activity = db.Column(Description)
     # location = db.Column(Description)
+
+
+    # frequency = db.Column(db.Enum('one-off', 'daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
+    # activity = db.Column(Description)
+    # location = db.Column(Description)
+    # report = db.relationship('Reports', backref='shifts', uselist=False)
 
 
 
