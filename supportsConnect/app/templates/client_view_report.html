@@ -1,8 +1,13 @@
 {% extends "client_base.html" %}
-
+{% block title %}View Reports{% endblock %}
+{% block firstname %}{{user.firstName}}{% endblock %}
+{% block lastname %}{{user.lastName}}{% endblock %}
+{% block accounttype %}{{user.accountType}}{% endblock %}
+{% block header %}
+<h3 style="padding: 15px 0;font-weight: bold;">View Reports</h3>
+{% endblock %}
 {% block content %}
-
-    <h1>Client: Viewing A Report  </h1>
+<link rel="stylesheet" href="/static/scss/report.css"> 
     
     <h2>{{ report.client_name }} </h2> 
     <a> Client: </a> {{ report.client_name }}<br>

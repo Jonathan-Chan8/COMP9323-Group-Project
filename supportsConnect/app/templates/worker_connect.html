@@ -1,8 +1,13 @@
 {% extends "worker_base.html" %}
-
+{% block title %}Support Worker Connect{% endblock %}
+{% block firstname %}{{user.firstName}}{% endblock %}
+{% block lastname %}{{user.lastName}}{% endblock %}
+{% block accounttype %}{{user.accountType}}{% endblock %}
+{% block header %}
+<h3 style="padding: 15px 0;font-weight: bold;">Connect</h3>
+{% endblock %}
 {% block content %}
-
-    <h1>Support Worker Connect Page </h1>
+<link rel="stylesheet" href="/static/scss/report.css"> 
     
     <div>
         <button onclick="location.href='http://localhost:5000/worker_connect'" type="button">

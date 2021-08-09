@@ -1,45 +1,50 @@
-<!doctype html>
-
-<html>
-    <head>
-        <title> {% block title %}{% endblock %} </title>
-    </head>
-
-    <div>
-        SupportsConnect:
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login') }}">Login</a>
-        {% else %}
-        <a href="{{ url_for('worker_dashboard') }}"' >Profile</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/scss/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body style="overflow: visible">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-brand" href="#">
+        <img src="/static/assets/svgs/people.svg" width="50" height="50" class="d-inline-block align-top" alt="">
+        <a class="navbar-brand" href="#">Supports Connect</a>
     </div>
-    <div>
-        Profile Navigation Bar (tmp):
-        <a href="{{ url_for('worker_profile_personal_info') }}">Edit Profile</a>&nbsp;&nbsp; 
-        <a href="{{ url_for('worker_connect') }}">Connect</a>&nbsp;&nbsp; 
-        <a href="{{ url_for('worker_dashboard') }}">My Dashboard</a> &nbsp;&nbsp; 
-        <a href="{{ url_for('worker_my_clients') }}">My Clients</a> &nbsp;&nbsp; 
-        <a href="{{ url_for('account') }}">Account</a> &nbsp;&nbsp; 
-        <a href="{{ url_for('worker_reports') }}">Reports</a>&nbsp;&nbsp;
-        <a href="{{ url_for('worker_shift_requests') }}">Shifts</a>&nbsp;&nbsp;
-        
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('logout') }}">Log out</a></li>
+      </ul>
+  </div>
+</nav>
+<div class="content-wrapper">
+    <div class="side-nav">
+        <a href="{{ url_for('worker_profile_personal_info') }}"><img src="/static/assets/svgs/people.svg" width="70" height="70" class="d-inline-block align-top" alt="" style="border-radius: 50%;"></a>
+        <h4>{% block firstname %}{% endblock %} {% block lastname %}{% endblock %}</h4>
+        <h6>{% block accounttype %}{% endblock %}</h6>
+        <div class="border"></div>
+        <div class="sidebar">
+          <a href="{{ url_for('worker_dashboard') }}"><i class="fa fa-fw fa-home"></i> Dashboard</a>
+          <a href="{{ url_for('worker_shift_requests') }}"><i class="fa fa-fw fa-list-ul"></i> Shifts</a>
+          <a href="{{ url_for('worker_my_clients') }}"><i class="fa fa-fw fa-users"></i> My Clients</a>
+          <a href="{{ url_for('worker_connect') }}"><i class="fa fa-th-large"></i> Connect</a>
+          <a href="{{ url_for('worker_reports') }}"><i class="fa fa-file-o"></i> Reports</a>
+          <a href="{{ url_for('account') }}"><i class="fa fa-cog"></i> Account</a>
+        </div>
+        <div class="border margin-top-border"></div>
+        <p class="short-text">Contact</p>
+        <p style=" color: #989795;">Help</p>
     </div>
-    <body>
-        <h1> supportsConnect </h1>
-        <p> This is stuff from the worker_base.html file. Put stuff here that should be on every support worker's page </p>
-
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-   		{% block content %}{% endblock %}
-    </body>
+    <div class="main-wrapper">
+      {% block header %}{% endblock %}
+      <div class="main-content">
+          {% block content %}{% endblock %}
+    </div>
+    </div>
+    
+  </div>
+</body>
 </html>

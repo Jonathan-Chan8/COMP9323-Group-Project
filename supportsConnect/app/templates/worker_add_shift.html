@@ -1,9 +1,11 @@
 {% extends "worker_base.html" %}
-{% block title %} Add a shift {% endblock %}
+{% block title %}Add a shift{% endblock %}
+{% block firstname %}{{user.firstName}}{% endblock %}
+{% block lastname %}{{user.lastName}}{% endblock %}
+{% block accounttype %}{{user.accountType}}{% endblock %}
 {% block content %}
-    <h1>Add a shift</h1>
-    
-    <div><a href="{{ url_for('worker_dashboard') }}">Back</a></div>
+<link rel="stylesheet" href="/static/scss/report.css">
+<div><a href="{{ url_for('worker_dashboard') }}">Back</a></div>
 
     <form action="" method="post">
         {{ form.hidden_tag() }}

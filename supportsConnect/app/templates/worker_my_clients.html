@@ -1,8 +1,13 @@
 {% extends "worker_base.html" %}
-
+{% block title %}My Clients{% endblock %}
+{% block firstname %}{{user.firstName}}{% endblock %}
+{% block lastname %}{{user.lastName}}{% endblock %}
+{% block accounttype %}{{user.accountType}}{% endblock %}
+{% block header %}
+<h3 style="padding: 15px 0;font-weight: bold;">My Clients</h3>
+{% endblock %}
 {% block content %}
-
-    <h1>Support Worker: My Clients Page </h1>
+<link rel="stylesheet" href="/static/scss/report.css"> 
     
 
     <form action="" method="post">

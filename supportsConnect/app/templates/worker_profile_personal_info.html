@@ -1,8 +1,13 @@
 {% extends "worker_base.html" %}
-
+{% block title %}Edit Personal Info{% endblock %}
+{% block firstname %}{{user.firstName}}{% endblock %}
+{% block lastname %}{{user.lastName}}{% endblock %}
+{% block accounttype %}{{user.accountType}}{% endblock %}
+{% block header %}
+<h3 style="padding: 15px 0;font-weight: bold;">Edit Personal Info</h3>
+{% endblock %}
 {% block content %}
-
-    <h1>Edit Support Worker Profile Information </h1>
+<link rel="stylesheet" href="/static/scss/report.css"> 
 
     <div>
     <button onclick="location.href='http://localhost:5000/worker_profile_personal_info'" type="button">

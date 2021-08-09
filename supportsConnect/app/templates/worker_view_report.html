@@ -1,11 +1,16 @@
 {% extends "worker_base.html" %}
-
+{% block title %}View Reports{% endblock %}
+{% block firstname %}{{user.firstName}}{% endblock %}
+{% block lastname %}{{user.lastName}}{% endblock %}
+{% block accounttype %}{{user.accountType}}{% endblock %}
+{% block header %}
+<h3 style="padding: 15px 0;font-weight: bold;">View Reports</h3>
+{% endblock %}
 {% block content %}
-
-    <h1>Support Worker: Viewing A Report  </h1>
+<link rel="stylesheet" href="/static/scss/report.css"> 
     
     <h2>{{ report.client_name }} </h2> 
-    <a> Support Worker: </a> {{ report.worker_name }}<br>
+    <a> Support Worker:</a> {{ report.worker_name }}<br>
     {{ report.date }} <br><br>
     <b> Mood: </b>
     {{ report.client_mood }}<br>

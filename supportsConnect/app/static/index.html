@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./scss/main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href='./js/fullcalendar/lib/main.min.css' rel='stylesheet' />
+  <script src='./js/fullcalendar/lib/main.min.js'></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-brand" href="#">
+        <img src="/static/assets/svgs/people.svg" width="50" height="50" class="d-inline-block align-top" alt="">
+        <a class="navbar-brand" href="#">Supports Connect</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Log out</a></li>
+      </ul>
+  </div>
+</nav>
+<div class="content-wrapper">
+    <div class="side-nav">
+        <img src="/static/assets/svgs/people.svg" width="70" height="70" class="d-inline-block align-top" alt="" style="border-radius: 50%;">
+        <h4>Name here</h4>
+        <h6>description</h6>
+        <div class="border"></div>
+        <div class="sidebar">
+          <a href="./index.html"  class="isActive"><i class="fa fa-fw fa-home"></i> Dashboard</a>
+          <a href="./shift.html"><i class="fa fa-fw fa-list-ul"></i> Shifts</a>
+          <a href="#clients"><i class="fa fa-fw fa-users"></i> My Clients</a>
+          <a href="#contact"><i class="fa fa-th-large"></i> Connect</a>
+          <a href="./report.html"><i class="fa fa-file-o"></i> Reports</a>
+          <a href="#contact"><i class="fa fa-cog"></i> Account</a>
+        </div>
+        <div class="border margin-top-border"></div>
+        <p class="short-text">Contact</p>
+        <p style=" color: #989795;">Help</p>
+    </div>
+    <div class="main-wrapper">
+      <h3 style="padding: 15px 0;font-weight: bold;" >View Reports</h3>
+      <div class="main-content">
+        <div id='calendar'></div>
+    </div>
+    </div>
+    <div class="right-side-wrapper">
+      <h3 style="padding: 15px 0;font-weight: bold;" >Notifications</h3>
+      <div class="side-main-content">
+        <div style="display: flex;align-items: center;justify-content: space-between;">
+          <i class="fa fa-bell green-color"></i>
+          <p>Monday, June 1</p>
+        </div>
+        <div style="display: flex;align-items: center;border: 1px solid #09926845;padding: 10px 10px;border-radius: 8px;justify-content: space-between;margin-bottom: 15px;">
+          <i class="fa fa-list-ul  green-color"></i>
+          <h5>Jenny wants to connect</h5>
+          <img src="/static/assets/svgs/people.svg" width="30" height="30" class="d-inline-block align-top" alt="" style="border-radius: 50%;">
+        </div>
+        <div style="display: flex;align-items: center;justify-content: space-between;">
+          <i class="fa fa-bell green-color"></i>
+          <p>Monday, June 1</p>
+        </div>
+        <div style="display: flex;align-items: center;border: 1px solid #09926845;padding: 10px 10px;border-radius: 8px;justify-content: space-between;margin-bottom: 15px;">
+          <i class="fa fa-list-ul  green-color"></i>
+          <h5>Jenny wants to connect</h5>
+          <img src="/static/assets/svgs/people.svg" width="30" height="30" class="d-inline-block align-top" alt="" style="border-radius: 50%;">
+        </div>
+
+    </div>
+    </div>
+    
+  </div>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        
+        headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+        initialView: 'dayGridMonth'
+      });
+      
+      calendar.render();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+;
+
+  calendar.render();
+});
+
+  </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ from datetime import date, time, datetime
 import datetime as dt
 from app import app, db
 from app.forms import (ClientAddShiftForm, LoginForm, RegistrationForm, ConnectForm, 
-                        ClientInformationForm, WorkerInformationForm, ConnectRequestForm,
+                        ClientInformationForm, WorkerAddShiftForm, WorkerInformationForm, ConnectRequestForm,
                         AccountForm, ClientAddShiftForm, WorkerReportForm, ReportingForm,
                         ClientReportForm)
 
@@ -521,7 +521,7 @@ def accept_shift_request():
             flash("You have successfully declined the shift request")
         db.session.commit()
         
-    return render_template('accept_shift_requests.html')    
+    return render_template('accept_shift_requests.html', user=user)    
 
 @app.route('/worker_add_shift', methods=['GET', 'POST'])
 @login_required
@@ -780,6 +780,9 @@ def worker_reports():
 @login_required
 def worker_complete_shift_report(shift_id):
     
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+
     # ASSUMES THAT A SHIFT OBJECT IS PASSED FROM shift_pending
     # Add 'shift' as an argument 
     
@@ -843,8 +846,7 @@ def worker_complete_shift_report(shift_id):
         return redirect(url_for('worker_shift_completed')) # CHANGE THIS TO 'shifts_completed'
     print(form.errors)
     
-    return render_template('worker_complete_shift_report.html', shift=shift, 
-                           form=form, client_full_name=client_full_name, incidents=incidents_check)
+    return render_template('worker_complete_shift_report.html', shift=shift, form=form, client_full_name=client_full_name, incidents=incidents_check, user=user)
 
 #------------------------------------------------------------------------------
 #                             View Report
@@ -858,6 +860,9 @@ def worker_complete_shift_report(shift_id):
 @login_required
 def worker_view_report(report_id, worker_name, client_name):
     
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+
     report = Reports.query.filter_by(id = report_id).first()
     shift = Shifts.query.filter_by(id = report.shift_id).first()
     if report.incident:
@@ -876,13 +881,16 @@ def worker_view_report(report_id, worker_name, client_name):
                               shift.activities,
                               incident)
     
-    return render_template('worker_view_report.html', report = report_card, report_text = report)    
+    return render_template('worker_view_report.html', user=user, report = report_card, report_text = report)    
 
 ## Client viewing a Report ##
 
 @app.route('/client_view_report/<report_id>/<worker_name>/<client_name>', methods=['GET'])
 @login_required
 def client_view_report(report_id, worker_name, client_name):
+    
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
     
     report = Reports.query.filter_by(id = report_id).first()
     shift = Shifts.query.filter_by(id = report.shift_id).first()
@@ -901,7 +909,7 @@ def client_view_report(report_id, worker_name, client_name):
                               shift.activities,
                               incident)
     
-    return render_template('client_view_report.html', report = report_card, report_text = report)  
+    return render_template('client_view_report.html', user=user, report = report_card, report_text = report)  
 
 #------------------------------------------------------------------------------
 #                        My Clients / Support Workers
@@ -929,7 +937,7 @@ def client_my_support_workers():
             connection_data[support_worker_id] = full_name
 
     
-    return render_template('client_my_support_workers.html', connections = connection_data)
+    return render_template('client_my_support_workers.html', user=user, connections = connection_data)
 
 
 @app.route('/worker_my_clients')
@@ -953,7 +961,7 @@ def worker_my_clients():
             full_name = client.firstName + ' ' +  client.lastName
             connection_data[client_id] = full_name
                 
-    return render_template('worker_my_clients.html', connections = connection_data)
+    return render_template('worker_my_clients.html', user=user, connections = connection_data)
 
 
 #------------------------------------------------------------------------------
@@ -1108,7 +1116,7 @@ def accept_request():
             flash("You have successfully declined the request")
         db.session.commit()
         
-    return render_template('accept_request.html')
+    return render_template('accept_request.html', user=user)
 
 
 #------------------------------------------------------------------------------
@@ -1120,6 +1128,9 @@ def accept_request():
 @app.route('/client_view_profile/<worker_id>', methods=['GET'])
 @login_required
 def client_view_profile(worker_id):
+    
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
     
     support_worker = SupportWorkers.query.filter_by(id=worker_id).first_or_404()  
 
@@ -1141,7 +1152,7 @@ def client_view_profile(worker_id):
         if t.course or t.institution:
             actual_training.append(t)
 
-    return render_template('client_view_profile.html', support_worker=support_worker, training=actual_training, work_history=actual_work_history)
+    return render_template('client_view_profile.html', support_worker=support_worker, training=actual_training, work_history=actual_work_history, user=user)
 
 
 ## Support Worker viewing a client's profile ##
@@ -1150,10 +1161,13 @@ def client_view_profile(worker_id):
 @login_required
 def worker_view_profile(client_id):
     
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
     print(client_id)        
     client = Clients.query.filter_by(id=client_id).first_or_404()    
     
-    return render_template('worker_view_profile.html', client=client)
+    return render_template('worker_view_profile.html', client=client, user=user)
 
 
 #------------------------------------------------------------------------------
@@ -1204,7 +1218,7 @@ def client_profile_personal_info():
         db.session.commit()
         flash("Your personal information was successfully updated")
         
-    print(form.errors)
+    # print(form.errors)
 
     return render_template('client_profile_personal_info.html', form=form, user=user)
     
