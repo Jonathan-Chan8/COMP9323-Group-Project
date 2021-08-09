@@ -186,12 +186,21 @@ class ClientAddShiftForm(FlaskForm):
     date = DateField('Choose a date', validators=[DataRequired()])
     start_time = DateTimeField('Start time (hours:mins)',format='%H:%M', validators=[DataRequired()])
     end_time = DateTimeField('End time (hours:mins)', format='%H:%M', validators=[DataRequired()])
-    frequency = SelectField('Frequency', choices = [('daily', 'Daily'), ('weekly','Weekly'), ('fortnightly', 'Fortnightly'), ('monthly', 'Monthly')], validators=[DataRequired()])
+    frequency = SelectField('Frequency', choices = [('one-off', 'One-off'), ('daily', 'Daily'), ('weekly','Weekly'), ('fortnightly', 'Fortnightly'), ('monthly', 'Monthly')], validators=[DataRequired()])
     worker = SelectField('Support Workers', coerce=int)
     activity = StringField('Activity', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class WorkerAddShiftForm(FlaskForm):
+    date = DateField('Choose a date', validators=[DataRequired()])
+    start_time = DateTimeField('Start time (hours:mins)', format='%H:%M', validators=[DataRequired()])
+    end_time = DateTimeField('End time (hours:mins)', format='%H:%M', validators=[DataRequired()])
+    frequency = SelectField('Frequency', choices = [('one-off', 'One-off'), ('daily', 'Daily'), ('weekly','Weekly'), ('fortnightly', 'Fortnightly'), ('monthly', 'Monthly')], validators=[DataRequired()])
+    client = SelectField('Clients', coerce=int)
+    activity = StringField('Activity', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 
 
