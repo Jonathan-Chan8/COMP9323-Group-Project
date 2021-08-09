@@ -4,7 +4,7 @@ from wtforms import (BooleanField, PasswordField, StringField, SubmitField,
                     IntegerField, TextField, TextAreaField, RadioField,
                     SelectField)
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional
-from wtforms.fields.html5 import DateField
+from wtforms.fields.html5 import DateField, DateTimeField
 
 from datetime import datetime
 from datetime import date
@@ -178,14 +178,19 @@ class AccountForm(FlaskForm):
 
 class WorkerReportForm(FlaskForm):
     
-        clients = SelectField(u'Clients', coerce=int)
+    clients = SelectField('Clients', coerce=int)
 
 
-class AddShiftForm(FlaskForm):
+class ClientAddShiftForm(FlaskForm):
     
-    clients = SelectField(u'Support worker clients', choices = [( 'worker1', 'Darren'),('worker2','Steve')])
-
-
+    date = DateField('Choose a date', validators=[DataRequired()])
+    start_time = DateTimeField('Start time (hours:mins)',format='%H:%M', validators=[DataRequired()])
+    end_time = DateTimeField('End time (hours:mins)', format='%H:%M', validators=[DataRequired()])
+    frequency = SelectField('Frequency', choices = [('daily', 'Daily'), ('weekly','Weekly'), ('fortnightly', 'Fortnightly'), ('monthly', 'Monthly')], validators=[DataRequired()])
+    worker = SelectField('Support Workers', coerce=int)
+    activity = StringField('Activity', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 
 

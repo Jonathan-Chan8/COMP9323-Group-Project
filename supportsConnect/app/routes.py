@@ -7,10 +7,11 @@ from werkzeug.urls import url_parse
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+import datetime as dt
 from app import app, db
-from app.forms import (LoginForm, RegistrationForm, ConnectForm, 
+from app.forms import (ClientAddShiftForm, LoginForm, RegistrationForm, ConnectForm, 
                         ClientInformationForm, WorkerInformationForm, ConnectRequestForm,
-                        AccountForm, AddShiftForm, WorkerReportForm)
+                        AccountForm, WorkerReportForm)
 
 from app.models import *
 
@@ -42,9 +43,9 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             
             if user.accountType == 'support worker':
-                return redirect(url_for('worker_dashboard', email=user.email))
+                return redirect(url_for('worker_dashboard'))
             elif user.accountType == 'client':
-                return redirect(url_for('client_dashboard', email=user.email))
+                return redirect(url_for('client_dashboard'))
             else:
                 next_page = url_for('index')
         return redirect(next_page)
@@ -158,19 +159,65 @@ def sign_up_client_guardian():
 #                             Dashboard 
 #------------------------------------------------------------------------------
 
-@app.route('/worker_dashboard/')
+@app.route('/worker_dashboard')
 @login_required
 def worker_dashboard():
     user_id = current_user.get_id()
     user = SupportWorkers.query.filter_by(id=user_id).first_or_404()
     return render_template('worker_dashboard.html', user=user)
 
-@app.route('/client_dashboard/')
+@app.route('/client_dashboard')
 @login_required
 def client_dashboard():
     user_id = current_user.get_id()
     user = Clients.query.filter_by(id=user_id).first_or_404()
+    # q = db.session.query(Users).join(Shifts, Shifts.workerId == Users.id).filter(Shifts.clientId == user_id)
+    # events = []
+    # for row in q:
+    #     events.append({
+    #         'title': f'{row.firstName}-{row.activity}'
+    #         })
+    
+    
+    # print(events)
+    # for event in Shifts.query.filter_by(clientId=user_id).all():
+    #     events.append({'title': event.activity})
+    # print(events)
     return render_template('client_dashboard.html', user=user)
+
+
+#------------------------------------------------------------------------------
+#                                   Shifts
+#------------------------------------------------------------------------------
+
+@app.route('/client_add_shift', methods=['GET', 'POST'])
+@login_required
+def client_add_shift():
+    user_id = current_user.get_id()
+    user = Clients.query.filter_by(id=user_id).first_or_404()
+    form = ClientAddShiftForm()
+    
+    q = db.session.query(Users).join(ConnectedUsers, ConnectedUsers.supportWorkerId == Users.id).filter(ConnectedUsers.clientId == user_id).filter(ConnectedUsers.clientStatus == 'accepted').all()
+            
+    form.worker.choices = [(row.id, row.firstName) for row in q]
+
+    if form.validate_on_submit():
+        shift = Shifts()
+        shift.shiftStatus = 'pending'
+        shift.clientId = user_id
+        shift.workerId = form.worker.data
+        shift.requestedFrom = 'client'
+        shift.date = form.date.data
+        shift.startTime = form.start_time.data
+        shift.endTime = form.end_time.data
+        shift.frequency = form.frequency.data
+        shift.activity = form.activity.data
+        shift.location = form.location.data
+        db.session.add(shift)
+        db.session.commit()
+        flash('Shift added')
+        return redirect(url_for('client_dashboard'))
+    return render_template('client_add_shift.html', form=form, user=user)
 
 
 #------------------------------------------------------------------------------
@@ -740,6 +787,7 @@ def account():
             flash("Error: Email Address not found. Please provide the email address used to login to this account.")
 
     return render_template('account.html', user=user, form=form)
+
 
 
 

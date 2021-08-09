@@ -2,7 +2,6 @@
 {% block title%} Client Dashboard {% endblock %}
 
 {% block content %} 
-<body>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
     <div id="calendar"></div>
@@ -10,6 +9,15 @@
         let calendarEl = document.getElementById('calendar');
 
         let calendar = new FullCalendar.Calendar(calendarEl, {
+            events: [
+                {% for event in events %}
+                {
+                    title: '{{ event.activity }}',
+                    start: '{{ (event.date) + "T" + (event.start_time) + ":00+10:00" }}'
+                    end: '{{ (event.date) + "T" + (event.end_time) + ":00+10:00" }}'
+                }
+                {% endfor %}
+            ],
             initialView: 'timeGridWeek',
             headerToolbar: {
                 left: 'title',
@@ -22,12 +30,13 @@
                 right: 'prevYear,prev,next,nextYear'
             },
             
+            allDaySlot: false,
             selectable: true,
             nowIndicator: true
         });
 
         calendar.render();
     </script>
-</body>
+    <button onclick="location.href='http://localhost:5000/client_add_shift'" type="button">Add Shift</button>
 
 {% endblock %}

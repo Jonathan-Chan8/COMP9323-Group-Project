@@ -1,0 +1,67 @@
+{% extends "client_base.html" %}
+{% block title %} Add a shift {% endblock %}
+{% block content %}
+    <h1>Add a shift</h1>
+    
+    <div><a href="{{ url_for('client_dashboard') }}">Back</a></div>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.date.label }}<br>
+            {{ form.date(size=32) }}<br>
+            {% for error in form.date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.start_time.label  }}<br>
+            {{ form.start_time(size=32) }}<br>
+            {% for error in form.start_time.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.end_time.label  }}<br>
+            {{ form.end_time(size=32) }}<br>
+            {% for error in form.end_time.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.frequency.label  }}<br>
+            {{ form.frequency() }}<br>
+            {% for error in form.frequency.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.worker.label  }}<br>
+            {{ form.worker() }}<br>
+            {% for error in form.worker.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.activity.label  }}<br>
+            {{ form.activity(size=32) }}<br>
+            {% for error in form.activity.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.location.label  }}<br>
+            {{ form.location(size=32) }}<br>
+            {% for error in form.location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
