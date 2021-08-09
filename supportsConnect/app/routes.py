@@ -4,7 +4,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 #from flask_login.utils import login_required
 from werkzeug.urls import url_parse
-from datetime import date
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 import datetime as dt
@@ -171,19 +171,17 @@ def worker_dashboard():
 def client_dashboard():
     user_id = current_user.get_id()
     user = Clients.query.filter_by(id=user_id).first_or_404()
-    # q = db.session.query(Users).join(Shifts, Shifts.workerId == Users.id).filter(Shifts.clientId == user_id)
-    # events = []
-    # for row in q:
-    #     events.append({
-    #         'title': f'{row.firstName}-{row.activity}'
-    #         })
-    
-    
-    # print(events)
-    # for event in Shifts.query.filter_by(clientId=user_id).all():
-    #     events.append({'title': event.activity})
-    # print(events)
-    return render_template('client_dashboard.html', user=user)
+
+    q = db.session.query(Users, Shifts).join(Shifts, Shifts.workerId == Users.id).filter(Shifts.clientId == user_id).all()
+    events = []
+    for row in q:
+        events.append({
+            'title': f'{row[0].firstName}-{row[1].activity}',
+            'start': dt.datetime.combine(row[1].date, row[1].startTime),
+            'end': dt.datetime.combine(row[1].date, row[1].endTime)
+            })
+
+    return render_template('client_dashboard.html', user=user, events=events)
 
 
 #------------------------------------------------------------------------------
