@@ -174,7 +174,8 @@ def worker_dashboard():
     events = []
     for row in q:
         events.append({
-            'title': f'{row[0].firstName}-{row[1].activity}',
+            #'title': f'{row[0].firstName}-{row[1].activity}',
+            'title': f'{row[0].firstName}',
             'start': dt.datetime.combine(row[1].date, row[1].startTime),
             'end': dt.datetime.combine(row[1].date, row[1].endTime)
             })
