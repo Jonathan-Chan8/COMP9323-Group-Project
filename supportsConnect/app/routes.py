@@ -536,7 +536,7 @@ def worker_add_shift():
 
     if form.validate_on_submit():
         shift = Shifts()
-        shift.shiftStatus = 'pending'
+        shift.shiftStatus = 'requested'
         shift.clientId = form.client.data
         shift.workerId = user_id
         shift.requestedFrom = 'worker'
