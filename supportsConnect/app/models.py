@@ -126,16 +126,20 @@ class Reports(db.Model):
     
     shift_id = db.Column(db.Integer, db.ForeignKey('shifts.id'))
 
+
+
 class Shifts(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    shiftStatus = db.Column(db.Enum('requested', 'scheduled', 'pending', 'completed', name='Shift Statuses'))
+    shiftStatus = db.Column(db.Enum('requested', 'scheduled', 'pending', 'completed', name = 'Shift Statuses'))
+
     workerId = db.Column(db.Integer, db.ForeignKey('support_workers.id'))
     clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
     requestedFrom = db.Column(db.Enum('client', 'worker', name='requester'))
     date = db.Column(db.DATE)
     startTime = db.Column(db.TIME)
     endTime = db.Column(db.TIME)
+
     duration = db.Column(db.Interval)
     frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))   
     
@@ -154,6 +158,21 @@ class Locations(db.Model):
     name = db.Column(NameValue)
     clientId = db.Column(db.Integer, db.ForeignKey('clients.id'))
     shifts = db.relationship('Shifts', secondary=subs_locations, backref=db.backref('locations', lazy='dynamic'))
+
+    # frequency = db.Column(db.Enum('daily', 'weekly', 'fortnightly', 'monthly', name = 'frequencies'))
+    # activity = db.Column(Description)
+    # location = db.Column(Description)
+
+
+
+# class Activities(db.Model):
+
+#     id = db.Column(db.Integer, primary_key = True)
+#     shift = db.Column(db.Integer, db.ForeignKey('shifts.id'))
+#     location = db.Column(Description)
+
+
+
 
     
 @login.user_loader

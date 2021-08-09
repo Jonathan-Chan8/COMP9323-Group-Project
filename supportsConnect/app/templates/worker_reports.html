@@ -2,52 +2,8 @@
 
 {% block content %}
 
-    <h1> Support Worker: View Reports </h1>
-    
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-    
-        {{ form.clients.label }}    
-        {{ form.clients }}
-        {{ form.client_submit}}
+    <h1> Support Worker: View Requested Shifts </h1>
 
-        <br><br>
-         {{ form.activities.label }}
-         {{ form.activities }}
-         {{ form.activity_submit}} 
-         <br><br>
-
-         {{ form.locations.label }}
-         {{ form.locations }}
-         {{ form.location_submit}} 
-         <br><br>
-    </form>
-
-    {% for report in reports %}
-    
-        <big><b> {{ report.client_name }} </b></big><br>
-        <a> Support Worker: </a> {{ report.worker_name }}<br>
-        <a> {{ report.date }} <br><br>
-        
-        <b> Mood: </b> <a> {{ report.client_mood }} </a><br>
-        <b> Location(s): </b> 
-        {% for location in report.locations %}
-            {{ location.name }}
-        {% endfor %}
-        <br>
-        <b> Activities: </b> 
-        {% for activity in report.activities %}
-            {{ activity.name }}
-        {% endfor %}
-        <br>
-        <b> Incident: </b><a> {{ report.incident }} </a>
-        <br><br>
-        <a href="/worker_view_report/{{ report.report_id }}/{{ report.worker_name }}/{{ report.client_name }}"><button type='button'>Read Report</button></a>
-        <br>
-        <br>
-        <br>
-
-    {% endfor %}
     
 {% endblock %}
 
