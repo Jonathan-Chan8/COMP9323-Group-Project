@@ -234,7 +234,7 @@ class ReportingForm(FlaskForm):
     
     submit = SubmitField('Submit')
 
-    clients = SelectField('Clients', coerce=int)
+    #clients = SelectField('Clients', coerce=int)
 
 
 

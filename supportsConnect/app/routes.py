@@ -194,6 +194,29 @@ def client_dashboard():
 #                                   Shifts
 #------------------------------------------------------------------------------
 
+
+class Shift_Card:
+    
+    def __init__(self, shift_id, client_name, date, start_time, end_time): 
+        
+        self.shift_id = shift_id
+        self.client_name = client_name
+        self.date = date
+        self.start_time = start_time
+        self.end_time = end_time
+
+class Shift_Card_Completed:
+    
+    def __init__(self, report_id, client_name, worker_name, date, start_time, end_time): 
+        
+        self.report_id = report_id
+        self.client_name = client_name
+        self.worker_name = worker_name
+        self.date = date
+        self.start_time = start_time
+        self.end_time = end_time
+
+
 @app.route('/client_add_shift', methods=['GET', 'POST'])
 @login_required
 def client_add_shift():
@@ -207,7 +230,7 @@ def client_add_shift():
 
     if form.validate_on_submit():
         shift = Shifts()
-        shift.shiftStatus = 'pending'
+        shift.shiftStatus = 'requested'
         shift.clientId = user_id
         shift.workerId = form.worker.data
         shift.requestedFrom = 'client'
@@ -231,13 +254,152 @@ def worker_shift_requests():
     user_id = current_user.get_id()
     user = Users.query.filter_by(id=user_id).first_or_404()
     
-    shifts = Shifts.query.filter_by(shiftStatus = 'pending', requestedFrom = 'client', workerId = user_id).all()
-    
+    # Run update for 'Pending Shifts'
+    # Any shifts past the current date time need to be set to pending
+    shifts = Shifts.query.filter_by(shiftStatus = 'scheduled', workerId = user_id).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
     for shift in shifts:
-        print(shift)
+        shift_datetime = datetime.combine(shift.date, shift.endTime)
+        if shift_datetime < datetime.now():
+            shift.shiftStatus = 'pending'
+            db.session.commit()
     
-    return render_template('worker_shift_requests.html', user=user)
+    # Get user requested shifts
+    shifts = Shifts.query.filter_by(shiftStatus = 'requested', requestedFrom = 'client', workerId = user_id).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
     
+    
+    shift_cards = []
+    # Append relevant information to shift_cards
+    for shift in shifts:
+        client = Clients.query.filter_by(id = shift.clientId).first()
+        client_full_name = client.firstName + ' ' +  client.lastName
+        
+        shift = Shift_Card(shift.id,
+                           client_full_name,
+                           shift.date,
+                           shift.startTime,
+                           shift.endTime
+                                    )
+        shift_cards.append(shift)
+    
+    return render_template('worker_shift_requests.html', user=user, shifts=shift_cards)
+
+
+@app.route('/worker_shift_scheduled', methods=['GET', 'POST'])
+@login_required
+def worker_shift_scheduled():
+    
+    # Current user 
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    # Get user pending shifts
+    shifts = Shifts.query.filter_by(shiftStatus = 'scheduled', workerId = user_id).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
+    
+    shift_cards = []
+    # Append relevant information to shift_cards
+    for shift in shifts:
+
+        client = Clients.query.filter_by(id = shift.clientId).first()
+        client_full_name = client.firstName + ' ' +  client.lastName
+        
+        shift = Shift_Card(shift.id,
+                           client_full_name,
+                           shift.date,
+                           shift.startTime,
+                           shift.endTime
+                                    )
+        shift_cards.append(shift)
+    
+    return render_template('worker_shift_scheduled.html', user=user, shifts=shift_cards)
+
+@app.route('/worker_shift_pending', methods=['GET', 'POST'])
+@login_required
+def worker_shift_pending():
+    
+    # Current user 
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    # Get user pending shifts
+    shifts = Shifts.query.filter_by(shiftStatus = 'pending', workerId = user_id).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
+    
+    shift_cards = []
+    # Append relevant information to shift_cards
+    for shift in shifts:
+
+        client = Clients.query.filter_by(id = shift.clientId).first()
+        client_full_name = client.firstName + ' ' +  client.lastName
+        
+        shift = Shift_Card(shift.id,
+                           client_full_name,
+                           shift.date,
+                           shift.startTime,
+                           shift.endTime
+                                    )
+        shift_cards.append(shift)
+    
+    return render_template('worker_shift_pending.html', user=user, shifts=shift_cards)
+
+@app.route('/worker_shift_completed', methods=['GET', 'POST'])
+@login_required
+def worker_shift_completed():
+    
+    # Current user 
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    # Get user pending shifts
+    shifts = Shifts.query.filter_by(shiftStatus = 'completed', workerId = user_id).order_by(desc(Shifts.date)).order_by(desc(Shifts.startTime)).all()
+    
+    shift_cards = []
+    # Append relevant information to shift_cards
+    for shift in shifts:
+        
+        report = Reports.query.filter_by(shift_id=shift.id).first()
+        client = Clients.query.filter_by(id = shift.clientId).first()
+        client_full_name = client.firstName + ' ' +  client.lastName
+        worker_full_name = user.firstName + ' ' +  user.lastName
+
+        shift = Shift_Card_Completed(report.id,
+                               client_full_name,
+                               worker_full_name,
+                               shift.date,
+                               shift.startTime,
+                               shift.endTime
+                                    )
+        shift_cards.append(shift)
+    
+    return render_template('worker_shift_completed.html', user=user, shifts=shift_cards)
+
+@app.route('/accept_shift_request', methods=['GET', 'POST'])
+@login_required
+def accept_shift_request():
+    
+    # Current user -> The user that received the request
+    user_id = current_user.get_id()
+    user = Users.query.filter_by(id=user_id).first_or_404()
+    
+    # Current user response to the request
+    user_response = request.json
+    response = user_response['response']
+    
+    # Retrive the shift id
+    shift_id = user_response['shift_id']
+    
+    # Retrieve the shift object from the database
+    shift = Shifts.query.filter_by(id=shift_id).first()
+
+    if shift:
+        # -> Current user accepted the request
+        if response == 'accept':
+            shift.shiftStatus = 'scheduled'
+            flash("The shift has been accepted")
+        # -> Current user declined the request
+        elif response == 'decline':
+            db.session.delete(shift)  # Remove the shift object
+            flash("You have successfully declined the shift request")
+        db.session.commit()
+        
+    return render_template('accept_shift_requests.html')    
+
+
 #------------------------------------------------------------------------------
 #                                   Reports
 #------------------------------------------------------------------------------
@@ -460,16 +622,15 @@ def worker_reports():
 
 
 
-
-@app.route('/worker_complete_shift_report', methods=['GET', 'POST'])
+@app.route('/worker_complete_shift_report/<shift_id>', methods=['GET', 'POST'])
 @login_required
-def worker_complete_shift_report():
+def worker_complete_shift_report(shift_id):
     
     # ASSUMES THAT A SHIFT OBJECT IS PASSED FROM shift_pending
     # Add 'shift' as an argument 
     
     # But in the mean time
-    shift = Shifts.query.first()
+    shift = Shifts.query.filter_by(id=shift_id).first()
     
     # Retrieve the client's name 
     client = Clients.query.filter_by(id=shift.clientId).first_or_404()
@@ -525,7 +686,7 @@ def worker_complete_shift_report():
         shift.shiftStatus = 'completed'
         db.session.add(report)
         db.session.commit()
-        return redirect(url_for('worker_reports')) # CHANGE THIS TO 'shifts_completed'
+        return redirect(url_for('worker_shift_completed')) # CHANGE THIS TO 'shifts_completed'
     print(form.errors)
     
     return render_template('worker_complete_shift_report.html', shift=shift, 

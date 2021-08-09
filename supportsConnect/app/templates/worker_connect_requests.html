@@ -25,6 +25,8 @@
             xhr.open("POST", "/accept_request");
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(json);
+            setTimeout(location.reload.bind(location), 100);
+
         }
                 
     </script>

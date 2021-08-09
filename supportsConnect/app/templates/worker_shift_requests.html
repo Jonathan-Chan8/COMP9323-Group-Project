@@ -1,0 +1,65 @@
+{% extends "worker_base.html" %}
+
+{% block content %}
+
+    <div>
+        <button onclick="location.href='http://localhost:5000/worker_shift_requests'" type="button">
+         Requests</button>
+        <button onclick="location.href='http://localhost:5000/worker_shift_scheduled'" type="button">
+         Scheduled</button>
+         <button onclick="location.href='http://localhost:5000/worker_shift_pending'" type="button">
+         Pending</button>
+          <button onclick="location.href='http://localhost:5000/worker_shift_completed'" type="button">
+         Completed</button>
+    </div>
+
+
+    <h1> Support Worker: View Requested Shifts </h1>
+
+    <script>
+
+        function sendJSON(data, response) {
+            var data = {
+                response: response,
+                shift_id: data
+            };
+        
+            var json = JSON.stringify(data);
+        
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/accept_shift_request");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(json);
+            setTimeout(location.reload.bind(location), 100);
+            
+        }
+                
+    </script>
+
+    <form action="" method="post">
+
+        <p>
+            {% for shift in shifts %}
+            
+                <big><b> {{ shift.client_name }} </b></big><br>
+        
+                <a> {{ shift.date }} <br><br>
+        
+                <b> Start Time: </b> <a> {{ shift.start_time }} </a><br>
+        
+                <b> End Time: </b> <a> {{ shift.end_time }} </a><br>
+                
+        
+                <button id='btn1' type="button" onclick="sendJSON( {{ shift.shift_id }} , 'accept')">Accept</button> 
+                <button id='btn1' type="button" onclick="sendJSON( {{ shift.shift_id }} , 'decline')">Decline</button> 
+                
+                <br><br><br>
+            {% endfor %}
+        </p>
+    </form>
+
+
+    
+    
+{% endblock %}
+
