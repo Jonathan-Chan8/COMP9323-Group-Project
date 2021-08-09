@@ -1,20 +1,18 @@
-{% extends "worker_base.html" %}
+{% extends "client_base.html" %}
 
 {% block content %}
 
     <div>
-        <button onclick="location.href='http://localhost:5000/worker_shift_requests'" type="button">
+        <button onclick="location.href='http://localhost:5000/client_shift_requests'" type="button">
          Requests</button>
-        <button onclick="location.href='http://localhost:5000/worker_shift_scheduled'" type="button">
+        <button onclick="location.href='http://localhost:5000/client_shift_scheduled'" type="button">
          Scheduled</button>
-         <button onclick="location.href='http://localhost:5000/worker_shift_pending'" type="button">
-         Pending</button>
-          <button onclick="location.href='http://localhost:5000/worker_shift_completed'" type="button">
+          <button onclick="location.href='http://localhost:5000/client_shift_completed'" type="button">
          Completed</button>
     </div>
 
 
-    <h1> Support Worker: View Scheduled Shifts </h1>
+    <h1> Client: View Requested Shifts </h1>
 
     <script>
 
@@ -50,8 +48,8 @@
                 <b> End Time: </b> <a> {{ shift.end_time }} </a><br>
                 
         
-                <br><a href="/worker_shift_update/{{ shift.shift_id }}"><button type='button'> Update </button></a> &nbsp;
-                <button id='btn1' type="button" onclick="sendJSON( {{ shift.shift_id }} , 'decline')">Cancel</button> 
+                <button id='btn1' type="button" onclick="sendJSON( {{ shift.shift_id }} , 'accept')">Accept</button> 
+                <button id='btn1' type="button" onclick="sendJSON( {{ shift.shift_id }} , 'decline')">Decline</button> 
                 
                 <br><br><br>
             {% endfor %}
@@ -62,3 +60,4 @@
     
     
 {% endblock %}
+
