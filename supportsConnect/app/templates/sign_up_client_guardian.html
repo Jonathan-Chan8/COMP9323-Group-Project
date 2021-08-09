@@ -7,74 +7,61 @@
     </br>
 </br>
     <h4>Client Details</h4>
-<div class="form2">
+<div>
     <form action="" method="post">
         {{ form.hidden_tag() }}
             <label>
-            {{ form.first_name.label }}<br>
-                {{ form.first_name(size=32) }}<br>
+            {{ form.first_name.label }}<br></br>
+                {{ form.first_name(size=32) }}<br></br>
                 {% for error in form.first_name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </label>
-        </br>
             <label>
-            {{ form.last_name.label }}<br>
-                {{ form.last_name(size=32) }}<br>
+            {{ form.last_name.label }}<br></br>
+                {{ form.last_name(size=32) }}<br></br>
                 {% for error in form.last_name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </label>
-    </form>
-</div>
-
-
-<div class="form3">
-</br>
 <h4>Guardian Details</h4>
-</br>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
         <label>
-            {{ form.guardian_first_name.label }}<br>
-            {{ form.guardian_first_name(size=32) }}<br>
+            {{ form.guardian_first_name.label }}<br></br>
+            {{ form.guardian_first_name(size=32) }}<br></br>
             {% for error in form.guardian_first_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
             </label>
-        </br>
             <label>
-                {{ form.guardian_last_name.label }}<br>
-                {{ form.guardian_last_name(size=32) }}<br>
+                {{ form.guardian_last_name.label }}<br></br>
+                {{ form.guardian_last_name(size=32) }}<br></br>
                 {% for error in form.guardian_last_name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </label>
-        </br>
         <label>
-            {{ form.email.label }}<br>
-            {{ form.email(size=32) }}<br>
+            {{ form.email.label }}<br></br>
+            {{ form.email(size=32) }}<br></br>
             {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </label>
-        </br>
+
         <label>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
+            {{ form.password.label }}<br></br>
+            {{ form.password(size=32) }}<br></br>
             {% for error in form.password.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </label>
-        </br>
+
         <label>
-        {{ form.password2.label }}<br>
-            {{ form.password2(size=32) }}<br>
+        {{ form.password2.label }}<br></br>
+            {{ form.password2(size=32) }}<br></br>
             {% for error in form.password2.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </label>
-        </br>
         <label class="button3">
         {{ form.submit() }}
     </label>
