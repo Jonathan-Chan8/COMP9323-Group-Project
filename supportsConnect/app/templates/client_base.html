@@ -23,12 +23,13 @@
 </nav>
 <div class="content-wrapper">
     <div class="side-nav">
-        <a href="{{ url_for('client_profile_personal_info') }}"><img src="/static/assets/svgs/people.svg" width="70" height="70" class="d-inline-block align-top" alt="" style="border-radius: 50%;"></a>
+        
+        <a href="{{ url_for('client_profile_personal_info') }}"><img src={% block photo % }{% endblock %} width="70" height="70" class="d-inline-block align-top" alt="" style="border-radius: 50%;"></a>
         <h4>{% block firstname %}{% endblock %} {% block lastname %}{% endblock %}</h4>
         <h6>{% block accounttype %}{% endblock %}</h6>
         <div class="border"></div>
         <div class="sidebar">
-            <a href="{{ url_for('client_dashboard') }}"  class="isActive"><i class="fa fa-fw fa-home"></i> Dashboard</a>
+            <a href="{{ url_for('client_dashboard') }}"><i class="fa fa-fw fa-home"></i> Dashboard</a>
             <a href="{{ url_for('client_shift_requests') }}"><i class="fa fa-fw fa-list-ul"></i> Shifts</a>
             <a href="{{ url_for('client_my_support_workers') }}"><i class="fa fa-fw fa-users"></i> My Support Workers</a>
             <a href="{{ url_for('client_connect') }}"><i class="fa fa-th-large"></i> Connect</a>
