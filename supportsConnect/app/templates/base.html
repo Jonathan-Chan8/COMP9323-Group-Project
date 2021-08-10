@@ -1,32 +1,48 @@
 <!doctype html>
 
 <html>
-    <head>
-        <title> {% block title %}{% endblock %} </title>
-        <link rel="icon" href="/static/images/icon.png" type="image/icon type">
-        <link rel="stylesheet" href="/static/style.css">
-    </head>
-    <body>
-        <div class="main">
-            <nav>
-                <label class="logo"><a href="{{ url_for('index') }}">Supports Connect</a></label>
-                <ul>
-                    <li><a href="{{ url_for('index') }}">Home</a></li>
-                    <li><a href="#">Contact us</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="{{ url_for('login') }}" class='login' style="border: 1px solid white; border-radius: 25px;">Login</a></li>
-                </ul>
+
+<head>
+    <title> {% block title %}{% endblock %} </title>
+    <link rel="icon" href="/static/images/icon.png" type="image/icon type">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="main">
+        <div style="">
+
+            <nav style="display: flex;">
+                <div>
+                    <span style="    padding-left: 15px;
+                padding-top: 5px;"><img src="../static/images/Vector.svg" style="margin-top: 5px;"></span>
+                </div>
+                <div style="width:65%">
+                    <label class="logo"><a href="{{ url_for('index') }}" style="color: white;top: -10px !important;">
+                            Supports Connect</a></label>
+                </div>
+                <div style="justify-content: flex-end;">
+                    <ul style="display:flex;margin-top: auto;">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="{{ url_for('login') }}" class='login'
+                                style="border: 1px solid white; border-radius: 25px;">Login</a></li>
+                    </ul>
+                </div>
             </nav>
         </div>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-   		{% block content %}{% endblock %}
-    </body>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+
 </html>

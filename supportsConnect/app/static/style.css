@@ -8,7 +8,9 @@
 }
 
 body{
-    font-family: Roboto;;
+    font-family: Roboto;
+    padding: 0px !important;
+    margin: 0px !important;
 }
 
 nav{
@@ -273,6 +275,9 @@ margin-left: 10px;
 
 
 div.footer{
+    width: 1522px;
+    /* margin: 0px !important; */
+    margin-top: -4px
     color: white;
     line-height: .7cm;
     background-color: #099268;
@@ -286,20 +291,18 @@ div.footer_head{
 }
 
 div.footer_body{
-    padding-left: 20px;
-    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+
 }
 
-div.followlogo{
-    font-size: 20px;
-}
 
 div.socialmedialogo{
     line-height: 10px;
     border-radius: 25px;
 }
 
-div.socialmedialogo ul li{
+div.socialmedialogo{
     display: inline-block;
     margin: 0 2px;
 }

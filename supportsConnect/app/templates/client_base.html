@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>{% block title %}{% endblock %}</title>
     <meta charset="utf-8">
@@ -8,42 +9,48 @@
     <link rel="stylesheet" href="/static/scss/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-<body style="overflow: visible">
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-brand" href="#">
-            <img src="/static/assets/svgs/people.svg" width="50" height="50" class="d-inline-block align-top" alt="">
-            <a class="navbar-brand" href="#">Supports Connect</a>
+
+    <body style="overflow: visible">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-brand" href="#">
+                    <img src="/static/assets/svgs/people.svg" width="50" height="50" class="d-inline-block align-top"
+                        alt="">
+                    <a class="navbar-brand" href="#">Supports Connect</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('logout') }}">Log out</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="content-wrapper">
+            <div class="side-nav">
+
+                <a href="{{ url_for('client_profile_personal_info') }}"><img src={% block photo %}{% endblock %}
+                        width="70" height="70" class="d-inline-block align-top" alt="" style="border-radius: 50%;"></a>
+                <h4>{% block firstname %}{% endblock %} {% block lastname %}{% endblock %}</h4>
+                <h6>{% block accounttype %}{% endblock %}</h6>
+                <div class="border"></div>
+                <div class="sidebar">
+                    <a href="{{ url_for('client_dashboard') }}"><i class="fa fa-fw fa-home"></i> Dashboard</a>
+                    <a href="{{ url_for('client_shift_requests') }}"><i class="fa fa-fw fa-list-ul"></i> Shifts</a>
+                    <a href="{{ url_for('client_my_support_workers') }}"><i class="fa fa-fw fa-users"></i> My Support
+                        Workers</a>
+                    <a href="{{ url_for('client_connect') }}"><i class="fa fa-th-large"></i> Connect</a>
+                    <a href="{{ url_for('client_reports') }}"><i class="fa fa-file-o"></i> Reports</a>
+                    <a href="{{ url_for('account') }}"><i class="fa fa-cog"></i> Account</a>
+                </div>
+                <div class="border margin-top-border"></div>
+                <p class="short-text">Contact</p>
+                <p style=" color: #989795;">Help</p>
+            </div>
+            <div class="main-wrapper">
+                {% block header %}{% endblock %}
+                <div class="main-content">{% block content %}{% endblock %}</div>
+            </div>
         </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('logout') }}">Log out</a></li>
-        </ul>
-    </div>
-</nav>
-<div class="content-wrapper">
-    <div class="side-nav">
-        
-        <a href="{{ url_for('client_profile_personal_info') }}"><img src={% block photo % }{% endblock %} width="70" height="70" class="d-inline-block align-top" alt="" style="border-radius: 50%;"></a>
-        <h4>{% block firstname %}{% endblock %} {% block lastname %}{% endblock %}</h4>
-        <h6>{% block accounttype %}{% endblock %}</h6>
-        <div class="border"></div>
-        <div class="sidebar">
-            <a href="{{ url_for('client_dashboard') }}"><i class="fa fa-fw fa-home"></i> Dashboard</a>
-            <a href="{{ url_for('client_shift_requests') }}"><i class="fa fa-fw fa-list-ul"></i> Shifts</a>
-            <a href="{{ url_for('client_my_support_workers') }}"><i class="fa fa-fw fa-users"></i> My Support Workers</a>
-            <a href="{{ url_for('client_connect') }}"><i class="fa fa-th-large"></i> Connect</a>
-            <a href="{{ url_for('client_reports') }}"><i class="fa fa-file-o"></i> Reports</a>
-            <a href="{{ url_for('account') }}"><i class="fa fa-cog"></i> Account</a>
-        </div>
-        <div class="border margin-top-border"></div>
-        <p class="short-text">Contact</p>
-        <p style=" color: #989795;">Help</p>
-    </div>
-    <div class="main-wrapper">
-        {% block header %}{% endblock %}
-        <div class="main-content">{% block content %}{% endblock %}</div>
-    </div>
-</div>
-</body>
+    </body>
+
 </html>

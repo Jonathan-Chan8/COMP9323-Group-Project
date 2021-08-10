@@ -2,34 +2,41 @@
 
 {% block content %}
 
-    <div class="menu">
-        <img src="/static/images/Hnet.com-image.jpg" alt="disabled person" width="1600" height="710">
-        <a href="{{ url_for('sign_up_user_type') }}"><input type="button" class="button1" value="SIGN UP"/></a>
-    </div>
-    <div class="footer">
-                    <div class="footer_head">CONTACT US</div>
-                    <div class="footer_body">
-                        <ul>
-                            <li><i class="fa fa-map-marker"></i> &nbsp; Street, derby. NSW 2147, Australia</li>
-                            <li><i class="fa fa-envelope-o"></i> &nbsp; Supportsconnect@gmail.com</li>
-                            <li><i class="fa fa-phone"></i>&nbsp; +613456789</li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class="followlogo" style="position:absolute; left:1450px; top:765px;"> FOLLOW US
-                        <div class="socialmedialogo">
-                        <ul>
-                        </br>
-                            <li><a href="www.instagram.com"><img class="instagramlogo" src="/static/images/instagram2.jpeg" alt="instagram" width="35px" height="35px"> </a></li>
-                            <li><a href="www.facebook.com"><img class="facebooklogo" src="/static/images/facebook.png" alt="facebook" width="35px" height="35px"> </a></li>
-                            <li><a href="www.twitter.com"><img class="twitterlogo" src="/static/images/twitter.jpeg" alt="twitter" width="35px" height="35px"> </a></li>
-                        </ul>
-                    </div>
-                </div>
+<div class="menu">
+    <img src="/static/images/Hnet.com-image.jpg" alt="disabled person" width="1600" height="710">
+    <a href="{{ url_for('sign_up_user_type') }}"><input type="button" class="button1" value="SIGN UP" /></a>
 </div>
-</body>
-</html>
+<div class="footer" style="margin: top -4px;width:1522px">
+    <div class="footer_head">CONTACT US</div>
+    <div class="footer_body">
+        <div style="width: 70%;">
+            <ul>
+                <li><i class="fa fa-map-marker"></i> &nbsp; Street, derby. NSW 2147, Australia</li>
+                <li><i class="fa fa-envelope-o"></i> &nbsp; Supportsconnect@gmail.com</li>
+                <li><i class="fa fa-phone"></i>&nbsp; +613456789</li>
+            </ul>
+        </div>
+        <div style="display:flex;margin-top:-3em">
+            <div class="followlogo" style="display: flex;">
+                <h3>FOLLOW US
+                    <div style="display: flex;">
+                        <div class="slogo"><a href="www.instagram.com"><img class="instagramlogo"
+                                    src="/static/images/instagram2.jpeg" alt="instagram" width="35px" height="35px">
+                            </a>
+                        </div>
+                        <div class="slogo"><a href="www.facebook.com"><img class="facebooklogo"
+                                    src="/static/images/facebook.png" alt="facebook" width="35px" height="35px"> </a>
+                        </div>
+                        <div class="slogo"><a href="www.twitter.com"><img class="twitterlogo"
+                                    src="/static/images/twitter.jpeg" alt="twitter" width="35px" height="35px"> </a>
+                        </div>
+                    </div>
+                </h3>
+            </div>
+        </div>
+    </div>
+    </body>
 
-{% endblock %}
+    </html>
 
+    {% endblock %}

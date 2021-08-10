@@ -9,65 +9,77 @@
 {% block content %}
 <link rel="stylesheet" href="/static/scss/report.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
-    <div id="calendar"></div>
-    <script>
-        let calendarEl = document.getElementById('calendar');
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main1.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
 
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            events: [
-                {% for event in events %}
-                {
-                    title: '{{ event.title }}',
-                    start: '{{ event.start }}',
-                    end: '{{ event.end }}'
-                },
-                {% endfor %}
-            ],
-            initialView: 'timeGridWeek',
-            headerToolbar: {
-                left: 'title',
-                center: '',
+
+<div id="calendar">
+    <button onclick="location.href='http://localhost:5000/client_add_shift'" type="button" style="margin-top: -40px;
+    width: 100px;
+">Add Shift</button>
+</div>
+
+
+<script>
+    let calendarEl = document.getElementById('calendar');
+
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        events: [
+            {% for event in events %}
+                        {
+            title: '{{ event.title }}',
+            start: '{{ event.start }}',
+            end: '{{ event.end }}'
+        },
+        {% endfor %}
+                    ],
+    initialView: 'timeGridWeek',
+        headerToolbar: {
+        left: 'title',
+            center: '',
                 right: 'today timeGridDay,timeGridWeek,dayGridMonth'
-            },
-            footerToolbar: {
-                left: '',
-                center: '',
+    },
+    footerToolbar: {
+        left: '',
+            center: '',
                 right: 'prevYear,prev,next,nextYear'
-            },
-            
-            allDaySlot: false,
-            selectable: true,
-            nowIndicator: true
-        });
+    },
 
-        calendar.render();
-    </script>
-    <button onclick="location.href='http://localhost:5000/client_add_shift'" type="button">Add Shift</button>
-    
-    <div class="right-side-wrapper">
-        <h3 style="padding: 15px 0;font-weight: bold;" >Notifications</h3>
-        <div class="side-main-content">
-            <div style="display: flex;align-items: center;justify-content: space-between;">
-                <i class="fa fa-bell green-color"></i>
-                <p>Monday, June 1</p>
-            </div>
-            <div style="display: flex;align-items: center;border: 1px solid #09926845;padding: 10px 10px;border-radius: 8px;justify-content: space-between;margin-bottom: 15px;">
-                <i class="fa fa-list-ul  green-color"></i>
-                <h5>Jenny wants to connect</h5>
-                <img src="/static/assets/svgs/people.svg" width="30" height="30" class="d-inline-block align-top" alt="" style="border-radius: 50%;">
-            </div>
-            <div style="display: flex;align-items: center;justify-content: space-between;">
-                <i class="fa fa-bell green-color"></i>
-                <p>Monday, June 1</p>
-            </div>
-            <div style="display: flex;align-items: center;border: 1px solid #09926845;padding: 10px 10px;border-radius: 8px;justify-content: space-between;margin-bottom: 15px;">
-                <i class="fa fa-list-ul  green-color"></i>
-                <h5>Jenny wants to connect</h5>
-                <img src="/static/assets/svgs/people.svg" width="30" height="30" class="d-inline-block align-top" alt="" style="border-radius: 50%;">
-            </div>
+    allDaySlot: false,
+        selectable: true,
+            nowIndicator: true
+                });
+
+    calendar.render();
+</script>
+
+
+<div class="right-side-wrapper">
+    <h3 style="padding: 15px 0;font-weight: bold;">Notifications</h3>
+    <div class="side-main-content">
+        <div style="display: flex;align-items: center;justify-content: space-between;">
+            <i class="fa fa-bell green-color"></i>
+            <p>Monday, June 1</p>
+        </div>
+        <div
+            style="display: flex;align-items: center;border: 1px solid #09926845;padding: 10px 10px;border-radius: 8px;justify-content: space-between;margin-bottom: 15px;">
+            <i class="fa fa-list-ul  green-color"></i>
+            <h5>Jenny wants to connect</h5>
+            <img src="/static/assets/svgs/people.svg" width="30" height="30" class="d-inline-block align-top" alt=""
+                style="border-radius: 50%;">
+        </div>
+        <div style="display: flex;align-items: center;justify-content: space-between;">
+            <i class="fa fa-bell green-color"></i>
+            <p>Monday, June 1</p>
+        </div>
+        <div
+            style="display: flex;align-items: center;border: 1px solid #09926845;padding: 10px 10px;border-radius: 8px;justify-content: space-between;margin-bottom: 15px;">
+            <i class="fa fa-list-ul  green-color"></i>
+            <h5>Jenny wants to connect</h5>
+            <img src="/static/assets/svgs/people.svg" width="30" height="30" class="d-inline-block align-top" alt=""
+                style="border-radius: 50%;">
         </div>
     </div>
-    </div>
+</div>
+</div>
 {% endblock %}
