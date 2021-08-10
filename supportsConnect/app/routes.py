@@ -1,3 +1,4 @@
+import os
 from flask import flash, redirect, render_template, request
 from flask.helpers import url_for
 from flask_login import current_user, login_user, logout_user, login_required
@@ -9,6 +10,8 @@ from werkzeug.urls import url_parse
 from dateutil.relativedelta import relativedelta
 from datetime import date, time, datetime
 import datetime as dt
+
+from werkzeug.utils import secure_filename
 from app import app, db
 from app.forms import (ClientAddShiftForm, LoginForm, RegistrationForm, ConnectForm, 
                         ClientInformationForm, WorkerAddShiftForm, WorkerInformationForm, ConnectRequestForm,
@@ -1214,6 +1217,11 @@ def client_profile_personal_info():
             user.healthNeeds = form.health_needs.data
         if form.short_bio.data: 
             user.shortBio = form.short_bio.data
+        if form.photo.data:
+            f = form.photo.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.instance_path, 'photos', filename))
+            user.photo = os.path.join(app.instance_path, 'photos', filename)
                  
         db.session.commit()
         flash("Your personal information was successfully updated")
@@ -1282,6 +1290,10 @@ def worker_profile_personal_info():
             user.interests = form.interests.data
         if form.languages.data: 
             user.languages = form.languages.data
+        if form.photo.data:
+            f = form.photo.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.instance_path, 'photos', filename))
         
         db.session.commit()
         

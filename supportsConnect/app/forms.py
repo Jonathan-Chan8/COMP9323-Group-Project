@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.recaptcha import validators
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import (BooleanField, PasswordField, StringField, SubmitField, 
                     IntegerField, TextField, TextAreaField, RadioField,
                     SelectField, DateTimeField, SelectMultipleField)
@@ -90,6 +91,7 @@ class ClientInformationForm(FlaskForm):
     gender = StringField('Gender')
     home_address = StringField('Home Address')
     short_bio = TextAreaField('Short Bio')
+    photo = FileField('Upload profile picture', validators=([Optional(), FileAllowed(['jpg', 'png'], 'Images only!')]))
     
     # Client Details
     likes = StringField('Likes')
@@ -118,6 +120,7 @@ class WorkerInformationForm(FlaskForm):
     gender = StringField('Gender')
     home_address = StringField('Home Address')
     short_bio = TextAreaField('Short Bio')
+    photo = FileField('Upload profile picture', validators=([Optional(), FileAllowed(['jpg', 'png'], 'Images only!')]))
     
     # Support Worker Details
     interests = TextAreaField('Interests')

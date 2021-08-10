@@ -34,6 +34,7 @@ class Users(UserMixin, db.Model):
     contactNo = db.Column(db.VARCHAR(15))
     homeAddress = db.Column(Description)
     shortBio = db.Column(db.VARCHAR(140))
+    photo = db.Column(db.VARCHAR(140))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
